@@ -1,0 +1,10 @@
+Package: wpp2012
+Version: 1.0-0
+Date: 2013-5-8
+Title: World Population Prospects 2012
+Author: Hana Sevcikova <hanas@uw.edu>, Patrick Gerland <gerland@un.org>
+Maintainer: Hana Sevcikova <hanas@uw.edu>
+Depends: R (>= 2.14.2)
+Description: Data from the United Nation's World Population Prospects 2012
+License: GPL (>= 2)
+URL: http://esa.un.org/wpp
