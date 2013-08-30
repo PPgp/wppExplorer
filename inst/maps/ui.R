@@ -14,7 +14,7 @@ googleLineChart <- function(id, options=list()) {
 }
 
 shinyUI(pageWithSidebar(
-  headerPanel("WPP 2012 Explorer"),
+  headerPanel("WPP Explorer"),
   sidebarPanel(
     geochartPrereqs,
     uiOutput('yearUI'),
