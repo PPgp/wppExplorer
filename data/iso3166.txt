@@ -1,0 +1,251 @@
+ISO 3166-1 COUNTRY NAME;COUNTRY ALTERNATE NAMES;ISO 3166-1 COUNTRY CHAR 2 CODE;ISO 3166-1 COUNTRY CHAR 3 CODE;ISO 3166-1 COUNTRY NUMBER CODE;FIPS COUNTRY CODE;FIPS COUNTRY NAME;UN REGION;UN SUB REGION NAME;CDH ID;COMMENTS;GPS LATITUDE;GPS LONGITUDE
+Afghanistan; Afghanistan, Afganistán;AF;AFG;004;AF;Afghanistan;Asia;Southern Asia;2;;33 00 N;65 00 E
+Albania;Albania, Albanien, Albanie;AL;ALB;008;AL;Albania;Europe;Southern Europe;4;Wikipedia: Introduced in 2006. AL- is part of the postcode.;41 00 N;20 00 E
+Algeria;Algeria, Algerien, Algérie, Argelia;DZ;DZA;012;AG;Algeria;Africa;Northern Africa;5;;28 00 N;3 00 E
+American Samoa;American Samoa, Amerikanisch-Samoa, Samoa américaines, Samoa Americana;AS;ASM;016;AQ;American Samoa;Oceania;Polynesia;6;;14 20 S;170 00 W
+Andorra;Andorre, Andorra;AD;AND;020;AN;Andorra;Europe;Southern Europe;7;AD is part of the postcode.  Wikipedia: each parish now has its own post code.;42 30 N;1 30 E
+Angola; Angola;AO;AGO;024;AO;Angola;Africa;Middle Africa;8;;12 30 S;18 30 E
+Anguilla; Anguilla;AI;AIA;660;AV;Anguilla;Americas;Caribbean;9;;18 15 N;63 10 W
+Antarctica;Antarctica, Antarktis, Antarctique, Antártida;AQ;ATA;010;AY;Antarctica;;;10;Region not listed in any source - indicates that there is no postal coding system.;90 00 S;0 00 E
+Antigua and Barbuda;Antigua and Barbuda, Antigua und Barbuda, Antigua et Barbuda, Antigua y Barbuda;AG;ATG;028;AC;Antigua and Barbuda;Americas;Caribbean;11;;17 03 N;61 48 W
+Argentina;Argentina, Argentinien, Argentine;AR;ARG;032;AR;Argentina;Americas;South America;12;;34 00 S;64 00 W
+Armenia;Armenia, Armenien, Arménie;AM;ARM;051;AM;Armenia;Asia;Western Asia;13;Postal codes changed from 999999 to 9999 in 2006.;40 00 N;45 00 E
+Aruba;Aruba;AW;ABW;533;AA;Aruba;Americas;Caribbean;14;;12 30 N;69 58 W
+Australia;Australien, Australie, Australia;AU;AUS;036;AS;Australia;Oceania;Australia and New Zealand;15;;27 00 S;133 00 E
+Austria;Österreich, Autriche, Austria;AT;AUT;040;AU;Austria;Europe;Western Europe;16;Wikipedia: A- or AT- is part of the postcode.  Statoids: postal codes can be identified by prefixing them with ;47 20 N;13 20 E
+Azerbaijan;Azerbaijan, Aserbaidschan, Azerbaïdjan, Azerbaiyán;AZ;AZE;031;AJ;Azerbaijan;Asia;Western Asia;17;AZ is part of the postcode.;40 30 N;47 30 E
+Bahamas;Bahamas;BS;BHS;044;BF;Bahamas;Americas;Caribbean;18;;24 15 N;76 00 W
+Bahrain;Bahrain, Bahreïn, Bahrein;BH;BHR;048;BA;Bahrain;Asia;Western Asia;21;;26 00 N;50 33 E
+Bangladesh;Bangladesh, Bangladesch;BD;BGD;050;BG;Bangladesh;Asia;Southern Asia;22;;24 00 N;90 00 E
+Barbados;Barbade, Barbados;BB;BRB;052;BB;Barbados;Americas;Caribbean;23;Wikipedia: BB is part of the postcode.;13 10 N;59 32 W
+Belarus;Belarus, Weißrussland, Biélorussie, Bielorrusia;BY;BLR;112;BO;Belarus;Europe;Eastern Europe;24;Wikipedia: BY- is part of the postcode.;53 00 N;28 00 E
+Belgium;Belgium, Belgien, Belgique, Bélgica;BE;BEL;056;BE;Belgium;Europe;Western Europe;25;Wikipedia: B- or BE- is part of the postcode.  Statoids: postal codes can be identified by prefixing them with ;50 50 N;4 00 E
+Belize;Belize, Belice;BZ;BLZ;084;BH;Belize;Americas;Central America;26;;17 15 N;88 45 W
+Benin;Benin, Bénin;BJ;BEN;204;BN;Benin;Africa;Western Africa;27;;9 30 N;2 15 E
+Bermuda;Bermuda, Bermudes, Bermudas;BM;BMU;060;BD;Bermuda;Americas;Northern America;28;Wikipedia: AA 99 used for street addresses, AA AA used for PO boxes.;32 20 N;64 45 W
+Bhutan;Bhutan, Bhoutan, Bután;BT;BTN;064;BT;Bhutan;Asia;Southern Asia;29;;27 30 N;90 30 E
+Bolivia, Plurinational State Of;Bolivia, Bolivien, Bolivie;BO;BOL;068;BL;Bolivia;Americas;South America;30;;17 00 S;65 00 W
+#Saba;BQ;BES;535;;;;;700;;;
+Bosnia and Herzegovina;Bosnia and Herzegovina, Bosnien und Herzegowina, Bosnie et Herzégovine, Bosnia y Herzegovina;BA;BIH;070;BK;Bosnia and Herzegovina;Europe;Southern Europe;31;Wikipedia: BA- is part of the postcode.;44 00 N;18 00 E
+Botswana;Botswana;BW;BWA;072;BC;Botswana;Africa;Southern Africa;32;;22 00 S;24 00 E
+Bouvet Island;;BV;BVT;074;BV;Bouvet Island;;;33;;54 26 S;3 24 E
+Brazil;Brazil, Brasilien, Brésil, Brasil;BR;BRA;076;BR;Brasil ;Americas;South America;34;Statoids: Three-digit extension ;10 00 S;55 00 W
+British Indian Ocean Territory;;IO;IOT;086;IO;British Indian Ocean Territory;Africa;Eastern Africa;35;Single code used for all addresses.;6 00 S;71 30 E
+Brunei Darussalam;Brunei;BN;BRN;096;BX;Brunei;Asia;South-Eastern Asia;36;;4 30 N;114 40 E
+Bulgaria;Bulgaria, Bulgarien, Bulgarie;BG;BGR;100;BU;Bulgaria;Europe;Eastern Europe;37;Wikipedia: BG- is part of the postcode.  Statoids: BG- can be used.;43 00 N;25 00 E
+Burkina Faso;Burkina Faso;BF;BFA;854;UV;Burkina Faso;Africa;Western Africa;38;;13 00 N;2 00 W
+Burundi;Burundi;BI;BDI;108;BY;Burundi;Africa;Eastern Africa;39;;3 30 S;30 00 E
+Cambodia;Cambodia, Kambodscha, Cambodge, Camboya;KH;KHM;116;CB;Cambodia;Asia;South-Eastern Asia;40;;13 00 N;105 00 E
+Cameroon;Cameroon, Kamerun, Cameroun, Camerún;CM;CMR;120;CM;Cameroon;Africa;Middle Africa;41;;6 00 N;12 00 E
+Canada;Canada, Kanada, Canadá;CA;CAN;124;CA;Canada;Americas;Northern America;42;;60 00 N;95 00 W
+Cape Verde;Cape Verde, Kap Verde, Cap Vert, Cabo Verde;CV;CPV;132;CV;Cape Verde;Africa;Western Africa;43;;16 00 N;24 00 W
+Cayman Islands;Cayman Islands, Cayman-Inseln, Îles Caïmans, Islas Caimán;KY;CYM;136;CJ;Cayman Islands;Americas;Caribbean;44;Wikipedia: KY is part of the postcode.;19 30 N;80 30 W
+Central African Republic;Central African Republic, Zentralafrikanische Republik, République Centrafricaine, República Centroafricana;CF;CAF;140;CT;Central African Republic;Africa;Middle Africa;45;;7 00 N;21 00 E
+Chad;Chad, Tschad, Tchad;TD;TCD;148;CD;Chad;Africa;Middle Africa;46;;15 00 N;19 00 E
+Chile;Chile;CL;CHL;152;CI;Chile;Americas;South America;47;;30 00 S;71 00 W
+China;China, Chine;CN;CHN;156;CH;Peoples Republic of China;Asia;Eastern Asia;48;;35 00 N;105 00 E
+Christmas Island;;CX;CXR;162;KT;Christmas Island;Oceania;Australia and New Zealand;49;;10 30 S;105 40 E
+Cocos (Keeling) Islands;;CC;CCK;166;CK;Cocos (Keeling) Islands;Oceania;Australia and New Zealand;50;;12 30 S;96 50 E
+Colombia;Colombia, Kolumbien, Colombie;CO;COL;170;CO;Colombia;Americas;South America;51;;4 00 N;72 00 W
+Comoros;Comoros, Komoren, Comores;KM;COM;174;CN;Comoros;Africa;Eastern Africa;52;;12 10 S;44 15 E
+Congo;Congo, Kongo;CG;COG;178;CF;Republic of the Congo;Africa;Middle Africa;53;;1 00 S;15 00 E
+Congo, The Democratic Republic Of The;Congo (Dem. Rep.), Kongo (Dem. Rep.), Congo (Rep. Dem.), Congo (Rep. Dem.);CD;COD;180;CG;Democratic Republic of the Congo;Africa;Middle Africa;54;;0 00 N;25 00 E
+Cook Islands;Cook Islands, Cookinseln, Îles Cook, Islas Cook;CK;COK;184;CW;Cook Islands;Oceania;Polynesia;55;;21 14 S;159 46 W
+Costa Rica;Costa Rica;CR;CRI;188;CS;Costa Rica;Americas;Central America;56;Wikipedia: Became 99999 after 1997.;10 00 N;84 00 W
+Croatia;Croatia, Kroatien, Croatie, Croacia;HR;HRV;191;HR;Croatia;Europe;Southern Europe;58;HR- is part of the postcode.  Statoids: HR- can be used.;45 10 N;15 30 E
+Cuba;Cuba, Kuba;CU;CUB;192;CU;Cuba;Americas;Caribbean;59;"CP (codigo postal; postal code) is often part of the postcode.";21 30 N;80 00 W
+Curacao;"Curaçao; Curaçao; Kòrsou";CW;CUW;531;;;;;701;;;
+Cyprus;Cyprus, Zypern, Chypre, Chipre;CY;CYP;196;CY;Cyprus;Asia;Western Asia;60;Wikipedia: CY- is part of the postcode.  Statoids: CY- can be used.;35 00 N;33 00 E
+Czech Republic;Czech Republic, Tschechische Republik, République Tchèque, República Checa;CZ;CZE;203;EZ;Czech Republic;Europe;Eastern Europe;61;Wikipedia: CZ- is part of the postcode.  Statoids: CZ- can be used.;49 45 N;15 30 E
+Cote DIvoire;;CI;CIV;384;IV;Côte DIvoire;Africa;Western Africa;57;;8 00 N;5 00 W
+Denmark;Denmark, Dänemark, Danemark, Dinamarca;DK;DNK;208;DA;Denmark;Europe;Northern Europe;62;Wikipedia: DK- is part of the postcode.;56 00 N;10 00 E
+Djibouti;Djibouti;DJ;DJI;262;DJ;Djibouti;Africa;Eastern Africa;63;;11 30 N;43 00 E
+Dominica;Dominica;DM;DMA;212;DO;Dominica;Americas;Caribbean;64;;15 25 N;61 20 W
+Dominican Republic;Dominican Republic, Dominikanische Republik, République Dominicaine, República Dominicana;DO;DOM;214;DR;Dominican Republic;Americas;Caribbean;65;;19 00 N;70 40 W
+Ecuador;Équateur, Ecuador;EC;ECU;218;EC;Ecuador;Americas;South America;66;Wikipedia: New system introduced in 12/2007.;2 00 S;77 30 W
+Egypt;Egypt, Ägypten, Égypte, Egipto;EG;EGY;818;EG;Egypt;Africa;Northern Africa;67;;27 00 N;30 00 E
+El Salvador;Salvador, El Salvador;SV;SLV;222;ES;El Salvador;Americas;Central America;68;"CP (codigo postal; postal code) is part of the postcode.";13 50 N;88 55 W
+Equatorial Guinea;Equatorial Guinea, Äquatorial-Guinea, Guinée Équatoriale, Guinea Ecuatorial;GQ;GNQ;226;EK;Equatorial Guinea;Africa;Middle Africa;69;;2 00 N;10 00 E
+Eritrea;Érythrée, Eritrea;ER;ERI;232;ER;Eritrea;Africa;Eastern Africa;70;;15 00 N;39 00 E
+Estonia;Estland, Estonie, Estonia;EE;EST;233;EN;Estonia;Europe;Northern Europe;71;Wikipedia: EE- is part of the postcode.  Statoids: EE- can be used.;59 00 N;26 00 E
+Ethiopia;Ethiopia, Äthiopien, Éthiopie, Etiopía;ET;ETH;231;ET;Ethiopia;Africa;Eastern Africa;73;;8 00 N;38 00 E
+Falkland Islands  (Malvinas);Falkland Islands, Falklandinseln, Îles Malouines, Islas Malvinas;FK;FLK;238;FK;Falkland Islands/Islas Malvinas;Americas;South America;74;Single code used for all addresses.;51 45 S;59 00 W
+Faroe Islands;Faroe Islands, Färöer-Inseln, Îles Féroé, Islas Faroe;FO;FRO;234;FO;Faroe Islands;Europe;Northern Europe;75;FO is part of the postcode.  Wikipedia: FO- is part of the postcode.;62 00 N;7 00 W
+Fiji;Fiji, Fidschi, Fidji;FJ;FJI;242;FJ;Fiji;Oceania;Melanesia;76;;18 00 S;175 00 E
+Finland;Finland, Finnland, Finlande, Finlandia;FI;FIN;246;FI;Finland;Europe;Northern Europe;77;FI- is part of the postcode.  Wikipedia: FI- is part of the postcode.;64 00 N;26 00 E
+France;France, Frankreich, Francia, the French Republic;FR;FRA;250;FR;France;Europe;Western Europe;78;Wikipedia: F- or FR- is part of the postcode. Statoids: F- can be used.  Also see individual listings for overseas regions and dependent territories of France.;46 00 N;2 00 E 
+French Guiana;French Guiana, Französisch Guyana, Guyane française, Guayana Francesa;GF;GUF;254;FG;French Guiana;Americas;South America;80;Overseas Region of France.  Source: CIA Factbook.;4 00 N;53 00 W 
+French Polynesia;French Polynesia, Französisch-Polynesien, Polynésie Française, Polinesia Francesa;PF;PYF;258;FP;French Polynesia;Oceania;Polynesia;81;Dependent area of France.  French Polynesia comprises Austral Islands, Gambier Islands, Marquesas Islands, Society Archipelago, Tuamotu Islands.;15 00 S;140 00 W
+French Southern Territories;French Southern Territories, Französische Südgebiete, Terres Australes Françaises, Territorios Franceses del Sur;TF;ATF;260;FS;French Southern Territories;;;82;Dependent Area of France.  Source: CIA Factbook.  Comprises Amsterdam Island, Crozet Archipelago, Kerguelen Islands, Saint-Paul Island and scattered islands in the Indian Ocean.;;
+Gabon;Gabon, Gabun, Gabón;GA;GAB;266;GB;Gabon;Africa;Middle Africa;83;;1 00 S;11 45 E
+Gambia;Gambia;GM;GMB;270;GA;The Gambia;Africa;Western Africa;84;;13 28 N;16 34 W
+Georgia;Georgien, Géorgie, Georgia;GE;GEO;268;GG;Georgia;Asia;Western Asia;1;Wikipedia: GE- is part of the postcode.;42 00 N;43 30 E
+Germany;Germany, Deutschland, Allemagne, Alemania;DE;DEU;276;GM;Germany;Europe;Western Europe;85;Wikipedia: D- or DE- is part of the postcode.  Statoids: D- can be used.;51 00 N;9 00 E
+Ghana;Ghana;GH;GHA;288;GH;Ghana;Africa;Western Africa;86;;8 00 N;2 00 W
+Gibraltar;Gibraltar;GI;GIB;292;GI;Gibraltar;Europe;Southern Europe;87;;36 08 N;5 21 W
+Greece;Greece, Griechenland, Grèce, Grecia;GR;GRC;300;GR;Greece;Europe;Southern Europe;88;Wikipedia: GR- is part of the postcode.  Statoids: GR- can be used.;39 00 N;22 00 E
+Greenland;Greenland, Grönland, Groenland, Groenlandia;GL;GRL;304;GL;Greenland;Americas;Northern America;89;;72 00 N;40 00 W
+Grenada;Grenada;GD;GRD;308;GJ;Grenada;Americas;Caribbean;90;;12 07 N;61 40 W
+Guadeloupe;Guadeloupe, Guadalupe;GP;GLP;312;GP;Guadeloupe;Americas;Caribbean;91;Includes la Desirade, Marie-Galante, les Saintes.;;
+Guam;Guam;GU;GUM;316;GQ;Guam;Oceania;Micronesia;92;;13 28 N;144 47 E
+Guatemala;Guatemala;GT;GTM;320;GT;Guatemala;Americas;Central America;93;;15 30 N;90 15 W
+Guernsey;Guernsey and Alderney, Guernsey und Alderney, Guernsey et Alderney, Guernsey y Alderney;GG;GGY;831;GK;Guernsey;Europe;Northern Europe;94;The Bailiwick of Guernsey also includes  the islands of Alderney, Brecqhou,  Burhou, Herm, Jethou, Lihou, Little Sark, and Sark.;49 28 N;2 35 W
+Guinea;Guinea, Guinea, Guinée, Guinea;GN;GIN;324;GV;Guinea;Africa;Western Africa;95;;11 00 N;10 00 W
+Guinea-Bissau;Guinea-Bissau, Guinée-Bissau;GW;GNB;624;PU;Guinea-Bissau;Africa;Western Africa;96;;12 00 N;15 00 W
+Guyana;Guyana;GY;GUY;328;GY;Guyana;Americas;South America;97;;5 00 N;59 00 W
+Haiti;Haiti;HT;HTI;332;HA;Haiti;Americas;Caribbean;98;HT is part of the postcode.  Wikipedia: HT- is part of the postcode.;19 00 N;72 25 W
+Heard and McDonald Islands;;HM;HMD;334;HM;Heard Island and McDonald Islands;;;99;;53 06 S;72 31 E
+Holy See (Vatican City State);Vatican City, Vatikan, Cité du Vatican, Ciudad del Vaticano;VA;VAT;336;VT;Vatican City;Europe;Southern Europe;100;Wikipedia & Statoids: single code used for all addresses.;41 54 N;12 27 E
+Honduras;Honduras;HN;HND;340;HO;Honduras;Americas;Central America;101;;15 00 N;86 30 W
+Hong Kong;;HK;HKG;344;HK;Hong Kong;Asia;Eastern Asia;102;;22 15 N;114 10 E
+Hungary;Hungary, Ungarn, Hongrie, Hungría;HU;HUN;348;HU;Hungary;Europe;Eastern Europe;103;Wikipedia: H- or HU- is part of the postcode.  Statoids: H- can be used.;47 00 N;20 00 E
+Iceland;Iceland, Island, Islande, Islandia;IS;ISL;352;IC;Iceland;Europe;Northern Europe;104;Wikipedia: IS- is part of the postcode.  Statoids: IS- can be used.;65 00 N;18 00 W
+India;India, Indien, Inde;IN;IND;356;IN;India;Asia;Southern Asia;105;Statoids: can be written with a space between the third and fourth digit.;20 00 N;77 00 E
+Indonesia;Indonesia, Indonesien, Indonésie;ID;IDN;360;ID;Indonesia;Asia;South-Eastern Asia;106;;5 00 S;120 00 E
+Iran, Islamic Republic Of;Iran, Irán;IR;IRN;364;IR;Iran;Asia;Southern Asia;107;;32 00 N;53 00 E
+Iraq;Iraq, Irak;IQ;IRQ;368;IZ;Iraq;Asia;Western Asia;108;;33 00 N;44 00 E
+Ireland;Ireland, Irland, Irlande, Irlanda;IE;IRL;372;EI;Republic of Ireland;Europe;Northern Europe;109;;53 00 N;8 00 W
+Isle of Man;Isle of Man, Man, Île de Man, Isla de Man;IM;IMN;833;IM;Isle of Man;Europe;Northern Europe;110;;54 15 N;4 30 W
+Israel;Israël, Israel;IL;ISR;376;IS;Israel;Asia;Western Asia;111;Statoids: may be identified by prefixing them with ;31 30 N;34 45 E
+Italy;Italy, Italien, Italie, Italia;IT;ITA;380;IT;Italy;Europe;Southern Europe;112;;42 50 N;12 50 E
+Jamaica;Jamaica, Jamaika, Jamaïque;JM;JAM;388;JM;Jamaica;Americas;Caribbean;113;Wikipedia: JM is part of the postcode.;18 15 N;77 30 W
+Japan;Japan, Japan, Japon, Japón;JP;JPN;392;JA;Japan;Asia;Eastern Asia;114;;36 00 N;138 00 E
+Jersey;Jersey;JE;JEY;832;JE;Jersey;Europe;Northern Europe;115;;49 15 N;2 10 W
+Jordan;Jordan, Jordanien, Jordanie, Jordania;JO;JOR;400;JO;Jordan;Asia;Western Asia;116;;31 00 N;36 00 E
+Kazakhstan;Kazakhstan, Kasachstan, Kazakhstan, Kazajistán;KZ;KAZ;398;KZ;Kazakhstan;Asia;Central Asia;117;;48 00 N;68 00 E
+Kenya;Kenya, Kenia, Kenya, Kenia;KE;KEN;404;KE;Kenya;Africa;Eastern Africa;118;Statoids: generally a space is inserted after the first digit.;1 00 N;38 00 E
+Kiribati;Kiribati, Kiribati, Kiribati, Kiribati;KI;KIR;296;KR;Kiribati;Oceania;Micronesia;119;;1 25 N;173 00 E
+Korea, Democratic Peoples Republic Of;Korea (North), Nordkorea, Corée du Nord, Corea del Norte;KP;PRK;408;KN;North Korea;Asia;Eastern Asia;121;;40 00 N;127 00 E
+Korea, Republic of;Korea (South), Südkorea, Corée du Sud, Corea del Sur;KR;KOR;410;KS;South Korea;Asia;Eastern Asia;120;;37 00 N;127 30 E
+Kuwait;Koweït, Kuwait;KW;KWT;414;KU;Kuwait;Asia;Western Asia;122;;29 30 N;45 45 E
+Kyrgyzstan;Kyrgyzstan, Kirgisistan, Kirghizistan, Kirguizistán;KG;KGZ;417;KG;Kyrgyzstan;Asia;Central Asia;123;;41 00 N;75 00 E
+Lao Peoples Democratic Republic;Laos, Laos, Laos, Laos;LA;LAO;418;LA;Laos;Asia;South-Eastern Asia;124;;18 00 N;105 00 E
+Latvia;Latvia, Lettland, Lettonie, Letonia;LV;LVA;428;LG;Latvia;Europe;Northern Europe;125;LV- is part of the postcode.;57 00 N;25 00 E
+Lebanon;Lebanon, Libanon, Liban, Líbano;LB;LBN;422;LE;Lebanon;Asia;Western Asia;126;Wikipedia: 9999 in rural areas, 9999 9999 in urban areas.;33 50 N;35 50 E
+Lesotho;Lesotho, Lesotho, Lesotho, Lesotho;LS;LSO;426;LT;Lesotho;Africa;Southern Africa;127;;29 30 S;28 30 E
+Liberia;Liberia, Liberia, Liberia, Liberia;LR;LBR;430;LI;Liberia;Africa;Western Africa;128;;6 30 N;9 30 W
+Libyan Arab Jamahiriya;Libya, Libyen, Libye, Libia;LY;LBY;434;LY;Libya;Africa;Northern Africa;129;;25 00 N;17 00 E
+Liechtenstein;Liechtenstein;LI;LIE;438;LS;Liechtenstein;Europe;Western Europe;130;;47 16 N;9 32 E
+Lithuania;Lithuania, Litauen, Lituanie, Lituania;LT;LTU;440;LH;Lithuania;Europe;Northern Europe;131;LT- is part of the postcode.  Statoids: LT- can be used.;56 00 N;24 00 E
+Luxembourg;Luxembourg, Luxemburg, Luxembourg, Luxemburgo;LU;LUX;442;LU;Luxembourg;Europe;Western Europe;132;Wikipedia: L- or LU- is part of the postcode.  Statoids: L- can be used.;49 45 N;6 10 E
+Macao;;MO;MAC;446;MC;Macau;Asia;Eastern Asia;133;;22 10 N;113 33 E
+Macedonia, the Former Yugoslav Republic Of;Macedonia, Mazedonien, Macédoine, Macedonia;MK;MKD;807;MK;Republic of Macedonia;Europe;Southern Europe;134;Wikipedia: MK- is part of the postcode.  Statoids: can prefix the postal code with MK- or MAK-.;41 50 N;22 00 E
+Madagascar;Madagascar, Madagaskar, the Republic of Madagascar;MG;MDG;450;MA;Madagascar;Africa;Eastern Africa;135;;20 00 S;47 00 E
+Malawi;Malawi;MW;MWI;454;MI;Malawi;Africa;Eastern Africa;136;;13 30 S;34 00 E
+Malaysia;Malaysia, Malaisie, Malasia;MY;MYS;458;MY;Malaysia;Asia;South-Eastern Asia;137;;2 30 N;112 30 E
+Maldives;Maldives, Malediven, Maldivas;MV;MDV;462;MV;Maldives;Asia;Southern Asia;138;Statoids: new system (99999), had been 99-99;3 15 N;73 00 E
+Mali;Mali;ML;MLI;466;ML;Mali;Africa;Western Africa;139;;17 00 N;4 00 W
+Malta;Malta, Malta, Malte, Malta;MT;MLT;470;MT;Malta;Europe;Southern Europe;140;;35 50 N;14 35 E
+Marshall Islands;Marshall Islands, Marshall-Inseln, Îles Marshall, Islas Marshall;MH;MHL;584;RM;Marshall Islands;Oceania;Micronesia;141;;9 00 N;168 00 E
+Martinique;Martinique, Martinique, Martinique, Martinica;MQ;MTQ;474;MB;Martinique;Americas;Caribbean;142;;;
+Mauritania;Mauritania, Mauretanien, Mauritanie, Mauritania;MR;MRT;478;MR;Mauritania;Africa;Western Africa;143;;20 00 N;12 00 W
+Mauritius;Mauritius, Mauritius, Île Maurice, Mauricio;MU;MUS;480;MP;Mauritius;Africa;Eastern Africa;144;;20 17 S;57 33 E
+Mayotte;Mayotte, Mayotte, Mayotte, Mayotte;YT;MYT;175;MF;Mayotte;Africa;Eastern Africa;145;;12 50 S;45 10 E
+Mexico;Mexico, Mexiko, Mexique, México;MX;MEX;484;MX;Mexico;Americas;Central America;146;;23 00 N;102 00 W
+Micronesia, Federated States Of;Micronesia, Mikronesien, Micronésie, Micronesia;FM;FSM;583;FM;Federated States of Micronesia;Oceania;Micronesia;147;;6 55 N;158 15 E
+Moldova, Republic of;Moldova, Moldawien, Moldavie, Moldavia, the Republic of Moldova;MD;MDA;498;MD;Moldova;Europe;Eastern Europe;148;MD- is part of the postcode.  Statoids: MD- can be used.;47 00 N;29 00 E
+Monaco;Monaco, Mónaco;MC;MCO;492;MN;Monaco;Europe;Western Europe;149;Wikipedia: MC- is part of the postcode.  Statoids: MC- can be used.;43 44 N;7 24 E
+Mongolia;Mongolei, Mongolie, Mongolia;MN;MNG;496;MG;Mongolia;Asia;Eastern Asia;150;;46 00 N;105 00 E
+Montenegro;Crna Gora, Montenegro;ME;MNE;499;MJ;Montenegro;Europe;Southern Europe;151;Previous ISO entries: Yugoslavia, Serbia and Montenegro. Wikipedia: ME- is part of the postcode.;42 30 N;19 18 E
+Montserrat;Montserrat, Montserrat, Montserrat, Montserrat;MS;MSR;500;MH;Montserrat;Americas;Caribbean;152;;16 45 N;62 12 W
+Morocco;Morocco, Marokko, Maroc, Marruecos;MA;MAR;504;MO;Morocco;Africa;Northern Africa;153;;32 00 N;5 00 W
+Mozambique;Mozambique, Mosambik, Mozambique, Mozambique;MZ;MOZ;508;MZ;Mozambique;Africa;Eastern Africa;154;Statoids: four-digit postcodes were inaugurated on 1/1/2004.;18 15 S;35 00 E
+Myanmar;Myanmar, Myanmar, Myanmar, Myanmar;MM;MMR;104;BM;Myanmar;Asia;South-Eastern Asia;155;;22 00 N;98 00 E
+Namibia;Namibia, Namibia, Namibie, Namibia;NA;NAM;516;WA;Namibia;Africa;Southern Africa;156;;22 00 S;17 00 E
+Nauru;Nauru, Nauru, Nauru, Nauru;NR;NRU;520;NR;Nauru;Oceania;Micronesia;157;;0 32 S;166 55 E
+Nepal;Nepal, Nepal, Népal, Nepal, the Federal Democratic Republic of Nepal;NP;NPL;524;NP;Nepal;Asia;Southern Asia;158;;28 00 N;84 00 E
+Netherlands;Netherlands, Niederlande, Pays-Bas, Países Bajos;NL;NLD;528;NL;Netherlands;Europe;Western Europe;159;Wikipedia: NL- is part of the postcode.;52 30 N;5 45 E
+Netherlands Antilles;Netherlands Antilles, Niederländische Antillen, Antilles néerlandaises, Antillas Holandesas;AN;ANT;530;NT;Netherlands Antilles;Americas;Caribbean;160;;;
+New Caledonia;New Caledonia, Neukaledonien, Nouvelle Calédonie, Nueva Caledonia;NC;NCL;540;NC;New Caledonia;Oceania;Melanesia;161;;21 30 S;165 30 E
+New Zealand;New Zealand, Neuseeland, Nouvelle ZÃ©lande, Nueva Zelanda;NZ;NZL;554;NZ;New Zealand;Oceania;Australia and New Zealand;162;;41 00 S;174 00 E
+Nicaragua;Nicaragua, Nicaragua, Nicaragua, Nicaragua;NI;NIC;558;NU;Nicaragua;Americas;Central America;163;Statoids: according to the UPU, Nicaragua is preparing to use 11-digit postcodes.;13 00 N;85 00 W
+Niger;Níger;NE;NER;562;NG;Niger;Africa;Western Africa;164;;16 00 N;8 00 E
+Nigeria;Nigeria, Nigéria, the Federal Republic of Nigeria;NG;NGA;566;NI;Nigeria;Africa;Western Africa;165;;10 00 N;8 00 E
+Niue;Niue;NU;NIU;570;NE;Niue;Oceania;Polynesia;166;;19 02 S;169 52 W
+Norfolk Island;Norfolk Island, Norfolk Island, Île de Norfolk, Isla de Norfolk;NF;NFK;574;NF;Norfolk Island;Oceania;Australia and New Zealand;167;;29 02 S;167 57 E
+Northern Mariana Islands;Northern Mariana Islands, Nördliche Marianen, Mariannes du Nord, Islas Marianas del Norte;MP;MNP;580;CQ;Northern Mariana Islands;Oceania;Micronesia;168;;15 12 N;145 45 E
+Norway;Norway, Norwegen, Norvège, Noruega;NO;NOR;578;NO;Norway;Europe;Northern Europe;169;Wikipedia: NO- is part of the postcode.  Statoids: N- can be used.;62 00 N;10 00 E
+Oman;Oman, Omán;OM;OMN;512;MU;Oman;Asia;Western Asia;170;;21 00 N;57 00 E
+Pakistan;Pakistan, Paquistán;PK;PAK;586;PK;Pakistan;Asia;Southern Asia;171;;30 00 N;70 00 E
+Palau;Palau;PW;PLW;585;PS;Palau;Oceania;Micronesia;172;;7 30 N;134 30 E
+Palestinian Territory, Occupied;Palestine, Palästina, Palestine, Palestina, the Occupied Palestinian Territory;PS;PSE;275;WE/GZ;West Bank and Gaza Strip;Asia;Western Asia;173;Region not listed in any source - indicates that there is no postal coding system.;;
+Panama;Panama, Panamá;PA;PAN;591;PM;Panama;Americas;Central America;175;;9 00 N;80 00 W
+Papua New Guinea;Papua New Guinea, Papua-Neuguinea, Papouasie Nouvelle-Guinée, Papúa Nueva Guinea;PG;PNG;598;PP;Papua New Guinea;Oceania;Melanesia;176;;6 00 S;147 00 E
+Paraguay;Paraguay;PY;PRY;600;PA;Paraguay;Americas;South America;177;;23 00 S;58 00 W
+Peru;Peru, Pérou, Perú;PE;PER;604;PE;Peru;Americas;South America;178;;10 00 S;76 00 W
+Philippines;Philippinen, Philippines, Filipinas;PH;PHL;608;RP;Philippines;Asia;South-Eastern Asia;180;;13 00 N;122 00 E
+Pitcairn;;PN;PCN;612;PC;Pitcairn Islands;Oceania;Polynesia;182;Single code used for all addresses.;25 04 S;130 06 W
+Poland;Poland, Polen, Pologne, Polonia;PL;POL;616;PL;Poland;Europe;Eastern Europe;183;Wikipedia: PL- is part of the postcode.;52 00 N;20 00 E
+Portugal;Portugal;PT;PRT;620;PO;Portugal;Europe;Southern Europe;184;Wikipedia: PT- is part of the postcode.;39 30 N;8 00 W
+Puerto Rico;Puerto Rico;PR;PRI;630;RQ;Puerto Rico;Americas;Caribbean;185;;18 15 N;66 30 W
+Qatar;Qatar, Katar;QA;QAT;634;QA;Qatar;Asia;Western Asia;186;;25 30 N;51 15 E
+Romania;Romania, Rumänien, Roumanie, Rumania;RO;ROU;642;RO;Romania;Europe;Eastern Europe;189;Wikipedia: RO- is part of the postcode.;46 00 N;25 00 E
+Russian Federation;Russia, Russland, Russie, Rusia;RU;RUS;643;RS;Russia;Europe;Eastern Europe;190;Wikipedia: changed as of 5/1/2008.;60 00 N;100 00 E
+Rwanda;Rwanda, Ruanda;RW;RWA;646;RW;Rwanda;Africa;Eastern Africa;191;;2 00 S;30 00 E
+Reunion;Réunion, Réunion, Réunion, Reunión;RE;REU;638;RE;Réunion;Africa;Eastern Africa;187;Overseas Region of France.  Source: CIA Factbook.;;
+Saint Barthelemy;;BL;BLM;652;TB;Saint Barthelemy;Americas;Caribbean;300;Dependent Area of France.  Source: CIA Factbook.;17 90 N;62 85 W
+Saint Helena, Ascension and Tristan Da Cunha;Saint Helena, Sankt Helena, Sainte Hélène, Santa Helena;SH;SHN;654;SH;Saint Helena;Africa;Western Africa;192;Comprises: Saint Helena Island, Ascension Island, Tristan da Cunha Archipelago (Gough Island, Inaccessible Island, Nightingale Island and Stoltenhoff Island);Saint Helena: 15 57 ;Saint Helena: 5 42 W
+Saint Kitts And Nevis;Saint Kitts and Nevis, Saint Kitts et Nevis, Saint Kitts y Nevis;KN;KNA;659;SC;Saint Kitts and Nevis;Americas;Caribbean;193;;17 20 N;62 45 W
+Saint Lucia;Saint Lucia, Saint-Lucie, Santa Lucía;LC;LCA;662;ST;Saint Lucia;Americas;Caribbean;194;;13 53 N;60 58 W
+Saint Martin;;MF;MAF;663;RN;Saint Martin;Americas;Caribbean;301;Dependent Area of France.  Source: CIA Factbook. Saint Martin is divided into a northern French part and a southern Dutch part. Source: ISO 3166-1.;18 05 N;63 57 W
+Saint Pierre And Miquelon;Saint Pierre and Miquelon, Saint-Pierre-et-Miquelon, Saint-Pierre-et-Miquelon, San Pedro y Miquelón;PM;SPM;666;SB;Saint Pierre and Miquelon;Americas;Northern America;181;Statoids: Single code used for all addresses.;46 50 N;56 20 W
+Saint Vincent And The Grenedines;Saint Vincent and the Grenadines, Saint Vincent und die Grenadinen, Saint-Vincent et les Grenadines, San Vicente y Granadinas;VC;VCT;670;VC;Saint Vincent and the Grenadines;Americas;Caribbean;195;;13 15 N;61 12 W
+Samoa;Samoa;WS;WSM;882;WS;Samoa;Oceania;Polynesia;196;;13 35 S;172 20 W
+San Marino;San Marino, Saint-Marin;SM;SMR;674;SM;San Marino;Europe;Southern Europe;197;Wikipedia: SM- is part of the postcode.;43 46 N;12 25 E
+Sao Tome and Principe;São Tomé and Príncipe, São Tomé und Príncipe, São Tomé et Príncipe, Santo Tomé y Príncipe;ST;STP;678;TP;São Tomé and Príncipe;Africa;Middle Africa;198;;1 00 N;7 00 E
+Saudi Arabia;Saudi Arabia, Saudi-Arabien, Arabie Saoudite, Arabia Saudí;SA;SAU;682;SA;Saudi Arabia;Asia;Western Asia;199;;25 00 N;45 00 E
+Senegal;Senegal,  Sénégal;SN;SEN;686;SG;Senegal;Africa;Western Africa;200;"CP (codigo postal; postal code) is often part of the postcode.";14 00 N;14 00 W
+Serbia;Serbia, Serbien, Serbie, Serbia;RS;SRB;688;RI;Serbia;Europe;Southern Europe;201;Wikipedia: RS- is part of the postcode.;44 00 N;21 00 E
+Seychelles;Seychelles;SC;SYC;690;SE;Seychelles;Africa;Eastern Africa;202;;4 35 S;55 40 E
+Sierra Leone;Sierra Leone;SL;SLE;694;SL;Sierra Leone;Africa;Western Africa;203;;8 30 N;11 30 W
+Singapore;Singapore, Singapur, Singapour, Singapur;SG;SGP;702;SN;Singapore;Asia;South-Eastern Asia;205;;1 22 N;103 48 E
+Sint Maarten (Dutch part);;SX;SXM;534;;;;;702;;;
+Slovakia;Slovakia, Slowakei, Slovaquie, República Eslovaca;SK;SVK;703;LO;Slovakia;Europe;Eastern Europe;206;Wikipedia: SK- is part of the postcode.  Statoids: SK- can be used.;48 40 N;19 30 E
+Slovenia;Slovenia, Slowenien, Slovénie, Eslovenia;SI;SVN;705;SI;Slovenia;Europe;Southern Europe;207;Wikipedia: SI- is part of the postcode.  Statoids: SL- can be used.;46 07 N;14 49 E
+Solomon Islands;Solomon Islands, Salomonen, Îles Salomon, Islas Salomón;SB;SLB;090;BP;Solomon Islands;Oceania;Melanesia;208;;8 00 S;159 00 E
+Somalia;Somalia;SO;SOM;706;SO;Somalia;Africa;Eastern Africa;209;Wikipedia: A 5 digit code has been publicized, but never taken into use.;10 00 N;49 00 E
+South Africa;South Africa, Republik Südafrika, Afrique du Sud, República de Sudáfrica;ZA;ZAF;710;SF;South Africa;Africa;Southern Africa;210;;29 00 S;24 00 E
+South Georgia and the South Sandwich Islands;;GS;SGS;239;SX;South Georgia and the South Sandwich Islands;Americas;South America;211;Single code used for all addresses.;54 30 S;37 00 W
+Spain;Spain, Spanien, Espagne, España;ES;ESP;724;SP;Spain;Europe;Southern Europe;212;Wikipedia: E- or ES- is part of the postcode.;40 00 N;4 00 W
+Sri Lanka;Sri Lanka;LK;LKA;144;CE;Sri Lanka;Asia;Southern Asia;213;;7 00 N;81 00 E
+Sudan;Sudan, Soudan, Sudán;SD;SDN;729;SU;Sudan;Africa;Northern Africa;214;;15 00 N;30 00 E
+Suriname;Suriname, Surinam;SR;SUR;740;NS;Suriname;Americas;South America;215;;4 00 N;56 00 W
+Svalbard And Jan Mayen;Svalbard and Jan Mayen, Svalbard und Jan Mayen, Îles Svalbard et Jan Mayen, Islas Svalbard y Jan Mayen;SJ;SJM;744;SV;Svalbard;Europe;Northern Europe;216;;78 00 N;20 00 E
+Swaziland;Swaziland, Swasiland, Swaziland, Suazilandia;SZ;SWZ;748;WZ;Swaziland;Africa;Southern Africa;217;;26 30 S;31 30 E
+Sweden;Sweden, Schweden, Suède, Suecia;SE;SWE;752;SW;Sweden;Europe;Northern Europe;218;SE- is part of the postcode.;62 00 N;15 00 E
+Switzerland;Switzerland, Schweiz, Suisse, Suiza;CH;CHE;756;SZ;Switzerland;Europe;Western Europe;219;Wikipedia: CH- is part of the postcode.  Statoids: CH- can be used.;47 00 N;8 00 E
+Syrian Arab Republic;Syria, Syrien, Syrie, Siria;SY;SYR;760;SY;Syria;Asia;Western Asia;220;;35 00 N;38 00 E
+Taiwan, Province Of China;Taiwan, Taiwán;TW;TWN;158;TW;Republic of China Taiwan;Asia;Eastern Asia;221;Source: Wiki;23 30 N;121 00 E
+Tajikistan;Tajikistan, Tadschikistan, Tajikistan, Tayikistán;TJ;TJK;762;TI;Tajikistan;Asia;Central Asia;222;Wikipedia: TJ- is part of the postcode.;39 00 N;71 00 E
+Tanzania, United Republic of;Tanzania, Tansania, Tanzanie;TZ;TZA;834;TZ;Tanzania;Africa;Eastern Africa;223;;6 00 S;35 00 E
+Thailand;Thailand, Thailand, Thaïlande, Tailandia;TH;THA;764;TH;Thailand;Asia;South-Eastern Asia;224;;15 00 N;100 00 E
+Timor-Leste;East Timor, Ost-Timor, Timor oriental, Timor Oriental;TL;TLS;626;TT;Timor-Leste;Asia;South-Eastern Asia;226;;8 50 S;125 55 E
+Togo;Togo;TG;TGO;768;TO;Togo;Africa;Western Africa;227;;8 00 N;1 10 E
+Tokelau;Tokelau, Tokelau, Îles Tokelau, Islas Tokelau;TK;TKL;772;TL;Tokelau;Oceania;Polynesia;228;;9 00 S;172 00 W
+Tonga;Tonga;TO;TON;776;TN;Tonga;Oceania;Polynesia;229;;20 00 S;175 00 W
+Trinidad and Tobago;Trinidad and Tobago, Trinidad und Tobago, Trinité et Tobago, Trinidad y Tobago;TT;TTO;780;TD;Trinidad and Tobago;Americas;Caribbean;230;;11 00 N;61 00 W
+Tunisia;Tunisia, Tunesien, Tunisie, Túnez;TN;TUN;788;TS;Tunisia;Africa;Northern Africa;231;;34 00 N;9 00 E
+Turkey;Turkey, Türkei, Turquie, Turquía;TR;TUR;792;TU;Turkey;Asia;Western Asia;232;Wikipedia: TR- is part of the postcode.;39 00 N;35 00 E
+Turkmenistan;Turkmenistan, Turkmenistan, Turkménistan, Turkmenistán;TM;TKM;795;TX;Turkmenistan;Asia;Central Asia;233;;40 00 N;60 00 E
+Turks and Caicos Islands;Turks and Caicos Islands, Turks- und Caicosinseln, Îles Turks et Caïcos, Islas Turks y Caicos;TC;TCA;796;TK;Turks and Caicos Islands;Americas;Caribbean;234;Single code used for all addresses.;21 45 N;71 35 W
+Tuvalu;Tuvalu, Tuvalu, Tuvalu, Tuvalu;TV;TUV;798;TV;Tuvalu;Oceania;Polynesia;235;;8 00 S;178 00 E
+Uganda;Uganda;UG;UGA;800;UG;Republic of Uganda;Africa;Eastern Africa;236;;1 00 N;32 00 E
+Ukraine;Ukraine, Ukraine, Ukraine, Ucrania;UA;UKR;804;UP;Ukraine;Europe;Eastern Europe;237;;49 00 N;32 00 E
+United Arab Emirates;United Arab Emirates, Vereinigte Arabische Emirate, Émirats Arabes Unis, Emiratos Árabes Unidos;AE;ARE;784;AE;United Arab Emirates;Asia;Western Asia;238;;24 00 N;54 00 E
+United Kingdom;United Kingdom, GroÃÂbritannien, Royaume-Uni, Reino Unido;GB;GBR;826;UK;United Kingdom;Europe;Northern Europe;239;Between 5 and 7 alphanumeric characters, with a space before the last 3 alphanumeric characters.  Wikipedia: other variants exist.;54 00 N;2 00 W
+United States;United States of America, Vereinigte Staaten von Amerika, États-Unis, Estados Unidos;US;USA;840;US;United States;Americas;Northern America;240;Wikipedia: 99999 alone is acceptable.;38 00 N;97 00 W
+United States Minor Outlying Islands;United States Minor Outlying Islands, US-Amerikanische Hoheitsgebiete, Dépendances américaines, Islas menores de Estados Unidos;UM;UMI;581;;;Americas;Northern America;241;;;
+Uruguay;Uruguay;UY;URY;858;UY;Uruguay;Americas;South America;242;;33 00 S;56 00 W
+Uzbekistan;Uzbekistan, Usbekistan, Ouzbékistan, Uzbekistán;UZ;UZB;860;UZ;Uzbekistan;Asia;Central Asia;243;;41 00 N;64 00 E
+Vanuatu;Vanuatu;VU;VUT;548;NH;Vanuatu;Oceania;Melanesia;244;;16 00 S;167 00 E
+Venezuela, Bolivarian Republic of;Venezuela;VE;VEN;862;VE;Venezuela;Americas;South America;245;Wikipedia: 9999 A may also be used.;8 00 N;66 00 W
+Viet Nam;Vietnam;VN;VNM;704;VM;Vietnam;Asia;South-Eastern Asia;247;;16 10 N;107 50 E
+Virgin Islands, British;British Virgin Islands, Britische Jungferninseln, Îles Vierges britanniques, Islas Vírgenes del Reino Unido;VG;VGB;092;VI;British Virgin Islands;Americas;Caribbean;248;Wikipedia: VG is part of the postcode.;;
+Virgin Islands, U.S.;Virgin Islands of the United States, Amerikanische Jungferninseln, Îles Vierges américaines, Islas Vírgenes de los Estados Unidos;VI;VIR;850;VQ;U.S. Virgin Islands;Americas;Caribbean;249;;;
+Wallis and Futuna;Wallis and Futuna, Wallis und Futuna, Wallis et Futuna, Wallis y Futuna;WF;WLF;876;WF;Wallis and Futuna;Oceania;Polynesia;250;;13 18 S;176 12 W
+Western Sahara;Western Sahara, Westsahara, Sahara Occidental, Sahara Occidental;EH;ESH;732;WI;Western Sahara;Africa;Northern Africa;251;;24 30 N;13 00 W
+Yemen;Yemen, Jemen, Yémen;YE;YEM;887;YM;Yemen;Asia;Western Asia;252;;15 00 N;48 00 E
+Zambia;Zambia, Sambia, Zambie;ZM;ZMB;894;ZA;Zambia;Africa;Eastern Africa;255;;15 00 S;30 00 E
+Zimbabwe;Zimbabwe, Simbabwe, Zimbabue;ZW;ZWE;716;ZI;Zimbabwe;Africa;Eastern Africa;256;;20 00 S;30 00 E
+Aland Islands;;AX;ALA;248;;;Europe;Northern Europe;3;;;
+South Sudan;Sudan, Soudan, Sudán;SS;SSD;728;SU;Sudan;Africa;Northern Africa;214;;15 00 N;30 00 E

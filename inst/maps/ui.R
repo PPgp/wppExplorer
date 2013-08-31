@@ -13,8 +13,16 @@ googleLineChart <- function(id, options=list()) {
   tags$div(id=id, class="google-linechart-output", `data-options`=RJSONIO::toJSON(options))
 }
 
+row <- function(...) {
+  tags$div(class="row", ...)
+}
+
+col <- function(width, ...) {
+  tags$div(class=paste0("span", width), ...)
+}
+
 shinyUI(pageWithSidebar(
-  headerPanel("WPP Explorer"),
+  headerPanel(paste("WPP", substr(wpp.package, 4, 8), "Explorer")),
   sidebarPanel(
     geochartPrereqs,
     uiOutput('yearUI'),
@@ -33,9 +41,28 @@ shinyUI(pageWithSidebar(
       tabPanel('Data', tableOutput('table')),
       tabPanel('Sortable Data', tableOutput('stable')),
       tabPanel('Histogram', plotOutput('hist')),
-      tabPanel('Trends',
-               googleLineChart('trends', options=list(height=600, animation.duration=200)))
+       tabPanel('Trends',
+  		tags$head(
+       		tags$style(type="text/css", "#seltcountries { height: 400px; width: 150px}")
+			),
+			tags$div(
+    			class = "container",
+				row(
+					col(0.5, ''),
+			      col(2,
+						uiOutput('cselection')
+						#selectInput('seltcountries', 'Select countries:', sort(data.env$iso3166[,'name'])=sort(data.env$iso3166[,'charcode']), multiple=TRUE)
+						),
+				  col(7, 
+ 						googleLineChart('trends', options=list(height=500))
+ 						)
+ 					)
+ 					,
+ 				row(
+ 					col(0.5, ''),
+ 					col(9, tableOutput('trendstable'))
+ 					)
+ 				)
     )
-    
-  )
+  ))
 ))

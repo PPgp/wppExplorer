@@ -1,5 +1,3 @@
-library(ggplot2)
-
 shinyServer(function(input, output, session) {
   indicatorData <- reactive({
     lookupByIndicator(input$indicator)
@@ -58,9 +56,9 @@ shinyServer(function(input, output, session) {
     if (is.null(input$map_selection))
       return(NULL)
 
-     data <- indicatorData()
-     data.l <- indicatorDataLow()
-     data.h <- indicatorDataHigh()
+	data <- indicatorData()
+    data.l <- indicatorDataLow()
+    data.h <- indicatorDataHigh()
     df <- filterByCountry(data, input$map_selection)
     low <- filterByCountry(data.l, input$map_selection)
     high <- filterByCountry(data.h, input$map_selection)
@@ -84,8 +82,21 @@ shinyServer(function(input, output, session) {
  }, include.rownames = FALSE, include.colnames = FALSE)
   
   output$stable <- renderGvis({
-  	data <- merge(data(), data.env$iso3166[,c('charcode', 'name')], by='charcode')
-  	data <- cbind(data[,c('charcode', 'name', 'value')], rank=rank(data$value))
+  	data <- indicatorData()
+  	year.data <- filterByYear(data, input$year) 
+  	year.data <- merge(year.data, data.env$iso3166[,c('charcode', 'name')], by='charcode')
+  	low <- indicatorDataLow()
+  	data <- cbind(year.data[,c('charcode', 'name', 'value')], rank=rank(year.data$value))
+  	if(!is.null(low)) {
+  		data.l <- filterByYear(low, input$year)
+  		 if(nrow(data.l) > 0) {  		
+    		data.h <- filterByYear(indicatorDataHigh(), input$year)
+  			colnames(data.l)[colnames(data.l)=='value'] <- 'low'
+  			data <- merge(data, data.l, by='charcode')
+  			colnames(data.h)[colnames(data.h)=='value'] <- 'high'
+  			data <- merge(data, data.h, by='charcode')
+  		}
+  	}
   	colnames(data)[1] <- 'code'
   	gvisTable(data, options=list(width=600, height=600, page='disable', pageSize=198))
   	})
@@ -95,23 +106,46 @@ shinyServer(function(input, output, session) {
     print(qplot(data()$value, binwidth=diff(rangeForAllYears())/20, xlim=rangeForAllYears(), ylim=c(0,10), xlab='value'))
   })
   
-  output$trends <- reactive({
-    data <- indicatorData()
-    hrange <- range(data$Year)
+  output$cselection <- renderUI({
+  	clist <- vector('list', nrow(data.env$iso3166))
+  	o <- order(data.env$iso3166[,'name'])
+  	codes <- as.character(data.env$iso3166[o,'charcode'])
+  	names(clist) <- paste(codes, data.env$iso3166[o,'name'])
+  	clist[] <- codes
+  	do.call('selectInput', list('seltcountries', 'Select countries:', clist, multiple=TRUE, selected=names(clist)[1]))
+	})
+	
+  get.trends <- reactive({
+  	if(is.null(input$seltcountries)) return(NULL)
+  	#data <- merge(indicatorData(), data.env$iso3166[,c('charcode', 'name')], by='charcode')
+  	data <- indicatorData()
+    data <- filterByMultipleCountryNames(data, input$seltcountries)
+    if(nrow(data) <= 0) return(NULL)
+   	hrange <- range(data$Year)
     vrange <- range(data$value)
-    #data <- data[data$Year <= input$year,]
-
-    casted <- dcast(data, Year ~ charcode)
-
-    list(data = preserveStructure(casted),
+    casted <- dcast(data, Year ~ charcode, mean)
+    list(casted=casted, hrange=hrange, vrange=vrange)
+  })
+  
+  output$trends <- reactive({
+	data <- get.trends()
+	if(is.null(data)) return(data)
+    list(data = preserveStructure(data$casted),
          options = list(
            hAxis = list(viewWindowMode = 'explicit', viewWindow = list(
-             min = hrange[1], max = hrange[2]
+             min = data$hrange[1], max = data$hrange[2]
            ), format="####"),
            vAxis = list(viewWindowMode = 'explicit', viewWindow = list(
-             min = vrange[1], max = vrange[2]
+             min = data$vrange[1], max = data$vrange[2]
            ))
          )
     )
   })
+  output$trendstable <- renderTable({
+	data <- get.trends()
+	if(is.null(data)) return(data)
+	df <- t(data$casted[,-1]) # remove year column
+	colnames(df) <- as.integer(data$casted[,'Year'])
+	df
+	}, include.rownames = TRUE)  
 })
