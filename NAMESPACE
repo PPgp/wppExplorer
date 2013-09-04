@@ -1,1 +1,7 @@
-export(show.maps)
+export(
+	wpp.explore,
+	wpp.indicator,
+	wpp.by.country,
+	wpp.by.countries,
+	wpp.by.year
+	)

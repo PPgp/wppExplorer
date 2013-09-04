@@ -1,10 +1,9 @@
 Package: wppExplorer
 Version: 1.0-0
 Date: 2013-5-8
-Title: Explorer for World Population Prospects
+Title: Explorer of World Population Prospects
 Author: Hana Sevcikova <hanas@uw.edu>
 Maintainer: Hana Sevcikova <hanas@uw.edu>
-Depends: R (>= 2.14.2), shiny, reshape2, googleVis, ggplot2
-Description: Data from the United Nation's World Population Prospects 2012
+Depends: R (>= 3.0.0), shiny, reshape2, plyr, Hmisc, googleVis, ggplot2
+Description: A shiny interface for exploring data in wpp2008-wpp2012 packages.
 License: GPL (>= 2)
-URL: http://esa.un.org/wpp
