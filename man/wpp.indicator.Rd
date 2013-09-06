@@ -34,13 +34,8 @@ wpp.indicator(what, \dots)
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
 %}
-%\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-%}
+\value{Data frame with columns \code{charcode} (alpha-2 ISO 3166 country code), \code{Year}, and \code{value}.}
+
 %\references{
 %% ~put references to the literature/web site here ~
 %}
@@ -55,6 +50,14 @@ Hana Sevcikova
 \code{\link{wpp.by.country}}, \code{\link{wpp.by.year}}
 }
 \examples{
+	tfr <- wpp.indicator("fert")
+	\dontrun{
+	# Histogram of TFR 
+	print(qplot(value, data=tfr) + facet_wrap(~ Year))}
+	\dontrun{
+	mxM01 <- wpp.indicator("mortagesex", sex="M", age="0")
+	# Plot map
+	plot(gvisGeoMap(tfr, locationvar='charcode', numvar='value'))}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -23,13 +23,13 @@ col <- function(width, ...) {
 
  
 shinyUI(pageWithSidebar(
-  headerPanel(paste("WPP", substr(wpp.package, 4, 8), "Explorer")),
+  headerPanel(paste("WPP", substr(wppExplorer:::wpp.data.env$package, 4, 8), "Explorer")),
   sidebarPanel(
     geochartPrereqs,
     uiOutput('yearUI'),
-    selectInput('indicator', 'Indicator:', data.env$indicators),
+    selectInput('indicator', 'Indicator:', wppExplorer:::wpp.data.env$indicators),
     textOutput('indicatorDesc'),
-    conditionalPanel(condition="input.indicator > 7",
+    conditionalPanel(condition="input.indicator > 13",
     	tags$head(tags$style(type="text/css", "#selagesmult { height: 150px; width: 70px}"),
     			  tags$style(type="text/css", "#selages { height:25px; width: 70px}"),
     			  tags$style(type="text/css", "#indsexmult { height: 50px; width: 90px}"),
@@ -52,10 +52,6 @@ shinyUI(pageWithSidebar(
       ),
       tabPanel('Data', tableOutput('table')),
       tabPanel('Sortable Data', tableOutput('stable')),
-      tabPanel('Histogram',
-      	checkboxInput('fiXscaleHist', 'Fixed x-axis over time', TRUE),
-      	plotOutput('hist')
-      	),
       tabPanel('Trends',
   		tags$head(
        		tags$style(type="text/css", "#seltcountries { height: 400px; width: 150px}")
@@ -65,13 +61,23 @@ shinyUI(pageWithSidebar(
 				row(
 					col(0.5, ''),
 			    	col(2, uiOutput('cselection')),
-				  	col(7, googleLineChart('trends', options=list(height=500)))
+				  	col(7, tabsetPanel(
+				  				tabPanel('Median',
+				  					googleLineChart('trends', options=list(height=400))),
+				  				tabPanel('Probabilistic trends', plotOutput('probtrends')),
+				  				tabPanel('Pyramids', plotOutput('pyramids'))
+				  			)
+				  		)
  					),
  				row(
  					col(0.5, ''),
  					col(9, tableOutput('trendstable'))
  					)
  				)
+ 		),
+ 	tabPanel('Histogram',
+      	checkboxInput('fiXscaleHist', 'Fixed x-axis over time', TRUE),
+      	plotOutput('hist')
     ) #end tabPanel
   ) #end tabsetPanel
   ) #end mainPanel

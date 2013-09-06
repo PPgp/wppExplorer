@@ -1,12 +1,10 @@
 shinyServer(function(input, output, session) {
   indicatorData <- reactive({
-  	#if(input$indicator>7) browser()
-  	#print(c(input$indicator, input$indsex, input$selagesmult, input$selages))
     wppExplorer:::lookupByIndicator(input$indicator, input$indsexmult, input$indsex, input$selagesmult, input$selages)
   })
   
 	indicator.fun <- reactive({
-		attr(data.env$indicators, 'fun')[as.integer(input$indicator)]
+		wppExplorer:::ind.fun(as.integer(input$indicator))
 	})
 	
    indicatorDataLow <- reactive({
@@ -25,21 +23,35 @@ shinyServer(function(input, output, session) {
     range(indicatorData()$value)
   })
   
+  pyramid.data <- reactive({
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries)
+  })
+  
+  pyramid.data.low <- reactive({
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, ci='low')
+  })
+  
+   pyramid.data.high <- reactive({
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, ci='high')
+  })
+  
+  data.env <- function() wppExplorer:::wpp.data.env
+  
   output$yearUI <- renderUI({
 	data <- indicatorData()
   	if(nrow(data)==0) return(NULL)
   	animationOptions(interval = 1500)
     yearRange <- range(data$Year)
     value <- yearRange[1]
-    #print(c('slider1: ', value, yearRange, data.env$year.range, input$year))
-    if(is.null(data.env$year.range)) data.env$year.range <- yearRange
+    #print(c('slider1: ', value, yearRange, data.env()$year.range, input$year))
+    if(is.null(data.env()$year.range)) wppExplorer:::set.data.env('year.range', yearRange)
     else {
-    	if(data.env$year.range[1] != yearRange[1]) {
-    		data.env$year.range <- yearRange
+    	if(data.env()$year.range[1] != yearRange[1]) {
+    		wppExplorer:::set.data.env('year.range', yearRange)
     		if(!is.null(input$year) && input$year >= yearRange[1]) value <- input$year
     	}
     }
-    #print(c('slider2: ', value, yearRange, data.env$year.range, input$year))
+    #print(c('slider2: ', value, yearRange, data.env()$year.range, input$year))
     sliderInput('year', 'Year', format="0000", animate=TRUE,
                 min=yearRange[1], max=yearRange[2], value = value, step=5)
   })
@@ -85,7 +97,7 @@ shinyServer(function(input, output, session) {
     if (input$normalizeCountryPlot)
       ylim <- range(c(data$value, data.l$value, data.h$value)) 
     plot(df, type='n', ylim=ylim)
-    title(main = paste(data.env$iso3166$name[data.env$iso3166$charcode==input$map_selection]))
+    title(main = paste(data.env()$iso3166$name[data.env()$iso3166$charcode==input$map_selection]))
     lines(df$Year, df$value, type='l')
     if(!is.null(low)) {
     	ipres <- which.max(df$Year[df$Year<min(low$Year)])
@@ -96,7 +108,7 @@ shinyServer(function(input, output, session) {
   })
 
  output$table <- renderTable({
- 	data <- merge(data(), data.env$iso3166[,c('charcode', 'name')], by='charcode')#
+ 	data <- merge(data(), data.env()$iso3166[,c('charcode', 'name')], by='charcode')#
 	data[,c('charcode', 'name', 'value')]
  }, include.rownames = FALSE, include.colnames = FALSE)
   
@@ -105,7 +117,7 @@ shinyServer(function(input, output, session) {
   	#year.data <- wpp.by.year(data, input$year)
   	year.data <- data()
   	if(nrow(year.data)==0) invalidateLater(1000, session)
-  	year.data <- merge(year.data, data.env$iso3166[,c('charcode', 'name')], by='charcode')
+  	year.data <- merge(year.data, data.env()$iso3166[,c('charcode', 'name')], by='charcode')
   	low <- indicatorDataLow()
   	data <- cbind(year.data[,c('charcode', 'name', 'value')], rank=rank(year.data$value))
   	if(!is.null(low)) {
@@ -143,7 +155,7 @@ shinyServer(function(input, output, session) {
   		else ages <- paste(seq(0, by=5, length=20), seq(4, by=5, length=20), sep='-')
   		ages <- c(ages, '100+')
   	}
-  	if (attr(data.env$indicators, 'no.sum')[as.integer(input$indicator)]) { # no multiple choices allowed
+  	if (wppExplorer:::ind.no.age.sum(as.integer(input$indicator))) { # no multiple choices allowed
   		multiple <- FALSE
 		name <- 'selages'
 		selected<-NULL
@@ -157,7 +169,7 @@ shinyServer(function(input, output, session) {
 	
 	output$sexselection <- renderUI({
 		choices<-if(indicator.fun()=='fertage') c(Female="F") else c(Female="F", Male="M")
-		if(attr(data.env$indicators, 'no.sum')[as.integer(input$indicator)]){
+		if(wppExplorer:::ind.no.age.sum(as.integer(input$indicator))){
   			multiple <- FALSE
   			selected <- NULL
   			name <- 'indsex'
@@ -170,9 +182,9 @@ shinyServer(function(input, output, session) {
 	})
 	
   output$cselection <- renderUI({
-  	o <- order(data.env$iso3166[,'name'])
-  	codes <- as.character(data.env$iso3166[o,'charcode'])
-  	names <- paste(codes, data.env$iso3166[o,'name'])
+  	o <- order(data.env()$iso3166[,'name'])
+  	codes <- as.character(data.env()$iso3166[o,'charcode'])
+  	names <- paste(codes, data.env()$iso3166[o,'name'])
   	countries <- structure(
   		codes,
   		names = names
@@ -181,16 +193,34 @@ shinyServer(function(input, output, session) {
   					selected=names[1]))
 	})
 	
-  get.trends <- reactive({
-  	if(is.null(input$seltcountries)) return(NULL)
-  	#data <- merge(indicatorData(), data.env$iso3166[,c('charcode', 'name')], by='charcode')
-  	data <- indicatorData()
-    data <- wpp.by.countries(data, input$seltcountries)
-    if(nrow(data) <= 0) return(NULL)
+  filter.trend.data <- function(data, countries, cast=TRUE){
+  	data <- wpp.by.countries(data, countries)
+    if(is.null(data) || nrow(data) <= 0) return(NULL)
    	hrange <- range(data$Year)
     vrange <- range(data$value)
-    casted <- dcast(data, Year ~ charcode, mean)
-    list(casted=casted, hrange=hrange, vrange=vrange)
+    if(cast)
+    	data <- dcast(data, Year ~ charcode, mean)
+    list(casted=data, hrange=hrange, vrange=vrange)
+  }
+  
+  get.trends <- reactive({
+  	if(is.null(input$seltcountries)) return(NULL)
+  	filter.trend.data(indicatorData(), input$seltcountries)
+  })
+  
+  get.trends.nocast <- reactive({
+  	if(is.null(input$seltcountries)) return(NULL)
+  	filter.trend.data(indicatorData(), input$seltcountries, cast=FALSE)
+  })
+  
+  get.trends.low <- reactive({
+  	if(is.null(input$seltcountries)) return(NULL)
+  	filter.trend.data(indicatorDataLow(), input$seltcountries, cast=FALSE)
+  })
+  
+  get.trends.high <- reactive({
+  	if(is.null(input$seltcountries)) return(NULL)
+  	filter.trend.data(indicatorDataHigh(), input$seltcountries, cast=FALSE)
   })
   
   output$trends <- reactive({
@@ -207,12 +237,64 @@ shinyServer(function(input, output, session) {
          )
     )
   })
+  
+  output$probtrends <- renderPlot({
+  	data <- get.trends.nocast()
+  	if(is.null(data)) return(data)
+  	data <- data$casted
+  	low <- get.trends.low()
+  	if(!is.null(low)) {
+  		high <- get.trends.high()
+  		low.high <- merge(low$casted, high$casted, by=c('charcode', 'Year'))
+  		colnames(low.high)[3:4] <- c('low', 'high')
+  		min.year <- min(low.high$Year)
+  		data <- merge(data, low.high, by=c('charcode', 'Year'), all=TRUE)
+  		idx <- which(data$Year == min.year-5)
+  		data$low[idx] <- data$value[idx]
+  		data$high[idx] <- data$value[idx]
+  	}
+  	g <- ggplot(data, aes(x=Year,y=value,colour=charcode)) + geom_line()
+  	if(!is.null(low)) g <- g + geom_ribbon(aes(ymin=low, ymax=high, linetype=NA
+), alpha=0.3)
+  	print(g)
+  })
+  
+  output$pyramids <- renderPlot({
+  	if(!indicator.fun() %in% c('tpop', 'tpopF', 'tpopM', 'popagesex')) {
+  		df <- data.frame(x=0, y=0, lab='No pyramid data for this indicator.')
+  		g <- ggplot(df, aes(x=x, y=y, label=lab)) + geom_text() + scale_y_continuous(name='') + scale_x_continuous(name='')
+  		return(print(g))
+  	}
+  	data <- pyramid.data()
+  	year <- input$year
+  	low <- pyramid.data.low()
+  	if(!is.null(low) && nrow(low)>0) {
+  		high <- pyramid.data.high()
+  		low.high <- merge(low, high, by=c('charcode', 'age', 'age.num', 'sex'), sort=FALSE)
+  		colnames(low.high)[5:6] <- c('low', 'high')
+  		data <- merge(data, low.high, all=TRUE, sort=FALSE)
+	} else low <- NULL
+  	data.range <- range(data$value)
+  	data <- data[order(data$age.num),]
+  	
+  	g <- ggplot(data, aes(y=value, x=reorder(age, age.num), group=charcode, colour=charcode)) + geom_line(subset=.(sex=='F')) + geom_line(subset=.(sex=='M'), aes(y=-1*value)) + scale_x_discrete(name="") + scale_y_continuous(labels=function(x)abs(x)) + coord_flip() + ggtitle(year)
+  	g <- g + geom_text(data=NULL, y=-data.range[2]/2, x=20, label="Male", colour='black')
+  	g <- g + geom_text(data=NULL, y=data.range[2]/2, x=20, label="Female", colour='black')
+  	g <- g + geom_hline(yintercept = 0)
+  	#browser()
+  	if(!is.null(low)) {
+  		g <- g + geom_ribbon(subset=.(sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
+  		g <- g + geom_ribbon(subset=.(sex=='M'), aes(ymin=-high, ymax=-low, linetype=NA), alpha=0.3)
+  	}
+  	print(g)
+  })
+  
   output$trendstable <- renderTable({
 	data <- get.trends()
 	if(is.null(data)) return(data)
 	df <- t(data$casted[,-1]) # remove year column
 	colnames(df) <- as.integer(data$casted[,'Year'])
-	if(nrow(df) > 1 && attr(data.env$indicators, 'sum.in.table')[as.integer(input$indicator)]) {
+	if(nrow(df) > 1 && wppExplorer:::ind.sum.in.table(as.integer(input$indicator))) {
 		df <- rbind(df, colSums(df))
 		rownames(df)[nrow(df)] <- 'Sum'
 	}
