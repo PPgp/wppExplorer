@@ -8,11 +8,11 @@ shinyServer(function(input, output, session) {
 	})
 	
    indicatorDataLow <- reactive({
-    wppExplorer:::getUncertainty(input$indicator, 'low', input$indsexmult, input$indsex, input$selagesmult, input$selages)
+    wppExplorer:::getUncertainty(input$indicator, input$uncertainty, 'low', input$indsexmult, input$indsex, input$selagesmult, input$selages)
   })
   
   indicatorDataHigh <- reactive({
-    wppExplorer:::getUncertainty(input$indicator, 'high', input$indsexmult, input$indsex, input$selagesmult, input$selages)
+    wppExplorer:::getUncertainty(input$indicator, input$uncertainty, 'high', input$indsexmult, input$indsex, input$selagesmult, input$selages)
   })
   
   data <- reactive({
@@ -28,15 +28,15 @@ shinyServer(function(input, output, session) {
   })
   
   pyramid.data.low <- reactive({
-  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, ci='low')
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, input$uncertainty, bound='low')
   })
   
    pyramid.data.high <- reactive({
-  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, ci='high')
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, input$uncertainty, bound='high')
   })
   
   data.env <- function() wppExplorer:::wpp.data.env
-  
+    
   output$yearUI <- renderUI({
 	data <- indicatorData()
   	if(nrow(data)==0) return(NULL)
@@ -61,7 +61,12 @@ shinyServer(function(input, output, session) {
     #as.character(Series[Series$SeriesCode == input$indicator,]$Long.definition)
     ""
   })
-  output$mapyear <- renderText(paste('Year:', input$year))
+  year.output <- reactive(paste('Year:', input$year))
+  output$mapyear <- renderText(year.output())
+  output$year1 <- renderText(year.output())
+  output$year2 <- renderText(year.output())
+  output$year3 <- renderText(year.output())
+  
   output$map <- reactive({
     if (is.null(input$year))
       return(NULL)

@@ -17,7 +17,7 @@ get.indicator.choices <- function() {
 	ind.df[c('popagesex', 'mortagesex', 'fertage'), 'by.age'] <- TRUE
 	ind.df[c('mortagesex','fertage'), 'no.age.sum'] <- TRUE
 	ind.df[c('tpop', 'tpopF', 'tpopM', 'mig','popagesex'), 'sum.in.table'] <- TRUE
-	ind.df[c('fert', 'popagesex'), 'low.high'] <- TRUE
+	ind.df[c('fert', 'leF', 'leM', 'tpop', 'popagesex'), 'low.high'] <- TRUE
 	structure(
 		as.character(1:length(ind.names)),
 		names = ind.names,

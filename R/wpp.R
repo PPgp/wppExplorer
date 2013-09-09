@@ -171,16 +171,43 @@ oadratio <- function(...) {
 	ddply(.sum.popFM.keep.age(), .(country_code), .fun=colwise(dependency.ratio, which='old'))
 }
 
-fert.ci <- function(ci, ...) {
-	# ci is 'low' or 'high'
+.pi.suffix <- function(x) c(low='l', high='u')[x]
+
+fert.ci <- function(which.pi, bound, ...) {
+	# which.pi is for '80', '95' or 'half.child'
+	# bound is 'low' or 'high'
 	if(wpp.data.env$package=='wpp2008') return(NULL)
-	load.and.merge.datasets(paste('tfrproj', capitalize(ci), sep=''), NULL)
+	if(wpp.data.env$package=='wpp2010' && which.pi != 'half.child') return(NULL)
+	dataset.name <- if(which.pi == 'half.child') paste('tfrproj', capitalize(bound), sep='')
+					else paste('tfrproj', which.pi, .pi.suffix(bound), sep='')
+	load.and.merge.datasets(dataset.name, NULL)
 }
 
-popagesex.ci <- function(ci, sexm, agem, ...) {
-	# ci is 'low' or 'high'
-	if((wpp.data.env$package != 'wpp2012') || (length(sexm) > 1) || (length(agem) > 1)) return(NULL)
-	dataset.name <- paste('pop', sexm, 'proj', capitalize(ci), sep='')
+leF.ci <- function(which.pi, bound, ...) {
+	e0.ci('F', which.pi, bound)
+}
+
+leM.ci <- function(which.pi, bound, ...) {
+	e0.ci('M', which.pi, bound)
+}
+
+e0.ci <- function(sex, which.pi, bound) {
+	if(wpp.data.env$package!='wpp2012' || which.pi == 'half.child') return(NULL)
+	load.and.merge.datasets(paste('e0', sex, 'proj', which.pi, .pi.suffix(bound), sep=''), NULL)
+}
+
+tpop.ci <- function(which.pi, bound, ...) {
+	# which.pi is for '80', '95' or 'half.child'
+	# bound is 'low' or 'high'
+	if(wpp.data.env$package!='wpp2012' || which.pi != 'half.child') return(NULL)
+	load.and.merge.datasets(paste('popproj', capitalize(bound), sep=''), NULL)
+}
+
+popagesex.ci <- function(which.pi, bound, sexm, agem, ...) {
+	# bound is 'low' or 'high'
+	if((wpp.data.env$package != 'wpp2012') || (length(sexm) > 1) || (length(agem) > 1) || (which.pi != 'half.child')) 
+		return(NULL)
+	dataset.name <- paste('pop', sexm, 'proj', capitalize(bound), sep='')
 	if.not.exists.load(dataset.name)
 	sum.by.country.subset.age(wpp.data.env[[dataset.name]], agem)
 }
@@ -221,14 +248,16 @@ lookupByIndicator <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), ag
 	data
 }
 
+.get.pi.name <- function(x) c('80', '95', 'half.child')[x]
 
-getUncertainty <- function(indicator, what='low', sex.mult=c(), sex=c(), age.mult=c(), age=c()) {
+getUncertainty <- function(indicator, which.pi, bound='low', sex.mult=c(), sex=c(), age.mult=c(), age=c()) {
 	indicator <- as.numeric(indicator)
 	if(!ind.is.low.high(indicator)) return(NULL)
 	fun <- paste(ind.fun(indicator), 'ci', sep='.')
-	lookup.name <- paste(fun, what, sep='.')
+	pi.name <-.get.pi.name(as.integer(which.pi))
+	lookup.name <- paste(fun, pi.name, bound, sep='.')
 	if(!is.null(wpp.data.env[[lookup.name]])) return(wpp.data.env[[lookup.name]])
-	data <- wpp.indicator(fun, ci=what, sexm=sex.mult, sex=sex, agem=age.mult, age=age)
+	data <- wpp.indicator(fun, pi.name, bound=bound, sexm=sex.mult, sex=sex, agem=age.mult, age=age)
 	if(!ind.is.by.age(indicator))
   		wpp.data.env[[lookup.name]] <- data
 	data
@@ -315,13 +344,14 @@ dependency.ratio <- function(counts, which='total'){
 	nom/sum(counts[4:13])	
 }
 
-get.pyramid.data <- function(year, countries, ci=NULL) {
+get.pyramid.data <- function(year, countries, which.pi=NULL, bound=NULL) {
 	name.preds <- name.obs <- c(NULL, NULL)
-	if(is.null(ci)) {
+	if(is.null(which.pi)) {
 		name.obs <- c('popF', 'popM')
 		if(wpp.data.env$package=='wpp2012') name.preds <- c('popFprojMed', 'popMprojMed')
-	} else {
-		if(wpp.data.env$package=='wpp2012') name.obs <- paste('pop', c('F','M'), 'proj', capitalize(ci), sep='')
+	} else { #PIs
+		if(wpp.data.env$package=='wpp2012' && .get.pi.name(as.integer(which.pi)) == 'half.child') 
+			name.obs <- paste('pop', c('F','M'), 'proj', capitalize(bound), sep='')
 	}
 	if(all(is.null(c(name.preds, name.obs)))) return(NULL)
 	pF <- load.and.merge.datasets(name.obs[1], name.preds[1], by=c('country_code', 'age'), remove.cols=c('country', 'name'))

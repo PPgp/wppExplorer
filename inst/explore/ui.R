@@ -39,20 +39,27 @@ shinyUI(pageWithSidebar(
 			col(4, uiOutput('sexselection')),
     		col(3, uiOutput('ageselection'))
     	)
-    )
+    ),
+    selectInput('uncertainty', 'Uncertainty:', structure(as.character(1:3), names=c('80%', '95%', '+-1/2child')))
   ),
   mainPanel(
     tabsetPanel(
       tabPanel('Map',
-               geochart('map'),
-               textOutput('mapyear'),
-               conditionalPanel(condition='input.map_selection',
-                                checkboxInput('normalizeCountryPlot', 'Fixed scale', FALSE)),
-               plotOutput('countryPlot', height='300px')
+		textOutput('mapyear'),
+		geochart('map'),
+		conditionalPanel(condition='input.map_selection',
+				checkboxInput('normalizeCountryPlot', 'Fixed scale', FALSE),
+				plotOutput('countryPlot', height='300px'))
       ),
-      tabPanel('Data', tableOutput('table')),
-      tabPanel('Sortable Data', tableOutput('stable')),
-      tabPanel('Trends',
+      tabPanel('Data', 
+		textOutput('year1'),
+      	tableOutput('table')
+      ),
+      tabPanel('Sortable Data', 
+		textOutput('year2'),
+      	tableOutput('stable')
+      ),
+      tabPanel('Trends & Pyramids',
   		tags$head(
        		tags$style(type="text/css", "#seltcountries { height: 400px; width: 150px}")
 			),
@@ -76,6 +83,7 @@ shinyUI(pageWithSidebar(
  				)
  		),
  	tabPanel('Histogram',
+ 		textOutput('year3'),
       	checkboxInput('fiXscaleHist', 'Fixed x-axis over time', TRUE),
       	plotOutput('hist')
     ) #end tabPanel
