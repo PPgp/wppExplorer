@@ -4,10 +4,10 @@
 \alias{wpp.by.year}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Aggregations by Country and Year
+Selection by Country and Year
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Filtering indicators by given countries and year.
 }
 \usage{
 wpp.by.country(data, country)
@@ -16,54 +16,29 @@ wpp.by.countries(data, countries)
 
 wpp.by.year(data, year)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{data}{
-%%     ~~Describe \code{data} here~~
+  \item{data}{Data frame as returned by \code{\link{wpp.indicator}}.}
+  \item{country}{alpha-2 ISO 3166 country code.}
+  \item{countries}{Vector of alpha-2 ISO 3166 country codes.}
+  \item{year}{Year. For vital rates with 5-years time period, currently it is the end year of the time period.}
 }
-  \item{country}{
-%%     ~~Describe \code{country} here~~
-}
-}
-\details{
+%\details{
 %%  ~~ If necessary, more details than the description above ~~
-}
+%}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+A data frame filtered by the input arguments.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{wpp.indicator}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (data, country) 
-{
-    data <- data[data$charcode == country, ]
-    data$charcode <- NULL
-    data
-  }
+tfr <- wpp.indicator("fert")
+tfr.germany.2010 <- wpp.by.country(wpp.by.year(tfr, 2010), 'DE')
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ manip }
+

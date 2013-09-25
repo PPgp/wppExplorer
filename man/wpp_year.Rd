@@ -1,0 +1,35 @@
+\name{set.wpp.year}
+\alias{set.wpp.year}
+\alias{get.wpp.year}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Edit/Retrieve WPP Year.
+}
+\description{
+Change/get the WPP year which determines from which \pkg{wpp} package data are retrieved.
+}
+\usage{
+set.wpp.year(wpp.year)
+
+get.wpp.year()
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{wpp.year}{Possible values are 2008, 2010, 2012 (default).}
+}
+
+\value{
+\code{get.wpp.year} returns the wpp year used through out the package.
+}
+
+%\seealso{
+%% ~~objects to See Also as \code{\link{help}}, ~~~
+%}
+\examples{
+get.wpp.year() # by default the wpp2012 is used
+set.wpp.year(2010) # any subsequent operations use the wpp2010 package
+}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ manip }
+

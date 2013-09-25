@@ -14,11 +14,11 @@ googleLineChart <- function(id, options=list()) {
 }
 
 row <- function(...) {
-  tags$div(class="row", ...)
+	tags$div(class="row", ...)
 }
 
 col <- function(width, ...) {
-  tags$div(class=paste0("span", width), ...)
+	tags$div(class=paste0("span", width), ...)
 }
 
  
@@ -61,13 +61,13 @@ shinyUI(pageWithSidebar(
       ),
       tabPanel('Trends & Pyramids',
   		tags$head(
-       		tags$style(type="text/css", "#seltcountries { height: 400px; width: 150px}")
+			tags$style(type="text/css", "#seltcountries { height: 400px; width: 150px}")
 			),
 			tags$div(
-    			class = "container",
+				class = "container",
 				row(
 					col(0.5, ''),
-			    	col(2, uiOutput('cselection')),
+					col(2, uiOutput('cselection')),
 				  	col(7, tabsetPanel(
 				  				tabPanel('Median',
 				  					googleLineChart('trends', options=list(height=400))),

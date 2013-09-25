@@ -14,7 +14,7 @@ check.wpp.revision <- function(wpp.year) {
 wpp.indicator <- function(what, ...) {
 	data <- do.call(what, list(...))
 	if(is.null(data)) return(NULL)
-	merge.with.un.and.melt(data)
+	merge.with.un.and.melt(data, what=what)
 }
 
 wpp.by.year <- function(data, year) {
@@ -152,23 +152,23 @@ sexratio <- function(...) {
 }
 
 medage <- function(...) {
-	ddply(.sum.popFM.keep.age(), .(country_code), .fun=colwise(gmedian))
+	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(gmedian))
 }
 
 tdratio <- function(...) {
-	ddply(.sum.popFM.keep.age(), .(country_code), .fun=colwise(dependency.ratio, which='total'))
+	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='total'))
 }
 
 psratio <- function(...) {
-	ddply(.sum.popFM.keep.age(), .(country_code), .fun=colwise(function(x) 1/dependency.ratio(x, which='old')))
+	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(function(x) 1/dependency.ratio(x, which='old')))
 }
 
 chdratio <- function(...) {
-	ddply(.sum.popFM.keep.age(), .(country_code), .fun=colwise(dependency.ratio, which='child'))
+	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='child'))
 }
 
 oadratio <- function(...) {
-	ddply(.sum.popFM.keep.age(), .(country_code), .fun=colwise(dependency.ratio, which='old'))
+	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='old'))
 }
 
 .pi.suffix <- function(x) c(low='l', high='u')[x]
@@ -238,7 +238,6 @@ load.and.merge.datasets <- function(name.obs, name.pred=NULL, by='country_code',
 lookupByIndicator <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), age=c()) {
 	indicator <- as.numeric(indicator)
 	fun <- ind.fun(indicator)
-	#print(c('ind:', age))
 	# load observed data
 	#browser()
 	if(!is.null(wpp.data.env[[fun]])) return(wpp.data.env[[fun]])
@@ -265,7 +264,7 @@ getUncertainty <- function(indicator, which.pi, bound='low', sex.mult=c(), sex=c
 
 .get.year.col.names <- function(col.names) {
 	col.names <- gsub('.y', '', col.names, fixed=TRUE)
-	l <- nchar(col.names)
+	l <- nchar(col.names)	
 	substr(col.names, l-3, l)
 }
 
@@ -278,7 +277,7 @@ getUncertainty <- function(indicator, which.pi, bound='low', sex.mult=c(), sex=c
  	year.cols.idx
 }
 
-merge.with.un.and.melt <- function(data, id.vars='charcode') {
+merge.with.un.and.melt <- function(data, id.vars='charcode', what=NULL) {
 	year.cols.idx <- .get.year.cols.idx(data)
   	year.cols <- colnames(data)[year.cols.idx]
 	data <- merge(wpp.data.env$iso3166[,c('uncode', 'name', 'charcode')], data, 
@@ -290,12 +289,15 @@ merge.with.un.and.melt <- function(data, id.vars='charcode') {
                variable.name = 'Year',
                na.rm=TRUE)
 	data$Year <- as.numeric(.get.year.col.names(as.character(data$Year)))
+	#if(!is.null(what) && ind.mid.years(what))
+	#	data$Year <- data$Year - 2
+	#browser()
 	data	
 }
 
 sum.by.country <- function(dataset) {
 	year.cols.idx <- grep('^[0-9]{4}', colnames(dataset))
-	ddply(dataset[,c(which(colnames(dataset)=='country_code'), year.cols.idx)], .(country_code), .fun=colwise(sum))
+	ddply(dataset[,c(which(colnames(dataset)=='country_code'), year.cols.idx)], "country_code", .fun=colwise(sum))
 }
 
 sumMFbycountry <- function(datasetM, datasetF) {
@@ -324,6 +326,7 @@ ind.is.by.age <- function(indicator) ind.settings()[indicator, 'by.age']
 ind.is.low.high <- function(indicator) ind.settings()[indicator, 'low.high']
 ind.no.age.sum <- function(indicator) ind.settings()[indicator, 'no.age.sum']
 ind.sum.in.table <- function(indicator) ind.settings()[indicator, 'sum.in.table']
+ind.mid.years <- function(indicator) ind.settings()[indicator, 'mid.years']
 
 set.data.env <- function(name, value) wpp.data.env[[name]] <- value
 
@@ -356,9 +359,11 @@ get.pyramid.data <- function(year, countries, which.pi=NULL, bound=NULL) {
 	if(all(is.null(c(name.preds, name.obs)))) return(NULL)
 	pF <- load.and.merge.datasets(name.obs[1], name.preds[1], by=c('country_code', 'age'), remove.cols=c('country', 'name'))
 	pM <- load.and.merge.datasets(name.obs[2], name.preds[2], by=c('country_code', 'age'), remove.cols=c('country', 'name'))
-	dataF <- merge.with.un.and.melt(cbind(pF, age.num=rep(1:21, nrow(pF)/21)), id.vars=c('charcode', 'age', 'age.num'))
+	dataF <- merge.with.un.and.melt(cbind(pF, age.num=rep(1:21, nrow(pF)/21)), id.vars=c('charcode', 'age', 'age.num'),
+				what="popF")
 	dataF <- cbind(dataF, sex='F')
-	dataM <- merge.with.un.and.melt(cbind(pM, age.num=rep(1:21, nrow(pM)/21)), id.vars=c('charcode', 'age', 'age.num'))
+	dataM <- merge.with.un.and.melt(cbind(pM, age.num=rep(1:21, nrow(pM)/21)), id.vars=c('charcode', 'age', 'age.num'),
+				what="popM")
 	dataM <- cbind(dataM, sex='M')
 	data <- wpp.by.year(rbind(dataF, dataM), year)
 	#browser()

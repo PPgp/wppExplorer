@@ -5,32 +5,36 @@
 Launching WPP Explorer
 }
 \description{
-Main function of the package. It opens an interactive (shiny) interface in a browser.
+Main function of the package. It opens an interactive (shiny) interface in a browser. To exit the browser view, hit the Escape key.
 }
 \usage{
-wpp.explore(wpp.year = 2012)
+wpp.explore(wpp.year = NULL)
 }
 
 \arguments{
-  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2008, 2010 and 2012.
+  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2008, 2010 and 2012 (default).
 }
 }
-%\details{
-%}
+\details{
+	The time slider in the left pane defines the year or time period for which data are shown. Note that for vital rates indicators, such as fertility, mortality, migration and sex ratio at birth, the time shown on the slider is the end year of the time period of the data shown in the right pane.
+	
+	The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bound is available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the \dQuote{Sortable Data} tab, and \dQuote{Probabilistic Trends} and \dQuote{Pyramids}. In \pkg{wpp2012}, the 80 and 95\% intervals are available only for fertility and mortality indicators, the +-1/2child intervals are available for fertility and population indicators. 
+}
 %\value{
 %}
 %\references{
 %% ~put references to the literature/web site here ~
 %}
 \author{
-Hana Sevcikova, used code from a Joe Cheng's shiny example
+Hana Sevcikova, based on code from a Joe Cheng's shiny example. Used comments from Patrick Gerland.
 }
-%\note{
-%%  ~~further notes~~
-%}
+\note{
+If you have any troubles to see the data, please check that the \pkg{\link[shiny:shiny-package]{shiny}} package is working in your environment. In particular, check that examples in \url{http://rstudio.github.com/shiny/tutorial} work. On Windows, you might check this:
+\url{https://groups.google.com/forum/#!topic/shiny-discuss/tqeURyiPmFI}
+}
 
 \seealso{
-\code{\link[wpp2008:wpp2008-package]{wpp2008}}, \code{\link[wpp2010:wpp2010-package]{wpp2010}}, \code{\link[wpp2012:wpp2012-package]{wpp2012}}
+\code{\link[wpp2008:wpp2008-package]{wpp2008}}, \code{\link[wpp2010:wpp2010-package]{wpp2010}}, \code{\link[wpp2012:wpp2012-package]{wpp2012}}, \code{\link{wpp.indicator}}
 }
 \examples{
 \dontrun{

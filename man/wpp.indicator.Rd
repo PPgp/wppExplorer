@@ -20,11 +20,17 @@ wpp.indicator(what, \dots)
   		\item{tpopF}{Total female population. Uses datasets \code{\link[wpp2012:popF]{popF}} and \code{\link[wpp2012:popF]{popFprojMed}} and aggregates over ages.}
   		\item{tpopM}{Total male population. Uses datasets \code{\link[wpp2012:popM]{popM}} and \code{\link[wpp2012:popM]{popMprojMed}} and aggregates over ages.}
   		\item{mig}{Total net migration. Aggregates datasets \code{\link[wpp2012:migrationF]{migrationF}} and \code{\link[wpp2012:migrationM]{migrationM}} over ages.}
-  		\item{popagesex}{Population by sex and age. Uses datasets \code{\link[wpp2012:popM]{popM}} and \code{\link[wpp2012:popM]{popMprojMed}}. It requires two arguments in \dots, namely \code{sexm=c("F", "M")} and \code{agem=c("0-4", "5-9", ..., "95-99", "100+")}. The function aggregates population counts over the given sex and age groups.}
+  		\item{popagesex}{Population by sex and age. Uses datasets \code{\link[wpp2012:popM]{popM}} and \code{\link[wpp2012:popM]{popMprojMed}}. It requires two arguments in \dots, namely \code{sexm=c("F", "M")} and \cr\code{agem=c("0-4", "5-9", ..., "95-99", "100+")}. The function aggregates population counts over the given sex and age groups.}
   		\item{mortagesex}{Mortality by sex and age. Uses datasets \code{\link[wpp2012:mxF]{mxF}} and \code{\link[wpp2012:mxM]{mxM}}. It requires two atguments in \dots, namely \code{sex} which is either "F" or "M", and \code{age} which is one of ("0", "1", "5", "10", "15", "20", ... "95", "100+").}
   		\item{fertage}{Age-specific fertility rate. Uses datasets \code{\link[wpp2012:tfr]{tfr}} and \code{\link[wpp2012:tfr]{tfrprojMed}} which are merged together and dataset \code{\link[wpp2012:percentASFR]{percentASFR}} to derive age-specific rates. It requires one argument in \dots, namely \code{age} which is one of ("15-19", "20-24", ..., "45-49").}
-  		\item{fert.ci}{Lower or upper bound of total fertility rate. Requires one argument in \dots, namely \code{ci} which is either \dQuote{low} or \dQuote{high}.}
-  		\item{popagesex.ci}{Lower or upper bound of age- and sex-specific population. Requires argument \code{ci} as above, and arguments \code{age} and \code{sex} which take one of the values described under \bold{popagesex}.}
+  		\item{sexratio}{Sex ratio at birth. Corresponds to the dataset \code{\link[wpp2012:sexRatio]{sexRatio}}.}
+  		\item{medage}{Median age.}
+  		\item{tdratio}{Total dependency ratio. Ratio of population of age 0 to 14 and 65+ to population of age 15-64.}
+  		\item{chdratio}{Child dependency ratio. Ratio of population of age 0 to 14 to population of age 15-64.}
+  		\item{oadratio}{Old-age dependency ratio. Ratio of population of age 65+ to population of age 15-64.}
+  		\item{psratio}{Potential support ratio. Inverse of old-age dependency ratio.}
+  		\item{fert.ci, leF.ci, leM.ci, tpop.ci, popagesex.ci}{Lower or upper bound of the corresponding indicator. Requires argument \code{which.pi} which is one of \dQuote{80}, \dQuote{95}, \dQuote{half.child}, and an argument \code{bound} which is
+  			either \dQuote{low} or \dQuote{high}. Arguments \code{sexm} and \code{agem} (as defined above, but of length one) are required for popagesex.ci.}
   	}
 }
   \item{\dots}{Arguments passed to the underlying functions as described above.

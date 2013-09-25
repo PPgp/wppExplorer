@@ -52,7 +52,8 @@ shinyServer(function(input, output, session) {
     	}
     }
     #print(c('slider2: ', value, yearRange, data.env()$year.range, input$year))
-    sliderInput('year', 'Year', format="0000", animate=TRUE,
+    sliderInput('year', 'Year', format="####", 
+    			animate=TRUE,
                 min=yearRange[1], max=yearRange[2], value = value, step=5)
   })
   
@@ -194,7 +195,7 @@ shinyServer(function(input, output, session) {
   		codes,
   		names = names
   	)
-  	do.call('selectInput', list('seltcountries', 'Select countries:', countries, multiple=TRUE, 
+  	do.call('selectInput', list('seltcountries', 'Select countries/areas:', countries, multiple=TRUE, 
   					selected=names[1]))
 	})
 	
