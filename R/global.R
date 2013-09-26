@@ -27,7 +27,9 @@ get.indicator.choices <- function() {
 }
 
 
-assign("wpp.data.env", new.env(), envir = .GlobalEnv)
+assign("wpp.data.env", new.env(), envir=parent.env(environment())
+	#envir = .GlobalEnv
+	)
 data('iso3166', envir=wpp.data.env)
 wpp.data.env$indicators <- get.indicator.choices()
 wpp.data.env$package <- "wpp2012"

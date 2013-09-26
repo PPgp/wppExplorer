@@ -1,3 +1,8 @@
+library(reshape2)
+library(googleVis)
+library(plyr)
+library(ggplot2)
+
 shinyServer(function(input, output, session) {
   indicatorData <- reactive({
     wppExplorer:::lookupByIndicator(input$indicator, input$indsexmult, input$indsex, input$selagesmult, input$selages)
@@ -282,7 +287,6 @@ shinyServer(function(input, output, session) {
 	} else low <- NULL
   	data.range <- range(data$value)
   	data <- data[order(data$age.num),]
-  	
   	g <- ggplot(data, aes(y=value, x=reorder(age, age.num), group=charcode, colour=charcode)) + geom_line(subset=.(sex=='F')) + geom_line(subset=.(sex=='M'), aes(y=-1*value)) + scale_x_discrete(name="") + scale_y_continuous(labels=function(x)abs(x)) + coord_flip() + ggtitle(year)
   	g <- g + geom_text(data=NULL, y=-data.range[2]/2, x=20, label="Male", colour='black')
   	g <- g + geom_text(data=NULL, y=data.range[2]/2, x=20, label="Female", colour='black')

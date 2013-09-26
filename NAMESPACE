@@ -7,3 +7,5 @@ export(
 	get.wpp.year,
 	set.wpp.year
 	)
+import("wpp2012", "shiny", "reshape2", "plyr", "googleVis",  "ggplot2")
+importFrom(Hmisc, capitalize)
