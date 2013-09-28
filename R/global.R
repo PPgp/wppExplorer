@@ -2,7 +2,7 @@ utils::globalVariables("wpp.data.env")
 get.indicator.choices <- function() {
 	ind.names <- c('Total Fertility Rate', 'Female Life Expectancy', 'Male Life Expectancy', 
 					'Total Population', 'Female Population', 'Male Population', 'Net Migration', 
-					'Sex Ration at Birth', 'Median Age', 
+					'Sex Ratio at Birth', 'Median Age', 
 					'Total Dependancy Ratio', 'Child Dependency Ratio', 'Old-age Dependency Ratio','Potential Support Ratio',
 					'Population by sex and age', 'Mortality Rate by sex and age', 'Age-specific Fertility')
 	funcs <- c('fert', 'leF', 'leM', 'tpop', 'tpopF', 'tpopM', 'mig', 

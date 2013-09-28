@@ -72,7 +72,8 @@ shinyUI(pageWithSidebar(
 				  				tabPanel('Median',
 				  					googleLineChart('trends', options=list(height=400))),
 				  				tabPanel('Probabilistic trends', plotOutput('probtrends')),
-				  				tabPanel('Pyramids', plotOutput('pyramids'))
+				  				tabPanel('Pyramids', plotOutput('pyramids')),
+				  				tabPanel('Proportional pyramids', plotOutput('proppyramids'))
 				  			)
 				  		)
  					),

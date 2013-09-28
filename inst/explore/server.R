@@ -270,29 +270,72 @@ shinyServer(function(input, output, session) {
   	print(g)
   })
   
-  output$pyramids <- renderPlot({
-  	if(!indicator.fun() %in% c('tpop', 'tpopF', 'tpopM', 'popagesex')) {
+  .is.pyramid.indicator <- function() {
+  	 if(!indicator.fun() %in% c('tpop', 'tpopF', 'tpopM', 'popagesex')) {
   		df <- data.frame(x=0, y=0, lab='No pyramid data for this indicator.')
   		g <- ggplot(df, aes(x=x, y=y, label=lab)) + geom_text() + scale_y_continuous(name='') + scale_x_continuous(name='')
-  		return(print(g))
+  		print(g)
+  		return(FALSE)
   	}
+  	TRUE
+  }
+  .get.prop.data <- function(data, tpop) {
+	tpop <- wppExplorer::wpp.by.countries(wppExplorer::wpp.by.year(tpop, input$year), input$seltcountries)
+  	colnames(tpop)[2] <- 'tpop' 
+  	data <- merge(data, tpop, by='charcode')  		
+  	data <- ddply(data, 'charcode', mutate, value = value/tpop)
+  	data$tpop <- NULL
+  	data
+  }
+  .get.pyramid.data <- function(proportion=FALSE) {
   	data <- pyramid.data()
-  	year <- input$year
-  	low <- pyramid.data.low()
+  	if(proportion) {
+  		tpop <- wppExplorer::wpp.indicator('tpop')
+  		data <- .get.prop.data(data, tpop)
+  	}
+	low <- pyramid.data.low()
   	if(!is.null(low) && nrow(low)>0) {
   		high <- pyramid.data.high()
+  		if(proportion) {
+  			tpop <- wppExplorer::wpp.indicator('tpop.ci', which.pi=input$uncertainty, bound='low')
+  			low <- .get.prop.data(low, tpop)
+  			tpop <- wppExplorer::wpp.indicator('tpop.ci', which.pi=input$uncertainty, bound='high')
+  			low <- .get.prop.data(high, tpop)
+  		}
   		low.high <- merge(low, high, by=c('charcode', 'age', 'age.num', 'sex'), sort=FALSE)
   		colnames(low.high)[5:6] <- c('low', 'high')
   		data <- merge(data, low.high, all=TRUE, sort=FALSE)
 	} else low <- NULL
-  	data.range <- range(data$value)
   	data <- data[order(data$age.num),]
-  	g <- ggplot(data, aes(y=value, x=reorder(age, age.num), group=charcode, colour=charcode)) + geom_line(subset=.(sex=='F')) + geom_line(subset=.(sex=='M'), aes(y=-1*value)) + scale_x_discrete(name="") + scale_y_continuous(labels=function(x)abs(x)) + coord_flip() + ggtitle(year)
+  	data
+  }
+  
+  output$pyramids <- renderPlot({
+  	if(!.is.pyramid.indicator()) return()
+	data <- .get.pyramid.data()
+	data.range <- range(data$value)
+  	g <- ggplot(data, aes(y=value, x=reorder(age, age.num), group=charcode, colour=charcode)) + geom_line(subset=.(sex=='F')) + geom_line(subset=.(sex=='M'), aes(y=-1*value)) + scale_x_discrete(name="") + scale_y_continuous(labels=function(x)abs(x)) + coord_flip() + ggtitle(input$year)
   	g <- g + geom_text(data=NULL, y=-data.range[2]/2, x=20, label="Male", colour='black')
   	g <- g + geom_text(data=NULL, y=data.range[2]/2, x=20, label="Female", colour='black')
   	g <- g + geom_hline(yintercept = 0)
   	#browser()
-  	if(!is.null(low)) {
+  	if(is.element('low', colnames(data))) {
+  		g <- g + geom_ribbon(subset=.(sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
+  		g <- g + geom_ribbon(subset=.(sex=='M'), aes(ymin=-high, ymax=-low, linetype=NA), alpha=0.3)
+  	}
+  	print(g)
+  })
+  
+  output$proppyramids <- renderPlot({
+  	if(!.is.pyramid.indicator()) return()
+  	data <- .get.pyramid.data(proportion=TRUE)
+  	data.range <- range(data$value)
+  	g <- ggplot(data, aes(y=value, x=reorder(age, age.num), group=charcode, colour=charcode)) + geom_line(subset=.(sex=='F')) + geom_line(subset=.(sex=='M'), aes(y=-1*value)) + scale_x_discrete(name="") + scale_y_continuous(labels=function(x)abs(x)) + coord_flip() + ggtitle(input$year)
+  	g <- g + geom_text(data=NULL, y=-data.range[2]/2, x=20, label="Male", colour='black')
+  	g <- g + geom_text(data=NULL, y=data.range[2]/2, x=20, label="Female", colour='black')
+  	g <- g + geom_hline(yintercept = 0)
+  	#browser()
+  	if(is.element('low', colnames(data))) {
   		g <- g + geom_ribbon(subset=.(sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
   		g <- g + geom_ribbon(subset=.(sex=='M'), aes(ymin=-high, ymax=-low, linetype=NA), alpha=0.3)
   	}
