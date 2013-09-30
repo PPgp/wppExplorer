@@ -155,6 +155,10 @@ medage <- function(...) {
 	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(gmedian))
 }
 
+meanagechbear <- function(...) {
+	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(gmean.child.bearing))
+}
+
 tdratio <- function(...) {
 	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='total'))
 }
@@ -169,6 +173,13 @@ chdratio <- function(...) {
 
 oadratio <- function(...) {
 	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='old'))
+}
+
+popgrowth <- function(...) {
+	pop <- tpop()
+	ncols <- ncol(pop)
+	#browser()
+	cbind(country_code=pop$country_code, log(pop[,3:ncols]/pop[,2:(ncols-1)])/5)
 }
 
 .pi.suffix <- function(x) c(low='l', high='u')[x]
@@ -327,10 +338,11 @@ ind.is.low.high <- function(indicator) ind.settings()[indicator, 'low.high']
 ind.no.age.sum <- function(indicator) ind.settings()[indicator, 'no.age.sum']
 ind.sum.in.table <- function(indicator) ind.settings()[indicator, 'sum.in.table']
 ind.mid.years <- function(indicator) ind.settings()[indicator, 'mid.years']
+ind.digits <- function(indicator) ind.settings()[indicator, 'digits']
 
 set.data.env <- function(name, value) wpp.data.env[[name]] <- value
 
-gmedian <- function(f, cats=NULL, age) {
+gmedian <- function(f, cats=NULL) {
 	# group median
 	if(is.null(cats)) cats <- seq(0, by=5, length=length(f)+1)
 	nhalf <- sum(f)/2.
@@ -338,6 +350,24 @@ gmedian <- function(f, cats=NULL, age) {
 	medcat <- findInterval(nhalf, cumsumf) + 1
 	med <- cats[medcat] + ((nhalf-cumsumf[medcat-1])/f[medcat])*(cats[medcat+1]-cats[medcat])
 	return(med)
+}
+
+gmean <- function (f, cats = NULL) 
+{
+    if (all(is.na(f))) 
+        return(NA)
+    if (is.null(cats)) 
+        cats <- seq(0, by = 5, length = length(f) + 1)
+    l <- min(length(cats), length(f) + 1)
+    mid.points <- cats[1:(l - 1)] + (cats[2:l] - cats[1:(l - 
+        1)])/2
+    counts <- f * mid.points
+    return(sum(counts)/sum(f))
+}
+
+gmean.child.bearing <- function(f) {
+	# group mean of child bearing age
+	return(gmean(f[4:10], cats=seq(15, by=5, length=8)))
 }
 
 dependency.ratio <- function(counts, which='total'){

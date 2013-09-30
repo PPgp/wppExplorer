@@ -29,7 +29,7 @@ shinyUI(pageWithSidebar(
     uiOutput('yearUI'),
     selectInput('indicator', 'Indicator:', wppExplorer:::wpp.data.env$indicators),
     textOutput('indicatorDesc'),
-    conditionalPanel(condition="input.indicator > 13",
+    conditionalPanel(condition="input.indicator > 15",
     	tags$head(tags$style(type="text/css", "#selagesmult { height: 150px; width: 70px}"),
     			  tags$style(type="text/css", "#selages { height:25px; width: 70px}"),
     			  tags$style(type="text/css", "#indsexmult { height: 50px; width: 90px}"),
@@ -72,6 +72,9 @@ shinyUI(pageWithSidebar(
 				  				tabPanel('Median',
 				  					googleLineChart('trends', options=list(height=400))),
 				  				tabPanel('Probabilistic trends', plotOutput('probtrends')),
+				  				tabPanel('Age Profile', 
+				  					googleLineChart('age.profileM', options=list(height=200)),
+				  					googleLineChart('age.profileF', options=list(height=200))),
 				  				tabPanel('Pyramids', plotOutput('pyramids')),
 				  				tabPanel('Proportional pyramids', plotOutput('proppyramids'))
 				  			)
@@ -87,7 +90,15 @@ shinyUI(pageWithSidebar(
  		textOutput('year3'),
       	checkboxInput('fiXscaleHist', 'Fixed x-axis over time', TRUE),
       	plotOutput('hist')
-    ) #end tabPanel
+    )#,
+    # tabPanel('Age Profiles',
+    	# tabsetPanel(
+    		# tabPanel('Multiple Countries',
+    				# ),
+    		# tabPanel('Multiple Years',
+    				# )
+    		# )
+     # ) #end tabPanel
   ) #end tabsetPanel
   ) #end mainPanel
 ))
