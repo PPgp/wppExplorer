@@ -25,10 +25,12 @@ wpp.indicator(what, \dots)
   		\item{fertage}{Age-specific fertility rate. Uses datasets \code{\link[wpp2012:tfr]{tfr}} and \code{\link[wpp2012:tfr]{tfrprojMed}} which are merged together and dataset \code{\link[wpp2012:percentASFR]{percentASFR}} to derive age-specific rates. It requires one argument in \dots, namely \code{age} which is one of ("15-19", "20-24", ..., "45-49").}
   		\item{sexratio}{Sex ratio at birth. Corresponds to the dataset \code{\link[wpp2012:sexRatio]{sexRatio}}.}
   		\item{medage}{Median age.}
+  		\item{meanagechbear}{Mean age of child bearing.}
   		\item{tdratio}{Total dependency ratio. Ratio of population of age 0 to 14 and 65+ to population of age 15-64.}
   		\item{chdratio}{Child dependency ratio. Ratio of population of age 0 to 14 to population of age 15-64.}
   		\item{oadratio}{Old-age dependency ratio. Ratio of population of age 65+ to population of age 15-64.}
   		\item{psratio}{Potential support ratio. Inverse of old-age dependency ratio.}
+  		\item{popgrowth}{Average annual population growth.}
   		\item{fert.ci, leF.ci, leM.ci, tpop.ci, popagesex.ci}{Lower or upper bound of the corresponding indicator. Requires argument \code{which.pi} which is one of \dQuote{80}, \dQuote{95}, \dQuote{half.child}, and an argument \code{bound} which is
   			either \dQuote{low} or \dQuote{high}. Arguments \code{sexm} and \code{agem} (as defined above, but of length one) are required for popagesex.ci.}
   	}

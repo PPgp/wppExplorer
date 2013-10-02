@@ -40,6 +40,27 @@ shinyServer(function(input, output, session) {
   	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, input$uncertainty, bound='high')
   })
   
+  age.profile.mortM <- reactive({
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, indicators=c(M='mxM'), load.pred=FALSE)
+  })
+  
+  age.profile.mortF <- reactive({
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, indicators=c(F='mxF'), load.pred=FALSE)
+  })
+  
+  age.profile.popM <- reactive({
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, indicators=c(M='popM'))
+  })
+  
+  age.profile.popF <- reactive({
+  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries, indicators=c(F='popF'))
+  })
+  
+  age.profile.fert <- reactive({
+  	wppExplorer:::get.age.profile.fert(input$year, input$seltcountries)
+  })
+
+  
   data.env <- function() wppExplorer:::wpp.data.env
     
   output$yearUI <- renderUI({
@@ -141,9 +162,6 @@ shinyServer(function(input, output, session) {
   			data <- merge(data, data.h, by='charcode')
   		}
   	}
-  	#print(c('sort table: ', input$year, dim(data), dim(year.data)))
-  	#print(head(data))
-  	#if(nrow(data)==0) browser()
   	colnames(data)[1] <- 'code'
   	gvisTable(data, options=list(width=600, height=600, page='disable', pageSize=198))
   	})
@@ -204,6 +222,16 @@ shinyServer(function(input, output, session) {
   					selected=names[1]))
 	})
 	
+  cast.profile.data <- function(data) {
+    vrange <- range(data$value)
+    hrange <- if(is.element('15-19', data$age)) c(0, length(unique(data$age))) else range(data$age)
+    #browser()
+    data <- dcast(data, age.num + age ~ charcode, mean)
+    data$age.num <- NULL
+    list(casted=data, hrange=hrange, vrange=vrange)
+  	
+  }	
+	
   filter.trend.data <- function(data, countries, cast=TRUE){
   	data <- wpp.by.countries(data, countries)
     if(is.null(data) || nrow(data) <= 0) return(NULL)
@@ -219,15 +247,6 @@ shinyServer(function(input, output, session) {
   	filter.trend.data(indicatorData(), input$seltcountries)
   })
   
-  filter.age.profiles <- function(data, countries, year, cast=TRUE){
-  	data <- wpp.by.countries(wpp.by.year(data, year), countries)
-    if(is.null(data) || nrow(data) <= 0) return(NULL)
-   	hrange <- range(data$Year)
-    vrange <- range(data$value)
-    if(cast)
-    	data <- dcast(data, Year ~ charcode, mean)
-    list(casted=data, hrange=hrange, vrange=vrange)
-  }
 
   get.age.profiles <- reactive({
   	if(is.null(input$seltcountries)) return(NULL)
@@ -259,38 +278,55 @@ shinyServer(function(input, output, session) {
            ), format="####"),
            vAxis = list(viewWindowMode = 'explicit', viewWindow = list(
              min = data$vrange[1], max = data$vrange[2]
-           ))
+           ), logScale=input$median.logscale)
          )
     )
   })
   
-  output$age.profileM <- reactive({
-	data <- get.trends()
-	if(is.null(data)) return(data)
+  show.age.profile <- function(sex, fun, logscale=FALSE, year) {
+  	if(fun=='mortagesex')
+		data <- do.call(paste0('age.profile.mort', sex), list())
+	else {
+		if(fun %in% c('tpop', 'tpopF', 'tpopM', 'popagesex'))
+			data <- do.call(paste0('age.profile.pop', sex), list())
+		else {
+			if(fun %in% c('fert', 'fertage') && sex=='F') {
+				data <- age.profile.fert()
+			} else {
+  				return(list(data=data.frame(age=c(0,0), v=c(0,0)),
+  						#data.frame(age=seq(0,100, by=5), value=rep(0, 21)), 
+  						options=list(title=paste(c(F='Female', M='Male')[sex], ': No age profiles for this indicator.'),
+  							legend= list(position="none"),
+  							hAxis = list(viewWindow = list(min=-1, max=1)),
+  							vAxis = list(viewWindow = list(min=-1, max=1))
+  						)))
+			}
+		}
+	}
+	if(is.null(data)) return(NULL)
+	data <- cast.profile.data(data)
+	#browser()
+	#print(data)
     list(data = wppExplorer:::preserveStructure(data$casted),
          options = list(
-           hAxis = list(viewWindowMode = 'explicit', viewWindow = list(
-             min = data$hrange[1], max = data$hrange[2]
-           ), format="####"),
+           hAxis = list(slantedText=fun!='mortagesex',
+           				viewWindowMode = 'explicit', viewWindow = list(
+           				min = data$hrange[1], max = data$hrange[2])),
+           #), format="####"),
            vAxis = list(viewWindowMode = 'explicit', viewWindow = list(
              min = data$vrange[1], max = data$vrange[2]
-           ))
+           ), logScale=logscale),
+           legend = list(position="right"),
+           title = paste(year, c(F='Female', M='Male')[sex])
          )
     )
+  }
+  
+  output$age.profileM <- reactive({
+  	show.age.profile('M', indicator.fun(), input$aprofile.logscale, input$year)
   })
   output$age.profileF <- reactive({
-	data <- get.trends()
-	if(is.null(data)) return(data)
-    list(data = wppExplorer:::preserveStructure(data$casted),
-         options = list(
-           hAxis = list(viewWindowMode = 'explicit', viewWindow = list(
-             min = data$hrange[1], max = data$hrange[2]
-           ), format="####"),
-           vAxis = list(viewWindowMode = 'explicit', viewWindow = list(
-             min = data$vrange[1], max = data$vrange[2]
-           ))
-         )
-    )
+	show.age.profile('F', indicator.fun(), input$aprofile.logscale, input$year)
   })
   
   output$probtrends <- renderPlot({
@@ -374,15 +410,10 @@ shinyServer(function(input, output, session) {
   
   output$pyramids <- renderPlot({
   	if(!.is.pyramid.indicator()) return()
-	data <- .get.pyramid.data()
+	data <- .get.pyramid.data(proportion=input$proppyramids)
 	.print.pyramid(data)
   })
   
-  output$proppyramids <- renderPlot({
-  	if(!.is.pyramid.indicator()) return()
-  	data <- .get.pyramid.data(proportion=TRUE)
-	.print.pyramid(data)
-  })
   
   # .get.digits <- reactive({
   	# print(wppExplorer:::ind.digits(as.integer(input$indicator)))
@@ -414,5 +445,8 @@ shinyServer(function(input, output, session) {
 	# }
 	df
 	}, include.rownames = TRUE)
-	
+
+  output$trendstabletitle <- renderText({
+ 	wppExplorer:::get.indicator.title(input$indicator, input$indsexmult, input$indsex, input$selagesmult, input$selages) 	
+   })
 })

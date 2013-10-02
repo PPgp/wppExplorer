@@ -4,7 +4,11 @@ New indicators: Mean childbearing age, mean annual pop. growth
 
 Propotional pyramids
 
+Vizualization for Age profiles for population, mortality and fertility.
 
-1.0-3 (9/25/2013)
+Log scale added.
+
+
+1.0-3 (9/25/2013)[CRAN]
 ------
 Initial version.
