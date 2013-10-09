@@ -66,7 +66,7 @@ shinyServer(function(input, output, session) {
   output$yearUI <- renderUI({
 	data <- indicatorData()
   	if(nrow(data)==0) return(NULL)
-  	animationOptions(interval = 1500)
+  	animationOptions(interval = 2000)
     yearRange <- range(data$Year)
     value <- yearRange[1]
     #print(c('slider1: ', value, yearRange, data.env()$year.range, input$year))
@@ -100,6 +100,7 @@ shinyServer(function(input, output, session) {
     df <- data()
     if (nrow(df) == 0)
       return(NULL)
+    #df <- cbind(df, hover=rep('xxx', nrow(df)))
     list(data = df,
          options = list(
            colorAxis = list(
@@ -110,11 +111,22 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  #col <- c('0x0000CC', '0x00CCFF', '0x33FF66', '0xFFFF66', '0xFF9900', '0xFF3300')
-	#geo <- gvisGeoMap(data, locationvar="iso", numvar=what, hovervar=hovervar, 
-	#			options=list(height=500, width=900, dataMode='regions',
-	#			colors=paste('[', paste(col, collapse=', '), ']')))
-
+  output$mapgvis <- renderGvis({
+  	if (is.null(input$year))
+      return(NULL)
+    df <- data()
+    if (nrow(df) == 0)
+      return(NULL)
+	#browser()
+	col <- c('0x0000CC', '0x00CCFF', '0x33FF66', '0xFFFF66', '0xFF9900', '0xFF3300')
+	gvisGeoChart(df, locationvar="charcode", #numvar="value", #hovervar="value", 
+				colorvar="value", chartid="map",
+				options=list(height=500, width=900, 
+				dataMode='regions'#,
+				#colors=paste('[', paste(col, collapse=', '), ']'
+				))
+  })
+  
   output$countryPlot <- renderPlot({
     if (is.null(input$map_selection))
       return(NULL)

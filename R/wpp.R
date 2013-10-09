@@ -410,7 +410,7 @@ get.age.profile.fert <- function(year, countries){
 				merge.with.un.and.melt(tfert, id.vars='charcode'), year), countries)
 	colnames(tfertm)[2] <- 'tfr'
 	data <- merge(asfrm, tfertm, by='charcode')
-	data <- ddply(data, 'charcode', mutate, value = value/100. * tfr)
+	data <- ddply(data, 'charcode', mutate, value = get("value")/100. * get("tfr"))
 	data$tfr <- NULL
 	data
 }
