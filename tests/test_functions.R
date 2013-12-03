@@ -22,3 +22,15 @@ test.wpp.indicators <- function(wpp.year=2012) {
 	stopifnot(all(is.element(c(1955, 2000, 2020, 2100), data$Year)))
 	test.ok(test.name)
 }
+
+test.changing.wpp.year <- function() {
+	test.name <- 'Changing WPP year'
+    start.test(test.name)
+    set.wpp.year(2008)
+    data <- wpp.indicator('leF') # contains only observed data
+    stopifnot(all(dim(data) == c(2328, 3)))
+    set.wpp.year(2012)
+    stopifnot(!('leF' %in% ls(wppExplorer:::wpp.data.env)))
+    data <- wpp.indicator('leF') # contains also predictions
+    stopifnot(all(dim(data) == c(6000, 3)))
+}

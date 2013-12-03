@@ -36,7 +36,15 @@ wpp.by.countries <- function(data, countries) {
 
 set.wpp.year <- function(wpp.year) {
 	check.wpp.revision(wpp.year)
+	# cleanup the environment
+	for (item in ls(wpp.data.env)) {
+		if(!(item %in% c('indicators'))) rm(list=item, envir=wpp.data.env)
+	}
+	data('iso3166', envir=wpp.data.env)
 	wpp.data.env$package <- paste('wpp', wpp.year, sep='')
+	# Filter out non-used countries
+	do.call('data', list("popM", package=wpp.data.env$package, envir=wpp.data.env))
+	wpp.data.env$iso3166 <- wpp.data.env$iso3166[is.element(wpp.data.env$iso3166$uncode, wpp.data.env$popM$country_code),]
 	cat('\nDefault WPP package set to', wpp.data.env$package,'.\n')
 }
 
