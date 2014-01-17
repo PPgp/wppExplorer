@@ -101,15 +101,16 @@ shinyUI(pageWithSidebar(
  		textOutput('year3'),
       	checkboxInput('fiXscaleHist', 'Fixed x-axis over time', TRUE),
       	plotOutput('hist')
-    )#,
-    # tabPanel('Age Profiles',
-    	# tabsetPanel(
-    		# tabPanel('Multiple Countries',
-    				# ),
-    		# tabPanel('Multiple Years',
-    				# )
-    		# )
-     # ) #end tabPanel
+    ),
+      tabPanel('Rosling Chart',
+		htmlOutput('graphgvis'),
+		row(col(1, "")),
+		row(
+			col(1,""),
+			col(3, textOutput('AddIndicatorText')),
+			col(1, actionButton("AddIndicator", "Add indicator"))
+			)
+      )#,
   ) #end tabsetPanel
   ) #end mainPanel
 ))

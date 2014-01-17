@@ -5,6 +5,11 @@ wpp.explore <- function(wpp.year=NULL) {
 	shiny::runApp(system.file('explore', package='wppExplorer'))
 }
 
+wpp.explore3d <- function(wpp.year=NULL) {
+	if(!is.null(wpp.year)) set.wpp.year(wpp.year)
+	shiny::runApp(system.file('bubbles', package='wppExplorer'))
+}
+
 get.available.wpps <- function() c(2008, 2010, 2012)
 check.wpp.revision <- function(wpp.year) {
 	if (!wpp.year %in% get.available.wpps())
@@ -17,6 +22,7 @@ wpp.indicator <- function(what, ...) {
 	merge.with.un.and.melt(data, what=what)
 }
 
+	
 wpp.by.year <- function(data, year) {
   data <- data[data$Year == year,]
   data$Year <- NULL
@@ -264,6 +270,58 @@ lookupByIndicator <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), ag
 	if(!ind.is.by.age(indicator))
 		wpp.data.env[[fun]] <- data
 	data
+}
+
+lookupByIndicatorInclArea <- function(indicator, ...) {
+	if (as.numeric(indicator) == 0) {
+		env <- new.env()
+		data('UNlocations', envir=env, package=wpp.data.env$package)
+		df <- merge(wpp.data.env$iso3166[,c('charcode', 'uncode')], env$UNlocations[,c('country_code','area_name')], 
+							by.x='uncode', by.y='country_code')[,-1]
+		colnames(df)[2] <- .indicator.title.incl.area(0)
+		return(df)
+	}
+	lookupByIndicator(indicator, ...)
+}
+
+lookupByIndicator.mchart <- function(indicator, ...) {
+	exdf <- wpp.data.env$mchart.data
+	name <- .indicator.title.incl.area(indicator[1], ...)
+	if(!is.null(exdf) && name %in% colnames(exdf)) {
+		exdf <- merge(wpp.data.env$iso3166[,c('charcode', 'name')], exdf)
+		return(exdf[,-1])
+	}
+	df <- lookupByIndicatorInclArea(indicator[1])
+	colnames(df)[which(colnames(df)=='value')] <- name
+	if(!is.null(exdf)) 
+		df <- merge(exdf, df)
+	if(length(indicator) > 1) {
+		for (ind in 2:length(indicator)) {
+			name <- .indicator.title.incl.area(indicator[ind], ...)
+			if(name %in% colnames(df)) next
+			if (as.numeric(indicator[ind]) == 0) {
+				env <- new.env()
+				data('UNlocations', envir=env, package=wpp.data.env$package)
+				locs <- merge(wpp.data.env$iso3166[,c('charcode', 'uncode')], env$UNlocations[,c('country_code','area_name')], 
+							by.x='uncode', by.y='country_code')[,-1]
+				#browser()
+				df <- merge(df, locs, by='charcode')
+				colnames(df)[which(colnames(df)=='area_name')] <- name
+			} else {
+				df <- merge(df, lookupByIndicator(indicator[ind], ...))
+				colnames(df)[which(colnames(df)=='value')] <- name
+			}
+		}
+	}
+	wpp.data.env$mchart.data <- df
+	df <- merge(wpp.data.env$iso3166[,c('charcode', 'name')], df)
+	return(df[,-1])
+}
+
+.indicator.title.incl.area <- function(indicator, ...) {
+	indicator <- as.numeric(indicator)
+	if(indicator == 0) return('UN Areas')
+	return(get.indicator.title(indicator, ...))
 }
 
 .get.pi.name <- function(x) c('80', '95', 'half.child')[x]

@@ -461,4 +461,27 @@ shinyServer(function(input, output, session) {
   output$trendstabletitle <- renderText({
  	wppExplorer:::get.indicator.title(input$indicator, input$indsexmult, input$indsex, input$selagesmult, input$selages) 	
    })
+   
+   all.data <- reactive({
+   		if(is.null(wppExplorer:::wpp.data.env$mchart.data)) {
+   			inds <- unique(c(input$indicator, 1,2,0,4))[1:4]
+   		} else inds <- input$indicator
+		wppExplorer:::lookupByIndicator.mchart(inds, input$indsexmult, input$indsex, input$selagesmult, input$selages)
+	})
+	
+  output$graphgvis <- renderGvis({
+  	# Take a dependency on input$AddIndicator button
+  	input$AddIndicator
+
+    df <- isolate(all.data())
+	#browser()
+	gvisMotionChart(df,
+                      idvar="name", 
+                      timevar="Year",
+                      #xvar="xvalue", yvar="yvalue",
+                      colorvar="UN Areas", 
+                      #sizevar="zvalue",
+                      options=list(width=700, height=600))
+  })
+  output$AddIndicatorText <- renderText({"\nAdd indicator from the left panel\nto chart axes:"})
 })
