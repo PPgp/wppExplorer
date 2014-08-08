@@ -6,7 +6,7 @@
 ISO 3166 Dataset
 }
 \description{
-Countries with their alpha-2, alpha-3 and numerical ISO3166-1 code. It includes aggregated regions that have user-assigned codes. 
+Countries with their alpha-2, alpha-3 and numerical ISO3166-1 code. It includes aggregated regions with user-assigned codes. 
 }
 \usage{
 	data(iso3166)
@@ -19,7 +19,7 @@ Countries with their alpha-2, alpha-3 and numerical ISO3166-1 code. It includes 
     \item{\code{charcode}}{alpha-2 code}
     \item{\code{charcode3}}{alpha-3 code}
     \item{\code{uncode}}{UN numeric code}
-    \item{\code{is.country}}{Logical. It is \code{TRUE} for all countries included in the official ISO3166-1 dataset and \code{FALSE} for user-assigend codes, i.e. for aggregations.} 
+    \item{\code{is.country}}{Logical. It is \code{TRUE} for all countries included in the official ISO3166-1 dataset and \code{FALSE} for user-assigned codes, i.e. aggregations.} 
   }
 }
 \details{

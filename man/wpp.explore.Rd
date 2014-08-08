@@ -18,7 +18,7 @@ wpp.explore(wpp.year = NULL)
 \details{
 	The time slider in the left pane defines the year or time period for which data are shown. Note that for vital rates indicators, such as fertility, mortality, migration and sex ratio at birth, the time shown on the slider is the end year of the time period of the data shown in the right pane.
 	
-	The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bound is available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the \dQuote{Sortable Data} tab, and \dQuote{Probabilistic Trends} and \dQuote{Pyramids}. In \pkg{wpp2012}, the 80 and 95\% intervals are available only for fertility and mortality indicators, the +-1/2child intervals are available for fertility and population indicators. 
+	The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bounds are available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the \dQuote{Sortable Data} tab, and \dQuote{Probabilistic Trends} and \dQuote{Pyramids}. In \pkg{wpp2012}, the 80 and 95\% intervals are available for the fertility, life expectancy and total population indicators; The +-1/2child intervals are available for the fertility and population indicators. 
 }
 %\value{
 %}
