@@ -6,6 +6,14 @@ get.indicator.choices <- function() {
 					'Total Dependancy Ratio', 'Child Dependency Ratio', 'Old-age Dependency Ratio','Potential Support Ratio',
 					'Mean Annual Population Growth',
 					'Population by sex and age', 'Mortality Rate by sex and age', 'Age-specific Fertility')
+	ind.def <- c('', '', '',
+				'Total population in thousands', 'Female population in thousands', 'Male population in thousands', 'Net migration counts in thousands',
+				'', '', '',
+				'Ratio of population age 0-14 and 65+ to population age 15-64',
+				'Ratio of population age 0-14 to population age 15-64', 
+				'Ratio of population age 65+ to population age 15-64', 
+				'Ratio of population age 15-64 to population age 65+', 
+				'log(P_t/P_{t-1})/5', 'Population in thousands', '', '')
 	funcs <- c('fert', 'leF', 'leM', 'tpop', 'tpopF', 'tpopM', 'mig', 
 				'sexratio', 'medage', 'meanagechbear',
 				'tdratio', 'chdratio', 'oadratio', 'psratio',
@@ -29,6 +37,7 @@ get.indicator.choices <- function() {
 	structure(
 		as.character(1:length(ind.names)),
 		names = ind.names,
+		definition = ind.def,
 		settings = ind.df
 	)
 }

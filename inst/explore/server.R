@@ -84,9 +84,9 @@ shinyServer(function(input, output, session) {
   })
   
   output$indicatorDesc <- renderText({
-  	#input$indicator
+  	wppExplorer:::ind.definition(as.integer(input$indicator))
     #as.character(Series[Series$SeriesCode == input$indicator,]$Long.definition)
-    ""
+    #""
   })
   year.output <- reactive(paste('Year:', input$year))
   output$mapyear <- renderText(year.output())
@@ -94,6 +94,9 @@ shinyServer(function(input, output, session) {
   output$year2 <- renderText(year.output())
   output$year3 <- renderText(year.output())
   
+  get.country.charcodes <- function()
+  	return(data.env()$iso3166[data.env()$iso3166$is.country, 'charcode'])
+  	
   output$map <- reactive({
     if (is.null(input$year))
       return(NULL)
@@ -101,13 +104,17 @@ shinyServer(function(input, output, session) {
     if (nrow(df) == 0)
       return(NULL)
     #df <- cbind(df, hover=rep('xxx', nrow(df)))
-    list(data = df,
-         options = list(
-           colorAxis = list(
-             minValue = min(indicatorData()$value),
-             maxValue = max(indicatorData()$value)
-           )
-         )
+    country.codes <- get.country.charcodes()
+    df <- df[df$charcode %in% country.codes,]
+    #inddata <- indicatorData()
+    #inddata <- inddata[inddata$charcode %in% country.codes, 'value']    
+    list(data = df
+         #options = list( # this doesnt seem to work to have fixed color scale 
+         #  colorAxis = list(
+         #    minValue = min(inddata),
+         #    maxValue = max(inddata)
+         #  )
+         #)
     )
   })
   
@@ -150,18 +157,20 @@ shinyServer(function(input, output, session) {
     }
     abline(v=input$year, col=3, lty=3)
   })
-
+	
  output$table <- renderTable({
- 	data <- merge(data(), data.env()$iso3166[,c('charcode', 'name')], by='charcode')#
+ 	iso <- data.env()$iso3166
+ 	if(!input$includeAggr1) iso <- iso[iso$is.country,]
+ 	data <- merge(data(), iso[,c('charcode', 'name')], by='charcode')#
 	data[,c('charcode', 'name', 'value')]
  }, include.rownames = FALSE, include.colnames = FALSE)
   
   output$stable <- renderGvis({
-  	#data <- indicatorData()
-  	#year.data <- wpp.by.year(data, input$year)
   	year.data <- data()
   	if(nrow(year.data)==0) invalidateLater(1000, session)
-  	year.data <- merge(year.data, data.env()$iso3166[,c('charcode', 'name')], by='charcode')
+  	iso <- data.env()$iso3166
+ 	if(!input$includeAggr2) iso <- iso[iso$is.country,]
+  	year.data <- merge(year.data, iso[,c('charcode', 'name')], by='charcode')
   	low <- indicatorDataLow()
   	data <- cbind(year.data[,c('charcode', 'name', 'value')], rank=rank(year.data$value))
   	if(!is.null(low)) {
@@ -181,7 +190,8 @@ shinyServer(function(input, output, session) {
   output$hist <- renderPlot({
   	data <- data()
   	if(is.null(data) || nrow(data)<=0) return(NULL)
-  	data <- data$value
+  	# filter out aggregations
+  	data <- merge(data[,c('charcode', 'value')], data.env()$iso3166[data.env()$iso3166$is.country, 'charcode', drop=FALSE], by='charcode')$value
   	xlim <- if(input$fiXscaleHist) rangeForAllYears() else range(data)
   	binw <- diff(xlim)/20
     print(qplot(data()$value, binwidth=binw, xlim=c(xlim[1]-binw/2, xlim[2]+binw/2), xlab='value'))

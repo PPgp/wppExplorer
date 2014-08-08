@@ -203,8 +203,8 @@ fert.ci <- function(which.pi, bound, ...) {
 	# bound is 'low' or 'high'
 	if(wpp.data.env$package=='wpp2008') return(NULL)
 	if(wpp.data.env$package=='wpp2010' && which.pi != 'half.child') return(NULL)
-	dataset.name <- if(which.pi == 'half.child') paste('tfrproj', capitalize(bound), sep='')
-					else paste('tfrproj', which.pi, .pi.suffix(bound), sep='')
+	dataset.name <- if(which.pi == 'half.child') paste0('tfrproj', capitalize(bound))
+					else paste0('tfrproj', which.pi, .pi.suffix(bound))
 	load.and.merge.datasets(dataset.name, NULL)
 }
 
@@ -218,14 +218,16 @@ leM.ci <- function(which.pi, bound, ...) {
 
 e0.ci <- function(sex, which.pi, bound) {
 	if(wpp.data.env$package!='wpp2012' || which.pi == 'half.child') return(NULL)
-	load.and.merge.datasets(paste('e0', sex, 'proj', which.pi, .pi.suffix(bound), sep=''), NULL)
+	load.and.merge.datasets(paste0('e0', sex, 'proj', which.pi, .pi.suffix(bound)), NULL)
 }
 
 tpop.ci <- function(which.pi, bound, ...) {
 	# which.pi is for '80', '95' or 'half.child'
 	# bound is 'low' or 'high'
-	if(wpp.data.env$package!='wpp2012' || which.pi != 'half.child') return(NULL)
-	load.and.merge.datasets(paste('popproj', capitalize(bound), sep=''), NULL)
+	if(wpp.data.env$package!='wpp2012') return(NULL)
+	dataset.name <- if(which.pi == 'half.child') paste0('popproj', capitalize(bound))
+					else paste0('popproj', which.pi, .pi.suffix(bound))
+	load.and.merge.datasets(dataset.name, NULL)
 }
 
 popagesex.ci <- function(which.pi, bound, sexm, agem, ...) {
@@ -246,6 +248,7 @@ if.not.exists.load <- function(name) {
 	if(!exists(name, where=wpp.data.env, inherits=FALSE))
 		do.call('data', list(name, package=wpp.data.env$package, envir=wpp.data.env))
 }
+
 load.and.merge.datasets <- function(name.obs, name.pred=NULL, by='country_code', remove.cols=c('country', 'name')){
 	if.not.exists.load(name.obs)
   	data <- wpp.data.env[[name.obs]]
@@ -276,7 +279,8 @@ lookupByIndicatorInclArea <- function(indicator, ...) {
 	if (as.numeric(indicator) == 0) {
 		env <- new.env()
 		data('UNlocations', envir=env, package=wpp.data.env$package)
-		df <- merge(wpp.data.env$iso3166[,c('charcode', 'uncode')], env$UNlocations[,c('country_code','area_name')], 
+		iso <- wpp.data.env$iso3166
+		df <- merge(iso[iso$is.country,c('charcode', 'uncode')], env$UNlocations[,c('country_code','area_name')], 
 							by.x='uncode', by.y='country_code')[,-1]
 		colnames(df)[2] <- .indicator.title.incl.area(0)
 		return(df)
@@ -287,8 +291,10 @@ lookupByIndicatorInclArea <- function(indicator, ...) {
 lookupByIndicator.mchart <- function(indicator, ...) {
 	exdf <- wpp.data.env$mchart.data
 	name <- .indicator.title.incl.area(indicator[1], ...)
+	iso <- wpp.data.env$iso3166
+	iso <- iso[iso$is.country,]
 	if(!is.null(exdf) && name %in% colnames(exdf)) {
-		exdf <- merge(wpp.data.env$iso3166[,c('charcode', 'name')], exdf)
+		exdf <- merge(iso[,c('charcode', 'name')], exdf)
 		return(exdf[,-1])
 	}
 	df <- lookupByIndicatorInclArea(indicator[1])
@@ -302,7 +308,7 @@ lookupByIndicator.mchart <- function(indicator, ...) {
 			if (as.numeric(indicator[ind]) == 0) {
 				env <- new.env()
 				data('UNlocations', envir=env, package=wpp.data.env$package)
-				locs <- merge(wpp.data.env$iso3166[,c('charcode', 'uncode')], env$UNlocations[,c('country_code','area_name')], 
+				locs <- merge(iso[,c('charcode', 'uncode')], env$UNlocations[,c('country_code','area_name')], 
 							by.x='uncode', by.y='country_code')[,-1]
 				#browser()
 				df <- merge(df, locs, by='charcode')
@@ -314,7 +320,7 @@ lookupByIndicator.mchart <- function(indicator, ...) {
 		}
 	}
 	wpp.data.env$mchart.data <- df
-	df <- merge(wpp.data.env$iso3166[,c('charcode', 'name')], df)
+	df <- merge(iso[,c('charcode', 'name')], df)
 	return(df[,-1])
 }
 
@@ -404,6 +410,7 @@ ind.no.age.sum <- function(indicator) ind.settings()[indicator, 'no.age.sum']
 ind.sum.in.table <- function(indicator) ind.settings()[indicator, 'sum.in.table']
 ind.mid.years <- function(indicator) ind.settings()[indicator, 'mid.years']
 ind.digits <- function(indicator) ind.settings()[indicator, 'digits']
+ind.definition <- function(indicator) attr(wpp.data.env$indicators, 'definition')[indicator]
 
 set.data.env <- function(name, value) wpp.data.env[[name]] <- value
 

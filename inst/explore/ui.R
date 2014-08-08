@@ -33,7 +33,6 @@ shinyUI(pageWithSidebar(
 ),
     uiOutput('yearUI'),
     selectInput('indicator', 'Indicator:', wppExplorer:::wpp.data.env$indicators),
-    textOutput('indicatorDesc'),
     conditionalPanel(condition="input.indicator > 15",
     	tags$head(tags$style(type="text/css", "#selagesmult { height: 150px; width: 70px}"),
     			  tags$style(type="text/css", "#selages { height:25px; width: 70px}"),
@@ -46,7 +45,8 @@ shinyUI(pageWithSidebar(
     		col(3, uiOutput('ageselection'))
     	)
     ),
-    selectInput('uncertainty', 'Uncertainty:', structure(as.character(1:3), names=c('80%', '95%', '+-1/2child')))
+    selectInput('uncertainty', 'Uncertainty:', structure(as.character(1:3), names=c('80%', '95%', '+-1/2child'))),
+    textOutput('indicatorDesc')
   ),
   mainPanel(
     tabsetPanel(
@@ -60,10 +60,12 @@ shinyUI(pageWithSidebar(
       ),
       tabPanel('Data', 
 		textOutput('year1'),
+		checkboxInput('includeAggr1', 'Include Aggregations', FALSE),
       	tableOutput('table')
       ),
       tabPanel('Sortable Data', 
 		textOutput('year2'),
+		checkboxInput('includeAggr2', 'Include Aggregations', FALSE),
       	tableOutput('stable')
       ),
       tabPanel('Trends, Age profiles & Pyramids',
