@@ -12,8 +12,8 @@ The package allows to interactively explore data from World Population Prospects
 \details{
 \tabular{ll}{
 Package: \tab wppExplorer\cr
-Version: \tab 1.2-0\cr
-Date: \tab 2013-12-20\cr
+Version: \tab 1.3-0\cr
+Date: \tab 2014-8-8\cr
 Depends: \tab R (>= 3.0.0)\cr
 License: \tab GPL (>= 2)
 }

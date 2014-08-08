@@ -1,0 +1,36 @@
+name;Iso3166ud-char2;Iso3166ud-char3;uncode
+World;AA;AAW;900
+More developed regions;XW;XWM;901
+Less developed regions;XX;XXL;902
+Africa;QM;QMA;903
+Latin America and the Caribbean;QN;QNL;904
+Northern America;QO;QON;905
+Eastern Asia;XA;XAE;906
+Europe;QP;QPE;908
+Oceania;QQ;QQO;909
+Eastern Africa;XB;XBE;910
+Middle Africa;XC;XCM;911
+Northern Africa;XD;XDN;912
+Southern Africa;XE;XES;913
+Western Africa;XF;XFW;914
+Caribbean;XG;XGC;915
+Central America;XH;XHC;916
+South-Eastern Asia;XI;XIS;920
+South-Central Asia;XJ;XJS;921
+Western Asia;XK;XKW;922
+Eastern Europe;XL;XLE;923
+Northern Europe;XM;XMN;924
+Southern Europe;XN;XNS;925
+Western Europe;XO;XOW;926
+Australia/New Zealand;XP;XPA;927
+Melanesia;XQ;XQM;928
+South America;XR;XRS;931
+Other less developed countries;XY;XYO;934
+Asia;QR;QRA;935
+Least developed countries;XZ;XZL;941
+Sub-Saharan Africa;QY;QYS;947
+Less developed regions, excluding China;QZ;QZL;948
+Micronesia;XS;XSM;954
+Polynesia;XT;XTP;957
+Central Asia;XU;XUC;5500
+Southern Asia;XV;XVS;5501

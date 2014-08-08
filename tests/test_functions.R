@@ -31,6 +31,6 @@ test.changing.wpp.year <- function() {
     stopifnot(all(dim(data) == c(2328, 3)))
     set.wpp.year(2012)
     stopifnot(!('leF' %in% ls(wppExplorer:::wpp.data.env)))
-    data <- wpp.indicator('leF') # contains also predictions
-    stopifnot(all(dim(data) == c(6000, 3)))
+    data <- wpp.indicator('leF') # contains also predictions and aggregations
+    stopifnot(all(dim(data) == c(7050, 3)))
 }
