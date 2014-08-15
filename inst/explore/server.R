@@ -78,7 +78,7 @@ shinyServer(function(input, output, session) {
     	}
     }
     #print(c('slider2: ', value, yearRange, data.env()$year.range, input$year))
-    sliderInput('year', 'Year', format="####", 
+    sliderInput('year', h5('Year:'), format="####", 
     			animate=TRUE,
                 min=yearRange[1], max=yearRange[2], value = value, step=5)
   })
@@ -90,7 +90,7 @@ shinyServer(function(input, output, session) {
   })
   year.output <- reactive(paste('Year:', input$year))
   output$mapyear <- renderText(year.output())
-  output$year1 <- renderText(year.output())
+  #output$year1 <- renderText(year.output())
   output$year2 <- renderText(year.output())
   output$year3 <- renderText(year.output())
   
@@ -158,14 +158,14 @@ shinyServer(function(input, output, session) {
     abline(v=input$year, col=3, lty=3)
   })
 	
- output$table <- renderTable({
- 	iso <- data.env()$iso3166
- 	if(!input$includeAggr1) iso <- iso[iso$is.country,]
- 	data <- merge(data(), iso[,c('charcode', 'name')], by='charcode')#
-	data[,c('charcode', 'name', 'value')]
- }, include.rownames = FALSE, include.colnames = FALSE)
+ # output$table <- renderTable({
+ 	# iso <- data.env()$iso3166
+ 	# if(!input$includeAggr1) iso <- iso[iso$is.country,]
+ 	# data <- merge(data(), iso[,c('charcode', 'name')], by='charcode')#
+	# data[,c('charcode', 'name', 'value')]
+ # }, include.rownames = FALSE, include.colnames = FALSE)
   
-  output$stable <- renderGvis({
+  output$stable <- renderDataTable({ #renderGvis({
   	year.data <- data()
   	if(nrow(year.data)==0) invalidateLater(1000, session)
   	iso <- data.env()$iso3166
@@ -184,7 +184,8 @@ shinyServer(function(input, output, session) {
   		}
   	}
   	colnames(data)[1] <- 'code'
-  	gvisTable(data, options=list(width=600, height=600, page='disable', pageSize=198))
+	data
+  	#gvisTable(data, options=list(width=600, height=600, page='disable', pageSize=198))
   	})
   	
   output$hist <- renderPlot({
@@ -194,7 +195,7 @@ shinyServer(function(input, output, session) {
   	data <- merge(data[,c('charcode', 'value')], data.env()$iso3166[data.env()$iso3166$is.country, 'charcode', drop=FALSE], by='charcode')$value
   	xlim <- if(input$fiXscaleHist) rangeForAllYears() else range(data)
   	binw <- diff(xlim)/20
-    print(qplot(data()$value, binwidth=binw, xlim=c(xlim[1]-binw/2, xlim[2]+binw/2), xlab='value'))
+    qplot(data()$value, binwidth=binw, xlim=c(xlim[1]-binw/2, xlim[2]+binw/2), xlab='value')
   })
         
   output$ageselection <- renderUI({
@@ -215,7 +216,7 @@ shinyServer(function(input, output, session) {
   		name <- 'selagesmult'
   		selected <- ages[1]
   	}
-  	selectInput(name, 'Age:', ages, multiple=multiple, selected=selected)
+  	selectInput(name, 'Age:', ages, multiple=multiple, selected=selected, selectize = FALSE)
 	})
 	
 	output$sexselection <- renderUI({
@@ -226,10 +227,10 @@ shinyServer(function(input, output, session) {
   			name <- 'indsex'
   		} else {
   			multiple <- TRUE
-  			selected <- names(choices)
+  			selected <- choices
   			name <- 'indsexmult'
   		}
-  		selectInput(name, 'Sex:', choices=choices, selected=selected, multiple=multiple)
+  		selectInput(name, 'Sex:', choices=choices, selected=selected, selectize = FALSE, multiple=multiple)
 	})
 	
   output$cselection <- renderUI({
@@ -240,8 +241,9 @@ shinyServer(function(input, output, session) {
   		codes,
   		names = names
   	)
-  	do.call('selectInput', list('seltcountries', 'Select countries/areas:', countries, multiple=TRUE, 
-  					selected=names[1]))
+  	do.call('selectInput', list('seltcountries', 'Select countries/areas:', countries, multiple=TRUE, selectize = FALSE,
+  					selected=countries[1] #names[1]
+  					))
 	})
 	
   cast.profile.data <- function(data) {
@@ -368,7 +370,7 @@ shinyServer(function(input, output, session) {
   	}
   	g <- ggplot(data, aes(x=Year,y=value,colour=charcode)) + geom_line() + theme(legend.title=element_blank())
   	if(!is.null(low)) g <- g + geom_ribbon(aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
-  	print(g)
+  	g
   })
   
   .is.pyramid.indicator <- function() {
@@ -427,7 +429,7 @@ shinyServer(function(input, output, session) {
   		g <- g + geom_ribbon(subset=.(sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
   		g <- g + geom_ribbon(subset=.(sex=='M'), aes(ymin=-high, ymax=-low, linetype=NA), alpha=0.3)
   	}
-  	print(g)
+  	g
   }
   
   output$pyramids <- renderPlot({
