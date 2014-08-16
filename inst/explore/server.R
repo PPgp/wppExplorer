@@ -381,7 +381,8 @@ shinyServer(function(input, output, session) {
   			if(length(idx)==0) next
   			g <- g + geom_ribbon(aes_string(ymin=colnames(data)[idx][1], ymax=colnames(data)[idx][2], 
   											fill="charcode", colour="charcode", linetype=NA), alpha=c(0.3, 0.2, 0.1)[i])
-  			line.data <- rbind(line.data, cbind(data[,c(1,2,idx)], wppExplorer:::.get.pi.name.for.label(i)), deparse.level = 0)			
+  			if(!is.null(line.data)) colnames(line.data) <- c('charcode', 'Year', 'low', 'high', 'variant')
+  			line.data <- rbind(line.data, setNames(cbind(data[,c(1,2,idx)], wppExplorer:::.get.pi.name.for.label(i)), colnames(line.data)))		
   		}
   		colnames(line.data) <- c('charcode', 'Year', 'low', 'high', 'variant')
 		
