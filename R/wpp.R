@@ -331,18 +331,29 @@ lookupByIndicator.mchart <- function(indicator, ...) {
 }
 
 .get.pi.name <- function(x) c('80', '95', 'half.child')[x]
+.get.pi.name.for.label <- function(x) c('80%', '95%', '1/2child')[x]
 
 getUncertainty <- function(indicator, which.pi, bound='low', sex.mult=c(), sex=c(), age.mult=c(), age=c()) {
 	indicator <- as.numeric(indicator)
 	if(!ind.is.low.high(indicator)) return(NULL)
+	if(length(which.pi) == 0) return(NULL)
 	fun <- paste(ind.fun(indicator), 'ci', sep='.')
-	pi.name <-.get.pi.name(as.integer(which.pi))
-	lookup.name <- paste(fun, pi.name, bound, sep='.')
-	if(!is.null(wpp.data.env[[lookup.name]])) return(wpp.data.env[[lookup.name]])
-	data <- wpp.indicator(fun, pi.name, bound=bound, sexm=sex.mult, sex=sex, agem=age.mult, age=age)
-	if(!ind.is.by.age(indicator))
-  		wpp.data.env[[lookup.name]] <- data
-	data
+	all.data <- NULL
+	for(i in 1:length(which.pi)) {
+		pi.idx <- as.integer(which.pi[i])
+		pi.name <-.get.pi.name(pi.idx)
+		lookup.name <- paste(fun, pi.name, bound, sep='.')
+		if(!is.null(wpp.data.env[[lookup.name]])) data <- wpp.data.env[[lookup.name]]
+		else {
+			data <- wpp.indicator(fun, pi.name, bound=bound, sexm=sex.mult, sex=sex, agem=age.mult, age=age)
+			if(!ind.is.by.age(indicator))
+  				wpp.data.env[[lookup.name]] <- data
+  		}
+  		colnames(data) <- sub('value', paste0('value.', pi.idx), colnames(data))
+  		all.data <- if(i == 1) data 
+  					else merge(all.data, data, by=c('charcode', 'Year'))
+  	}
+	all.data
 }
 
 .get.year.col.names <- function(col.names) {

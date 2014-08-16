@@ -48,7 +48,8 @@ shinyUI(pageWithSidebar(
     ),
     textOutput('indicatorDesc'),
     hr(),
-    selectInput('uncertainty', h5('Uncertainty:'), structure(as.character(1:3), names=c('80%', '95%', '+-1/2child')))    
+    selectInput('uncertainty', h5('Uncertainty:'), structure(as.character(1:3), names=c('80%', '95%', '+-1/2child')), 
+    			multiple=TRUE, selected=1)    
   ),
   mainPanel(
     tabsetPanel(

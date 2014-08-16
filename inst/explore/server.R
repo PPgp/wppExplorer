@@ -175,11 +175,14 @@ shinyServer(function(input, output, session) {
   	data <- cbind(year.data[,c('charcode', 'name', 'value')], rank=rank(year.data$value))
   	if(!is.null(low)) {
   		data.l <- wpp.by.year(low, input$year)
-  		 if(nrow(data.l) > 0) {  		
+  		 if(nrow(data.l) > 0) {
+  		 	#browser()		
     		data.h <- wpp.by.year(indicatorDataHigh(), input$year)
-  			colnames(data.l)[colnames(data.l)=='value'] <- 'low'
+    		for(i in 1:3) {
+    			colnames(data.l) <- sub(paste0('value.',i), paste('low', wppExplorer:::.get.pi.name.for.label(i)), colnames(data.l))
+    			colnames(data.h) <- sub(paste0('value.',i), paste('high', wppExplorer:::.get.pi.name.for.label(i)), colnames(data.h))
+    		}
   			data <- merge(data, data.l, by='charcode')
-  			colnames(data.h)[colnames(data.h)=='value'] <- 'high'
   			data <- merge(data, data.h, by='charcode')
   		}
   	}
@@ -329,8 +332,6 @@ shinyServer(function(input, output, session) {
 	}
 	if(is.null(data)) return(NULL)
 	data <- cast.profile.data(data)
-	#browser()
-	#print(data)
     list(data = wppExplorer:::preserveStructure(data$casted),
          options = list(
            hAxis = list(slantedText=fun!='mortagesex',
@@ -360,16 +361,34 @@ shinyServer(function(input, output, session) {
   	low <- get.trends.low()
   	if(!is.null(low)) {
   		high <- get.trends.high()
+  		colnames(low$casted) <- sub('value', 'low', colnames(low$casted))
+  		colnames(high$casted) <- sub('value', 'high', colnames(high$casted))
   		low.high <- merge(low$casted, high$casted, by=c('charcode', 'Year'))
-  		colnames(low.high)[3:4] <- c('low', 'high')
+  		#browser()
+  		#colnames(low.high)[3:4] <- c('low', 'high')
   		min.year <- min(low.high$Year)
   		data <- merge(data, low.high, by=c('charcode', 'Year'), all=TRUE)
   		idx <- which(data$Year == min.year-5)
-  		data$low[idx] <- data$value[idx]
-  		data$high[idx] <- data$value[idx]
+  		for (col in grep('low|high', colnames(data)))
+  			data[idx,col] <- data$value[idx]
   	}
-  	g <- ggplot(data, aes(x=Year,y=value,colour=charcode)) + geom_line() + theme(legend.title=element_blank())
-  	if(!is.null(low)) g <- g + geom_ribbon(aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
+  	#browser()
+  	g <- ggplot(data, aes(x=Year,y=value,colour=charcode, fill=charcode)) + geom_line() + theme(legend.title=element_blank())
+  	if(!is.null(low)) {
+  		line.data <- NULL
+  		for(i in 3:1) {
+  			idx <- grep(paste0('.',i), colnames(data))
+  			if(length(idx)==0) next
+  			g <- g + geom_ribbon(aes_string(ymin=colnames(data)[idx][1], ymax=colnames(data)[idx][2], 
+  											fill="charcode", colour="charcode", linetype=NA), alpha=c(0.3, 0.2, 0.1)[i])
+  			line.data <- rbind(line.data, cbind(data[,c(1,2,idx)], wppExplorer:::.get.pi.name.for.label(i)), deparse.level = 0)			
+  		}
+  		colnames(line.data) <- c('charcode', 'Year', 'low', 'high', 'variant')
+		
+  		g <- g + geom_line(data=line.data, aes(y=low, linetype=variant, colour=charcode))
+  		g <- g + geom_line(data=line.data, aes(y=high, linetype=variant, colour=charcode))
+  		g <- g + scale_linetype_manual(values=c("80%"=2, '1/2child'=4, "95%"=3), na.value=0)
+  	}
   	g
   })
   
