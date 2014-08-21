@@ -29,8 +29,8 @@ shinyUI(pageWithSidebar(
     tags$head(
          		#tags$style(type="text/css", ".jslider { max-width: 50px; }"),
          		#tags$style(type='text/css', ".well { padding: 0px; margin-bottom: 5px; max-width: 100px; }"),
-	tags$style(type='text/css', ".span4 { max-width: 270px; }")
-),
+		tags$style(type='text/css', ".span4 { max-width: 270px; }")
+	),
     uiOutput('yearUI'),
     hr(),
     selectInput('indicator', h5('Indicator:'), wppExplorer:::wpp.data.env$indicators),
@@ -50,7 +50,9 @@ shinyUI(pageWithSidebar(
     hr(),
     selectInput('uncertainty', h5('Uncertainty:'), structure(as.character(1:3), names=c('80%', '95%', '+-1/2child')), 
     			multiple=TRUE, selected=1),
-    textOutput('uncertaintyNote')
+    textOutput('uncertaintyNote'),
+    hr(),
+    HTML("<small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small>")
   ),
   mainPanel(
     tabsetPanel(

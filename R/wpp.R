@@ -351,7 +351,7 @@ getUncertainty <- function(indicator, which.pi, bound='low', sex.mult=c(), sex=c
   				wpp.data.env[[lookup.name]] <- data
   		}
   		colnames(data) <- sub('value', paste0('value.', pi.idx), colnames(data))
-  		all.data <- if(i == 1) data 
+  		all.data <- if(is.null(all.data)) data 
   					else merge(all.data, data, by=c('charcode', 'Year'))
   	}
 	all.data

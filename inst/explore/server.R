@@ -88,7 +88,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$uncertaintyNote <- renderText({
-  	if(wppExplorer:::ind.is.low.high(as.integer(input$indicator))) return("")
+  	if(wppExplorer:::ind.is.low.high(as.integer(input$indicator)) && wppExplorer:::get.wpp.year()>2010) return("")
     "No uncertainty available for this indicator."
   })
   
@@ -279,8 +279,8 @@ shinyServer(function(input, output, session) {
   filter.trend.data <- function(data, countries, cast=TRUE){
   	data <- wpp.by.countries(data, countries)
     if(is.null(data) || nrow(data) <= 0) return(NULL)
-   	hrange <- range(data$Year)
-    vrange <- range(data$value, na.rm=TRUE)
+   	hrange <- range(data$Year, na.rm=TRUE)
+    vrange <- range(data[,grep('value', colnames(data))], na.rm=TRUE)
     if(cast)
     	data <- dcast(data, Year ~ charcode, mean)
     list(casted=data, hrange=hrange, vrange=vrange)
@@ -383,13 +383,12 @@ shinyServer(function(input, output, session) {
   		low.high <- merge(low$casted, high$casted, by=c('charcode', 'Year'))
   		#browser()
   		#colnames(low.high)[3:4] <- c('low', 'high')
-  		min.year <- min(low.high$Year)
+  		min.year <- min(low.high$Year, na.rm=TRUE)
   		data <- merge(data, low.high, by=c('charcode', 'Year'), all=TRUE)
   		idx <- which(data$Year == min.year-5)
   		for (col in grep('low|high', colnames(data)))
   			data[idx,col] <- data$value[idx]
   	}
-  	#browser()
   	g <- ggplot(data, aes(x=Year,y=value,colour=charcode, fill=charcode)) + geom_line() + theme(legend.title=element_blank())
   	if(!is.null(low)) {
   		line.data <- NULL
