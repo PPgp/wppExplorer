@@ -467,11 +467,11 @@ get.pyramid.data <- function(year, countries, which.pi=NULL, bound=NULL, indicat
 		name.obs <- indicators
 		if(wpp.data.env$package=='wpp2012' && load.pred) name.preds <- paste(indicators, 'projMed', sep='')
 	} else { #PIs
-		if(wpp.data.env$package=='wpp2012' && .get.pi.name(as.integer(which.pi)) == 'half.child') 
+		# only +-half.child available
+		if(wpp.data.env$package=='wpp2012' && 'half.child' %in% .get.pi.name(as.integer(which.pi))) 
 			name.obs <- paste(indicators, 'proj', capitalize(bound), sep='')
 	}
 	if(all(is.null(c(name.preds, name.obs)))) return(NULL)
-	#browser()
 	dataB <- list()
 	for(i in 1:min(2,length(indicators))) {
 		p <- load.and.merge.datasets(name.obs[i], name.preds[i], by=c('country_code', 'age'), remove.cols=c('country', 'name'))

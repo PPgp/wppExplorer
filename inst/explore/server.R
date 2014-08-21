@@ -438,18 +438,23 @@ shinyServer(function(input, output, session) {
   		if(proportion) {
 			#browser()
 			which.pi <- wppExplorer:::.get.pi.name(as.integer(input$uncertainty))
-  			tpop <- wppExplorer::wpp.indicator('tpop.ci', which.pi=which.pi, bound='low')
-  			low <- .get.prop.data(low, tpop)
-  			lowval <- low$value
-  			tpop <- wppExplorer::wpp.indicator('tpop.ci', which.pi=which.pi, bound='high')
-  			high <- .get.prop.data(high, tpop)
-  			low$value <- pmin(low$value, high$value, na.rm=TRUE)
-  			high$value <- pmax(high$value, lowval, na.rm=TRUE)
+			which.pi <- if('half.child' %in% which.pi) 'half.child' else NULL # currently only half child for pyramid available
+			if(!is.null(which.pi)) {
+  				tpop <- wppExplorer::wpp.indicator('tpop.ci', which.pi=which.pi, bound='low')
+  				low <- .get.prop.data(low, tpop)
+  				lowval <- low$value
+  				tpop <- wppExplorer::wpp.indicator('tpop.ci', which.pi=which.pi, bound='high')
+  				high <- .get.prop.data(high, tpop)
+  				low$value <- pmin(low$value, high$value, na.rm=TRUE)
+  				high$value <- pmax(high$value, lowval, na.rm=TRUE)
+  			} else low <- NULL
   		}
-  		low.high <- merge(low, high, by=c('charcode', 'age', 'age.num', 'sex'), sort=FALSE)
-  		colnames(low.high)[5:6] <- c('low', 'high')
-  		data <- merge(data, low.high, all=TRUE, sort=FALSE)
-	} else low <- NULL
+  		if(!is.null(low)) {
+  			low.high <- merge(low, high, by=c('charcode', 'age', 'age.num', 'sex'), sort=FALSE)
+  			colnames(low.high)[5:6] <- c('low', 'high')
+  			data <- merge(data, low.high, all=TRUE, sort=FALSE)
+  		}
+	}
   	data <- data[order(data$age.num),]
   	data
   }
@@ -460,10 +465,15 @@ shinyServer(function(input, output, session) {
   	g <- g + geom_text(data=NULL, y=-data.range[2]/2, x=20, label="Male", colour='black')
   	g <- g + geom_text(data=NULL, y=data.range[2]/2, x=20, label="Female", colour='black')
   	g <- g + geom_hline(yintercept = 0)
-  	#browser()
   	if(is.element('low', colnames(data))) {
   		g <- g + geom_ribbon(subset=.(sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
   		g <- g + geom_ribbon(subset=.(sex=='M'), aes(ymin=-high, ymax=-low, linetype=NA), alpha=0.3)
+  		line.data <- cbind(data, variant=wppExplorer:::.get.pi.name.for.label(3)) # only half-child variant available 
+  		g <- g + geom_line(data=line.data, subset=.(sex=='F'), aes(y=low, linetype=variant, colour=charcode, group=charcode)) # female low
+  		g <- g + geom_line(data=line.data, subset=.(sex=='F'), aes(y=high, linetype=variant, colour=charcode, group=charcode)) # female high
+  		g <- g + geom_line(data=line.data, subset=.(sex=='M'), aes(y=-low, linetype=variant, colour=charcode, group=charcode)) # male low
+  		g <- g + geom_line(data=line.data, subset=.(sex=='M'), aes(y=-high, linetype=variant, colour=charcode, group=charcode)) # male high
+        g <- g + scale_linetype_manual(values=c("80%"=2, '1/2child'=4, "95%"=3), na.value=0)
   	}
   	g
   }
