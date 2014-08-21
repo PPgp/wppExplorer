@@ -21,6 +21,20 @@ License: \tab GPL (>= 2)
 The main function of the packge is \code{\link{wpp.explore}} which opens an interactive interface in a web browser. A few helper functions are available for a fast access to the (possibly filtered) data, e.g. \code{\link{wpp.indicator}}.
 }
 
+\source{
+ The underlying datasets are based on estimates and projections of United Nations, Department of Economic and Social Affairs, Population Division (2009, 2011, 2013). The probabilistic projections were produced with the method of Raftery et al. (2012).
+ }
+ 
+ \references{
+ World Population Prospects: The 2012 Revision. (\url{http://esa.un.org/unpd/wpp}) Special Tabulations.
+ 
+ Probabilistic projections: \url{http://esa.un.org/unpd/ppp}
+ 
+ A. E. Raftery,  N. Li, H. Sevcikova , P. Gerland, G. K. Heilig (2012). Bayesian probabilistic population projections for all countries. Proceedings of the National Academy of Sciences 109:13915-13921.
+}
+
+
+
  \author{
 Hana Sevcikova <hanas@uw.edu>, used code from a Joe Cheng's shiny example
 

@@ -346,6 +346,7 @@ getUncertainty <- function(indicator, which.pi, bound='low', sex.mult=c(), sex=c
 		if(!is.null(wpp.data.env[[lookup.name]])) data <- wpp.data.env[[lookup.name]]
 		else {
 			data <- wpp.indicator(fun, pi.name, bound=bound, sexm=sex.mult, sex=sex, agem=age.mult, age=age)
+			if(is.null(data)) next
 			if(!ind.is.by.age(indicator))
   				wpp.data.env[[lookup.name]] <- data
   		}
