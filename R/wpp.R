@@ -139,6 +139,13 @@ fertage <- function(age, ...){
 	cbind(country_code=tfert[o,'country_code'], tfert[o,2:ncol(tfert)] * asfr[o,2:ncol(asfr)] / 100.)
 }
 
+pfertage <- function(agem, ...){
+	age <- agem
+	if(is.null(age)) age <- '15-19'
+	if.not.exists.load('percentASFR')
+	sum.by.country.subset.age(wpp.data.env[['percentASFR']], age)
+}
+
 fert <- function(...) {
 	name.pred <- if(wpp.data.env$package=='wpp2008') NULL else 'tfrprojMed'
 	return(load.and.merge.datasets('tfr', name.pred))
@@ -158,6 +165,12 @@ sexratio <- function(...) {
 	return(load.and.merge.datasets('sexRatio', NULL))
 }
 
+meanagechbear <- function(...) {
+	# mean age of child bearing
+	data <- load.and.merge.datasets('percentASFR', NULL)
+	ddply(data[,-which(colnames(data) == "age")], "country_code", .fun=colwise(function(x) sum(seq(17.5, by=5, length=7)*x)/100.))
+}
+
 .sum.popFM.keep.age <- function() {
 	name.preds <- if(wpp.data.env$package!='wpp2012') c(NULL, NULL) else c('popFprojMed', 'popMprojMed')
 	pF <- load.and.merge.datasets('popF', name.preds[1], by=c('country_code', 'age'), remove.cols=c('country', 'name'))
@@ -169,7 +182,7 @@ medage <- function(...) {
 	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(gmedian))
 }
 
-meanagechbear <- function(...) {
+meanageinchbearage <- function(...) {
 	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(gmean.child.bearing))
 }
 
@@ -448,6 +461,8 @@ gmean <- function (f, cats = NULL)
     counts <- f * mid.points
     return(sum(counts)/sum(f))
 }
+
+
 
 gmean.child.bearing <- function(f) {
 	# group mean of child bearing age

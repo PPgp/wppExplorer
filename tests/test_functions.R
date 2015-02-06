@@ -17,7 +17,7 @@ test.wpp.indicators <- function(wpp.year=2012) {
     start.test(test.name)
     if(!get.wpp.year()==wpp.year)
 		set.wpp.year(wpp.year)
-	data <- wpp.by.country(wpp.indicator('meanagechbear'), 'US')
+	data <- wpp.by.country(wpp.indicator('meanageinchbearage'), 'US')
 	stopifnot(all(dim(data) == c(31, 2)))
 	stopifnot(all(is.element(c(1955, 2000, 2020, 2100), data$Year)))
 	test.ok(test.name)

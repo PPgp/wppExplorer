@@ -34,7 +34,7 @@ shinyUI(pageWithSidebar(
     uiOutput('yearUI'),
     hr(),
     selectInput('indicator', h5('Indicator:'), wppExplorer:::wpp.data.env$indicators),
-    conditionalPanel(condition="input.indicator > 15",
+    conditionalPanel(condition="input.indicator > 16",
     	tags$head(tags$style(type="text/css", "#selagesmult { height: 150px; width: 70px}"),
     			  tags$style(type="text/css", "#selages { height:25px; width: 70px}"),
     			  tags$style(type="text/css", "#indsexmult { height: 50px; width: 90px}"),

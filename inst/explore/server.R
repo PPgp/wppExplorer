@@ -219,7 +219,7 @@ shinyServer(function(input, output, session) {
   })
         
   output$ageselection <- renderUI({
-  	if(indicator.fun()=='fertage'){
+  	if(indicator.fun() %in% c('fertage', 'pfertage')){
   		ages <- paste(seq(15, by=5, length=7), seq(19, by=5, length=7), sep='-')
   	} else {
   		if(indicator.fun()=='mortagesex')
@@ -240,7 +240,7 @@ shinyServer(function(input, output, session) {
 	})
 	
 	output$sexselection <- renderUI({
-		choices<-if(indicator.fun()=='fertage') c(Female="F") else c(Female="F", Male="M")
+		choices<-if(indicator.fun() %in% c('fertage', 'pfertage')) c(Female="F") else c(Female="F", Male="M")
 		if(wppExplorer:::ind.no.age.sum(as.integer(input$indicator))){
   			multiple <- FALSE
   			selected <- NULL
@@ -334,7 +334,7 @@ shinyServer(function(input, output, session) {
 		if(fun %in% c('tpop', 'tpopF', 'tpopM', 'popagesex'))
 			data <- do.call(paste0('age.profile.pop', sex), list())
 		else {
-			if(fun %in% c('fert', 'fertage') && sex=='F') {
+			if(fun %in% c('fert', 'fertage', 'pfertage') && sex=='F') {
 				data <- age.profile.fert()
 			} else {
   				return(list(data=data.frame(age=c(0,0), v=c(0,0)),
