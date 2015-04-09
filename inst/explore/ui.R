@@ -57,13 +57,15 @@ shinyUI(pageWithSidebar(
   mainPanel(
     tabsetPanel(
       tabPanel('Map',
-		textOutput('mapyear'),
+      	 flowLayout(
+			textOutput('mapyear'),
+			checkboxInput('normalizeMapAndCountryPlot', 'Fixed scale over time', TRUE)
+		),		
 		hr(),
 		geochart('map'),
 		#htmlOutput('mapgvis'),
 		hr(),
 		conditionalPanel(condition='input.map_selection',
-				checkboxInput('normalizeCountryPlot', 'Fixed scale', FALSE),
 				plotOutput('countryPlot', height='300px'))
       ),
       #tabPanel('Data', 

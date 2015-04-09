@@ -110,16 +110,18 @@ shinyServer(function(input, output, session) {
     #df <- cbind(df, hover=rep('xxx', nrow(df)))
     country.codes <- get.country.charcodes()
     df <- df[df$charcode %in% country.codes,]
-    #inddata <- indicatorData()
-    #inddata <- inddata[inddata$charcode %in% country.codes, 'value']
-    list(data = df#,
-         #options = list( # this doesnt seem to work to have fixed color scale 
-           #colorAxis = list(
-             #minValue = min(inddata),
-             #maxValue = max(inddata)
-           #)
-         #)
-    )
+    options <- NULL
+    if (input$normalizeMapAndCountryPlot) {
+    	inddata <- indicatorData()
+    	inddata <- inddata[inddata$charcode %in% country.codes, 'value']
+    	options <- list( # fixed color scale
+           colorAxis = list(
+             minValue = min(inddata),
+             maxValue = max(inddata)
+           )
+        )
+	}
+    list(data = df, options=options)
   })
   
   output$mapgvis <- renderGvis({
@@ -150,7 +152,7 @@ shinyServer(function(input, output, session) {
     high <- wpp.by.country(data.h, input$map_selection)
     idx.col.val <- grep('\\.', colnames(low))
     ylim <- range(c(df$value, low[,idx.col.val], high[,idx.col.val]), na.rm=TRUE)
-    if (input$normalizeCountryPlot) {
+    if (input$normalizeMapAndCountryPlot) {
     	idx.col.val.all <- grep('\\.', colnames(data.l))
     	ylim <- range(c(data$value, data.l[,idx.col.val.all], data.h[,idx.col.val.all]), na.rm=TRUE)
     }
