@@ -1,3 +1,4 @@
+library(wppExplorer)
 library(reshape2)
 library(googleVis)
 library(plyr)

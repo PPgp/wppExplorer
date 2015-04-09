@@ -18,7 +18,8 @@ row <- function(...) {
 }
 
 col <- function(width, ...) {
-	tags$div(class=paste0("span", width), ...)
+#	tags$div(class=paste0("span", width), ...)
+tags$div(class=paste0("col-sm-", width), ...)
 }
 
  
@@ -52,7 +53,8 @@ shinyUI(pageWithSidebar(
     			multiple=TRUE, selected=1),
     textOutput('uncertaintyNote'),
     hr(),
-    HTML("<small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small>")
+    HTML("<small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small>"),
+width=3
   ),
   mainPanel(
     tabsetPanel(
@@ -88,9 +90,9 @@ shinyUI(pageWithSidebar(
 			tags$div(
 				class = "container",
 				row(
-					col(0.5, ''),
+					#col(0.5, ''),
 					col(2, uiOutput('cselection')),
-				  	col(7, tabsetPanel(
+				  	col(6, tabsetPanel(
 				  				tabPanel('Median',
 				  					googleLineChart('trends', options=list(height=400, width=650)),
 				  					checkboxInput('median.logscale', 'Log scale', FALSE)),
@@ -106,7 +108,7 @@ shinyUI(pageWithSidebar(
 				  		)
  					),
  				row(
- 					col(0.5, ''),
+ 					#col(0.5, ''),
  					col(9, textOutput('trendstabletitle'),
  						   tableOutput('trendstable'))
  					)
