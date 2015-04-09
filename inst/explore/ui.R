@@ -18,8 +18,8 @@ row <- function(...) {
 }
 
 col <- function(width, ...) {
-#	tags$div(class=paste0("span", width), ...)
-tags$div(class=paste0("col-sm-", width), ...)
+	tags$div(class=paste0("span", width), ...)
+#tags$div(class=paste0("col-sm-", width), ...)
 }
 
  
@@ -90,9 +90,9 @@ width=3
 			tags$div(
 				class = "container",
 				row(
-					#col(0.5, ''),
+					col(0.5, ''),
 					col(2, uiOutput('cselection')),
-				  	col(6, tabsetPanel(
+				  	col(7, tabsetPanel(
 				  				tabPanel('Median',
 				  					googleLineChart('trends', options=list(height=400, width=650)),
 				  					checkboxInput('median.logscale', 'Log scale', FALSE)),
@@ -108,7 +108,7 @@ width=3
 				  		)
  					),
  				row(
- 					#col(0.5, ''),
+ 					col(0.5, ''),
  					col(9, textOutput('trendstabletitle'),
  						   tableOutput('trendstable'))
  					)
