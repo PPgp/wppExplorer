@@ -92,6 +92,15 @@ mig <- function(...) {
 	sumMFbycountry(wpp.data.env$migrationM, wpp.data.env$migrationF)
 }
 
+migrate <- function(...) {
+	migcounts <- mig()
+	pop <- tpop()
+	mergepop <- merge(migcounts[,'country_code', drop=FALSE], pop)
+	ncols <- ncol(mergepop)
+	#browser()
+	cbind(country_code=mergepop$country_code, (migcounts[,2:ncol(migcounts)]*200.)/((mergepop[,3:ncols]+mergepop[,2:(ncols-1)])/2.))
+}
+	
 popagesex <- function(sexm, agem, ...){
 	age <- agem
 	sex <- sexm
