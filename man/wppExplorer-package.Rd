@@ -3,7 +3,7 @@
 \alias{wppExplorer}
 \docType{package}
 \title{
-Explorer of World Population Prospects
+Explorer of the World Population Prospects
 }
 
 \description{
@@ -12,7 +12,7 @@ Allows to interactively explore data from the World Population Prospects, contai
 \details{
 \tabular{ll}{
 Package: \tab wppExplorer\cr
-Version: \tab 1.6-0\cr
+Version: \tab 1.6-1\cr
 Date: \tab 2015-4-10\cr
 Depends: \tab R (>= 3.0.0)\cr
 License: \tab GPL (>= 2)
@@ -20,7 +20,7 @@ License: \tab GPL (>= 2)
 
 The main function of the packge is \code{\link{wpp.explore}} which opens an interactive interface in a web browser. A few helper functions are available for a fast access to the (possibly filtered) data, e.g. \code{\link{wpp.indicator}}.
 
-The interface can be also accessed online: \url{https://rstudio.stat.washington.edu/shiny/wppExplorer/inst/explore}
+The interface can be also accessed online: \url{https://rstudio.stat.washington.edu/shiny/wppExplorer/inst/explore/}
 }
 
 \source{
