@@ -503,19 +503,18 @@ shinyServer(function(input, output, session) {
 	data <- get.trends()
 	if(is.null(data)) return(data)
 	df <- as.data.frame(data$casted[,-1])
-	if(ncol(df) > 1 && wppExplorer:::ind.sum.in.table(as.integer(input$indicator))) {
-		df <- cbind(df, rowSums(df))
-		colnames(df)[ncol(df)] <- 'Sum'
+	if(ncol(df) > 1) {
+		if(wppExplorer:::ind.sum.in.table(as.integer(input$indicator))) {
+			df <- cbind(df, rowSums(df))
+			colnames(df)[ncol(df)] <- 'Sum'
+		}
 	} else colnames(df) <- input$seltcountries # one country selected
+	
 	df <- t(df)
 	#df <- t(as.data.frame(lapply(df, format_num, digits=wppExplorer:::ind.digits(as.integer(input$indicator)))))
 	# df <- t(data$casted[,-1]) # remove year column
 	#browser()
 	colnames(df) <- as.integer(data$casted[,'Year'])
-	# if(nrow(df) > 1 && wppExplorer:::ind.sum.in.table(as.integer(input$indicator))) {
-		# df <- rbind(df, colSums(df))
-		# rownames(df)[nrow(df)] <- 'Sum'
-	# }
 	df
 	}, include.rownames = TRUE)
 
