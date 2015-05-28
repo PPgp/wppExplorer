@@ -1,11 +1,11 @@
 Package: wppExplorer
-Version: 1.5-0
-Date: 2015-2-6
+Version: 1.6-2
+Date: 2015-5-28
 Title: Explorer of World Population Prospects
 Author: Hana Sevcikova <hanas@uw.edu>
 Maintainer: Hana Sevcikova <hanas@uw.edu>
 Depends: R (>= 3.0.0)
 Imports: shiny (>= 0.10.0), plyr, reshape2, googleVis, wpp2012, Hmisc, ggplot2
 Suggests: wpp2008, wpp2010
-Description: A shiny interface for exploring data in wpp2008-wpp2012 packages.
+Description: A shiny interface for exploring data in the 'wpp2012' (or 2010, 2008) package.
 License: GPL (>= 2)

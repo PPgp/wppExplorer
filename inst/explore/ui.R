@@ -18,8 +18,8 @@ row <- function(...) {
 }
 
 col <- function(width, ...) {
-#	tags$div(class=paste0("span", width), ...)
-tags$div(class=paste0("col-sm-", width), ...)
+	tags$div(class=paste0("span", width), ...)
+#tags$div(class=paste0("col-sm-", width), ...)
 }
 
  
@@ -35,7 +35,7 @@ shinyUI(pageWithSidebar(
     uiOutput('yearUI'),
     hr(),
     selectInput('indicator', h5('Indicator:'), wppExplorer:::wpp.data.env$indicators),
-    conditionalPanel(condition="input.indicator > 16",
+    conditionalPanel(condition=paste("input.indicator >", sum(attr(wppExplorer:::wpp.data.env$indicators, "settings")$by.age == FALSE)),
     	tags$head(tags$style(type="text/css", "#selagesmult { height: 150px; width: 70px}"),
     			  tags$style(type="text/css", "#selages { height:25px; width: 70px}"),
     			  tags$style(type="text/css", "#indsexmult { height: 50px; width: 90px}"),
@@ -53,7 +53,7 @@ shinyUI(pageWithSidebar(
     			multiple=TRUE, selected=1),
     textOutput('uncertaintyNote'),
     hr(),
-    HTML("<small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small>"),
+    HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small></p><p><small>CSSS, University of Washington; <a href='http://bayespop.csss.washington.edu'>project website</a></small></p>"),
 width=3
   ),
   mainPanel(
@@ -90,9 +90,9 @@ width=3
 			tags$div(
 				class = "container",
 				row(
-					#col(0.5, ''),
+					col(0.5, ''),
 					col(2, uiOutput('cselection')),
-				  	col(6, tabsetPanel(
+				  	col(7, tabsetPanel(
 				  				tabPanel('Median',
 				  					googleLineChart('trends', options=list(height=400, width=650)),
 				  					checkboxInput('median.logscale', 'Log scale', FALSE)),
@@ -108,7 +108,7 @@ width=3
 				  		)
  					),
  				row(
- 					#col(0.5, ''),
+ 					col(0.5, ''),
  					col(9, textOutput('trendstabletitle'),
  						   tableOutput('trendstable'))
  					)
