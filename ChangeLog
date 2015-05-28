@@ -1,4 +1,8 @@
-1.6-0 (4/10/2015)
+1.6-2 (5/28/2015)
+-----
+Fixed bug that was putting wrong labels into table outputs (thanks to Jon Azose).
+
+1.6-0/1 (4/10/2015)
 -----
 Indicator for the net migration rate added.
 
