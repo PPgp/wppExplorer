@@ -79,7 +79,7 @@ shinyServer(function(input, output, session) {
     	}
     }
     #print(c('slider2: ', value, yearRange, data.env()$year.range, input$year))
-    sliderInput('year', h5('Year:'), format="####", 
+    sliderInput('year', h5('Year:'), sep="",
     			animate=TRUE,
                 min=yearRange[1], max=yearRange[2], value = value, step=5)
   })
@@ -179,7 +179,7 @@ shinyServer(function(input, output, session) {
 	# data[,c('charcode', 'name', 'value')]
  # }, include.rownames = FALSE, include.colnames = FALSE)
   
-  output$stable <- renderDataTable({ #renderGvis({
+  output$stable <- DT::renderDataTable({ #renderGvis({
   	year.data <- data()
   	if(nrow(year.data)==0) invalidateLater(1000, session)
   	iso <- data.env()$iso3166

@@ -18,8 +18,8 @@ row <- function(...) {
 }
 
 col <- function(width, ...) {
-	tags$div(class=paste0("span", width), ...)
-#tags$div(class=paste0("col-sm-", width), ...)
+	#tags$div(class=paste0("span", width), ...)
+ tags$div(class=paste0("col-sm-", width), ...)
 }
 
  
@@ -81,7 +81,7 @@ width=3
 			checkboxInput('includeAggr2', 'Include Aggregations', FALSE)
 		),
 		hr(),
-      	dataTableOutput('stable')
+      	DT::dataTableOutput('stable')
       ),
       tabPanel('Trends, Age profiles & Pyramids',
   		tags$head(
