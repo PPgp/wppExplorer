@@ -4,7 +4,7 @@ get.indicator.choices <- function() {
 					'Total Population', 'Female Population', 'Male Population', 
 					'Net Migration', 'Net Migration Rate', 
 					'Sex Ratio at Birth', 'Median Age', 'Mean Age at Childbearing', 'Mean Age of Women in Childbearing Ages',
-					'Total Dependancy Ratio', 'Child Dependency Ratio', 'Old-age Dependency Ratio','Potential Support Ratio',
+					'Total Dependency Ratio', 'Child Dependency Ratio', 'Old-age Dependency Ratio','Potential Support Ratio',
 					'Mean Annual Population Growth',
 					'Population by sex and age', 'Mortality Rate by sex and age', 'Age-specific Fertility Rate', 'Percent Age-specific Fertility')
 	ind.def <- c('', '', '',

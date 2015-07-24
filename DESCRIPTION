@@ -6,6 +6,7 @@ Author: Hana Sevcikova <hanas@uw.edu>
 Maintainer: Hana Sevcikova <hanas@uw.edu>
 Depends: R (>= 3.0.0)
 Imports: shiny (>= 0.10.0), plyr, reshape2, googleVis, wpp2012, Hmisc, ggplot2, DT
-Suggests: wpp2008, wpp2010
+Suggests: wpp2008, wpp2010,
+    testthat
 Description: A shiny interface for exploring data in the 'wpp2012' (or 2010, 2008) package.
 License: GPL (>= 2)
