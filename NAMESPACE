@@ -9,4 +9,6 @@ export(
 	)
 import("wpp2012",  "reshape2", "plyr", "googleVis",  "ggplot2", "DT")
 importFrom(Hmisc, capitalize)
+importFrom("utils", "data")
+
 
