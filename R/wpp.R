@@ -15,6 +15,7 @@ check.wpp.revision <- function(wpp.year) {
 	if (!wpp.year %in% get.available.wpps())
 		stop('wpp.year must be one of ', paste(get.available.wpps(), collapse=', '))
 }
+
 wpp.year.from.package.name <- function(package)
 	return(as.integer(substr(package, 4, nchar(package))))
 
