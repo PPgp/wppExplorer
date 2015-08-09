@@ -90,9 +90,12 @@ tpop.sex <- function(sex) {
 
 mig <- function(...) {
 	# Create a dataset of net migration
-	if.not.exists.load('migrationM')
-	if.not.exists.load('migrationF')
-	sumMFbycountry(wpp.data.env$migrationM, wpp.data.env$migrationF)
+	if(wpp.year.from.package.name(wpp.data.env$package) <2015) { # sex- and age-specific migration available
+		if.not.exists.load('migrationM')
+		if.not.exists.load('migrationF')
+		return(sumMFbycountry(wpp.data.env$migrationM, wpp.data.env$migrationF))
+	}
+	load.and.merge.datasets('migration', NULL) # total migration available
 }
 
 migrate <- function(...) {
