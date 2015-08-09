@@ -12,7 +12,7 @@ wpp.explore(wpp.year = NULL)
 }
 
 \arguments{
-  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2008, 2010, 2012 and 2015 (default).
+  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2015 (default), 2012, and 2010.
 }
 }
 \details{
