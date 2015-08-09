@@ -28,9 +28,7 @@ The interface can be also accessed online: \url{https://rstudio.stat.washington.
  }
  
  \references{
- World Population Prospects: The 2012 Revision. (\url{http://esa.un.org/unpd/wpp}) Special Tabulations.
- 
- Probabilistic projections: \url{http://esa.un.org/unpd/ppp}
+ World Population Prospects: The 2015 Revision. (\url{http://esa.un.org/unpd/wpp}) Special Tabulations.
  
  A. E. Raftery,  N. Li, H. Sevcikova , P. Gerland, G. K. Heilig (2012). Bayesian probabilistic population projections for all countries. Proceedings of the National Academy of Sciences 109:13915-13921.
  
