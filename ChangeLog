@@ -1,6 +1,8 @@
-1.7-0 (8/8/2015)
+1.7-0/1 (8/8/2015)
 -----
 Added support for 2015.
+
+Removed support for wpp2008.
 
 Unit tests converted to testthat.
 
