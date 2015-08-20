@@ -4,7 +4,7 @@ get.indicator.choices <- function() {
 					'Total Population', 'Female Population', 'Male Population', 
 					'Net Migration', 'Net Migration Rate', 
 					'Sex Ratio at Birth', 'Median Age', 'Mean Age at Childbearing', 'Mean Age of Women in Childbearing Ages',
-					'Total Dependancy Ratio', 'Child Dependency Ratio', 'Old-age Dependency Ratio','Potential Support Ratio',
+					'Total Dependency Ratio', 'Child Dependency Ratio', 'Old-age Dependency Ratio','Potential Support Ratio',
 					'Mean Annual Population Growth',
 					'Population by sex and age', 'Mortality Rate by sex and age', 'Age-specific Fertility Rate', 'Percent Age-specific Fertility')
 	ind.def <- c('', '', '',
@@ -51,7 +51,7 @@ assign("wpp.data.env", new.env(), envir=parent.env(environment())
 	)
 data('iso3166', envir=wpp.data.env)
 wpp.data.env$indicators <- get.indicator.choices()
-wpp.data.env$package <- "wpp2012"
+wpp.data.env$package <- "wpp2015"
 # Filter out non-used countries
 do.call('data', list("popM", package=wpp.data.env$package, envir=wpp.data.env))
 wpp.data.env$iso3166 <- wpp.data.env$iso3166[is.element(wpp.data.env$iso3166$uncode, wpp.data.env$popM$country_code),]
