@@ -7,13 +7,13 @@ Explorer of the World Population Prospects
 }
 
 \description{
-Allows to interactively explore data from the World Population Prospects, contained in packages \pkg{wpp2008}, \pkg{wpp2010} and \pkg{wpp2012}. It is based on the \pkg{shiny} package.
+Allows to interactively explore data from the World Population Prospects, contained in packages \pkg{wpp2015}, \pkg{wpp2012} and \pkg{wpp2010}. It is based on the \pkg{shiny} package.
 }
 \details{
 \tabular{ll}{
 Package: \tab wppExplorer\cr
-Version: \tab 1.6-2\cr
-Date: \tab 2015-5-28\cr
+Version: \tab 1.7-1\cr
+Date: \tab 2015-8-9\cr
 Depends: \tab R (>= 3.0.0)\cr
 License: \tab GPL (>= 2)
 }
@@ -24,13 +24,11 @@ The interface can be also accessed online: \url{https://rstudio.stat.washington.
 }
 
 \source{
- The underlying datasets are based on estimates and projections of the United Nations, Department of Economic and Social Affairs, Population Division (2009, 2011, 2013). The probabilistic projections were produced with the method of Raftery et al. (2012).
+ The underlying datasets are based on estimates and projections of the United Nations, Department of Economic and Social Affairs, Population Division (2011, 2013, 2015). The probabilistic projections were produced with the method of Raftery et al. (2012).
  }
  
  \references{
- World Population Prospects: The 2012 Revision. (\url{http://esa.un.org/unpd/wpp}) Special Tabulations.
- 
- Probabilistic projections: \url{http://esa.un.org/unpd/ppp}
+ World Population Prospects: The 2015 Revision. (\url{http://esa.un.org/unpd/wpp}) Special Tabulations.
  
  A. E. Raftery,  N. Li, H. Sevcikova , P. Gerland, G. K. Heilig (2012). Bayesian probabilistic population projections for all countries. Proceedings of the National Academy of Sciences 109:13915-13921.
  
@@ -46,7 +44,7 @@ Maintainer: Hana Sevcikova <hanas@uw.edu>
 }
 
 \seealso{
-\code{\link[wpp2012:wpp2012-package]{wpp2012}}, \code{\link[wpp2010:wpp2010-package]{wpp2010}}, \code{\link[wpp2008:wpp2008-package]{wpp2008}},  \code{\link[shiny:shiny-package]{shiny}}, \code{\link{wpp.explore}}, \code{\link{wpp.indicator}}
+\code{\link[wpp2015:wpp2015-package]{wpp2015}}, \code{\link[wpp2012:wpp2012-package]{wpp2012}}, \code{\link[wpp2010:wpp2010-package]{wpp2010}}, \code{\link[shiny:shiny-package]{shiny}}, \code{\link{wpp.explore}}, \code{\link{wpp.indicator}}
 }
 
 \keyword{ package }

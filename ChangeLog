@@ -1,3 +1,13 @@
+1.7-0/1 (8/8/2015)
+-----
+Added support for 2015.
+
+Removed support for wpp2008.
+
+Unit tests converted to testthat.
+
+A few shiny deprecations solved.
+
 1.6-2 (5/28/2015)
 -----
 Fixed bug that was putting wrong labels into table outputs (thanks to Jon Azose).

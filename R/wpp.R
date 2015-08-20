@@ -10,11 +10,14 @@ wpp.explore3d <- function(wpp.year=NULL) {
 	shiny::runApp(system.file('bubbles', package='wppExplorer'))
 }
 
-get.available.wpps <- function() c(2008, 2010, 2012)
+get.available.wpps <- function() c(2008, 2010, 2012, 2015)
 check.wpp.revision <- function(wpp.year) {
 	if (!wpp.year %in% get.available.wpps())
-		stop('wpp.year must be one of ', get.available.wpps())
+		stop('wpp.year must be one of ', paste(get.available.wpps(), collapse=', '))
 }
+
+wpp.year.from.package.name <- function(package)
+	return(as.integer(substr(package, 4, nchar(package))))
 
 wpp.indicator <- function(what, ...) {
 	data <- do.call(what, list(...))
@@ -61,7 +64,7 @@ tpop <- function(...) {
 	if.not.exists.load('popM')
 	if.not.exists.load('popF')
 	tpop <- sumMFbycountry(wpp.data.env$popM, wpp.data.env$popF)
-	if(wpp.data.env$package == 'wpp2012') { #projection stored separately from observations
+	if(wpp.year.from.package.name(wpp.data.env$package) > 2010) { #projection stored separately from observations
 		if.not.exists.load('popMprojMed')
 		if.not.exists.load('popFprojMed')
 		tpopp <- sumMFbycountry(wpp.data.env$popMprojMed, wpp.data.env$popFprojMed)
@@ -77,7 +80,7 @@ tpop.sex <- function(sex) {
 	# Create a dataset of total population
 	dataset <- paste('pop', sex, sep='')
 	pop <- load.dataset.and.sum.by.country(dataset)
-	if(wpp.data.env$package == 'wpp2012') { #projection stored separately from observations
+	if(wpp.year.from.package.name(wpp.data.env$package) > 2010) { #projection stored separately from observations
 		dataset <- paste('pop', sex, 'projMed', sep='')
 		popp <- load.dataset.and.sum.by.country(dataset)
 		pop <- merge(pop, popp, by='country_code')
@@ -87,9 +90,12 @@ tpop.sex <- function(sex) {
 
 mig <- function(...) {
 	# Create a dataset of net migration
-	if.not.exists.load('migrationM')
-	if.not.exists.load('migrationF')
-	sumMFbycountry(wpp.data.env$migrationM, wpp.data.env$migrationF)
+	if(wpp.year.from.package.name(wpp.data.env$package) <2015) { # sex- and age-specific migration available
+		if.not.exists.load('migrationM')
+		if.not.exists.load('migrationF')
+		return(sumMFbycountry(wpp.data.env$migrationM, wpp.data.env$migrationF))
+	}
+	load.and.merge.datasets('migration', NULL) # total migration available
 }
 
 migrate <- function(...) {
@@ -115,7 +121,7 @@ popagesex <- function(sexm, agem, ...){
 		if(!is.null(tpop)){
 			tpop <- cbind(country_code=tpop[,'country_code'], tpop[,2:ncol(tpop)] + pop[,2:ncol(pop)])
 		} else tpop<-pop
-		if(wpp.data.env$package == 'wpp2012') { #projection stored separately from observations
+		if(wpp.year.from.package.name(wpp.data.env$package) > 2010) { #projection stored separately from observations
 			dataset.name <- paste('pop', s, 'projMed', sep='')
 			if.not.exists.load(dataset.name)
 			popp <- sum.by.country.subset.age(wpp.data.env[[dataset.name]], age)
@@ -181,7 +187,7 @@ meanagechbear <- function(...) {
 }
 
 .sum.popFM.keep.age <- function() {
-	name.preds <- if(wpp.data.env$package!='wpp2012') c(NULL, NULL) else c('popFprojMed', 'popMprojMed')
+	name.preds <- if(wpp.year.from.package.name(wpp.data.env$package) <= 2010) c(NULL, NULL) else c('popFprojMed', 'popMprojMed')
 	pF <- load.and.merge.datasets('popF', name.preds[1], by=c('country_code', 'age'), remove.cols=c('country', 'name'))
 	pM <- load.and.merge.datasets('popM', name.preds[2], by=c('country_code', 'age'), remove.cols=c('country', 'name'))
 	cbind(country_code=pF[,1], pF[,-c(1,2)] + pM[,-c(1,2)])
@@ -239,14 +245,14 @@ leM.ci <- function(which.pi, bound, ...) {
 }
 
 e0.ci <- function(sex, which.pi, bound) {
-	if(wpp.data.env$package!='wpp2012' || which.pi == 'half.child') return(NULL)
+	if(wpp.year.from.package.name(wpp.data.env$package) <= 2010 || which.pi == 'half.child') return(NULL)
 	load.and.merge.datasets(paste0('e0', sex, 'proj', which.pi, .pi.suffix(bound)), NULL)
 }
 
 tpop.ci <- function(which.pi, bound, ...) {
 	# which.pi is for '80', '95' or 'half.child'
 	# bound is 'low' or 'high'
-	if(wpp.data.env$package!='wpp2012') return(NULL)
+	if(wpp.year.from.package.name(wpp.data.env$package) <= 2010) return(NULL)
 	dataset.name <- if(which.pi == 'half.child') paste0('popproj', capitalize(bound))
 					else paste0('popproj', which.pi, .pi.suffix(bound))
 	load.and.merge.datasets(dataset.name, NULL)
@@ -254,7 +260,7 @@ tpop.ci <- function(which.pi, bound, ...) {
 
 popagesex.ci <- function(which.pi, bound, sexm, agem, ...) {
 	# bound is 'low' or 'high'
-	if((wpp.data.env$package != 'wpp2012') || (length(sexm) > 1) || (length(agem) > 1) || (which.pi != 'half.child')) 
+	if((wpp.year.from.package.name(wpp.data.env$package) <= 2010) || (length(sexm) > 1) || (length(agem) > 1) || (which.pi != 'half.child')) 
 		return(NULL)
 	dataset.name <- paste('pop', sexm, 'proj', capitalize(bound), sep='')
 	if.not.exists.load(dataset.name)
@@ -489,10 +495,10 @@ get.pyramid.data <- function(year, countries, which.pi=NULL, bound=NULL, indicat
 	name.preds <- name.obs <- c(NULL, NULL)
 	if(is.null(which.pi)) {
 		name.obs <- indicators
-		if(wpp.data.env$package=='wpp2012' && load.pred) name.preds <- paste(indicators, 'projMed', sep='')
+		if(wpp.year.from.package.name(wpp.data.env$package) > 2010 && load.pred) name.preds <- paste(indicators, 'projMed', sep='')
 	} else { #PIs
 		# only +-half.child available
-		if(wpp.data.env$package=='wpp2012' && 'half.child' %in% .get.pi.name(as.integer(which.pi))) 
+		if(wpp.year.from.package.name(wpp.data.env$package) > 2010 && 'half.child' %in% .get.pi.name(as.integer(which.pi))) 
 			name.obs <- paste(indicators, 'proj', capitalize(bound), sep='')
 	}
 	if(all(is.null(c(name.preds, name.obs)))) return(NULL)
