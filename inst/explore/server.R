@@ -69,7 +69,8 @@ shinyServer(function(input, output, session) {
   	if(nrow(data)==0) return(NULL)
   	animationOptions(interval = 2000)
     yearRange <- range(data$Year)
-    value <- yearRange[1]
+    #value <- yearRange[1]
+    value <- 2015
     #print(c('slider1: ', value, yearRange, data.env()$year.range, input$year))
     if(is.null(data.env()$year.range)) wppExplorer:::set.data.env('year.range', yearRange)
     else {
@@ -375,10 +376,12 @@ shinyServer(function(input, output, session) {
   })
   
   output$probtrends <- renderPlot({
+  	probtime.data <<- NULL
   	data <- get.trends.nocast()
   	if(is.null(data)) return(data)
   	data <- data$casted
-  	low <- get.trends.low()
+  	low <- NULL
+  	if (!input$trend.logscale) low <- get.trends.low()
   	if(!is.null(low)) {
   		high <- get.trends.high()
   		colnames(low$casted) <- sub('value', 'low', colnames(low$casted))
@@ -392,7 +395,13 @@ shinyServer(function(input, output, session) {
   		for (col in grep('low|high', colnames(data)))
   			data[idx,col] <- data$value[idx]
   	}
+  	#data <- subset(data, Year >= input$plotFrom & Year <= input$plotTo)
+  	if(!is.null(input$probtrends_zoom)) 
+  		data <- subset(data, Year >= round(input$probtrends_zoom$xmin,0) & Year <= round(input$probtrends_zoom$xmax,0) & 
+  								value >= input$probtrends_zoom$ymin & value <= input$probtrends_zoom$ymax)
   	g <- ggplot(data, aes(x=Year,y=value,colour=charcode, fill=charcode)) + geom_line() + theme(legend.title=element_blank())
+  	if (input$trend.logscale) g <- g + coord_trans(y="log2")
+  	probtime.data <<- data
   	if(!is.null(low)) {
   		line.data <- NULL
   		for(i in 3:1) {
@@ -401,7 +410,12 @@ shinyServer(function(input, output, session) {
   			g <- g + geom_ribbon(aes_string(ymin=colnames(data)[idx][1], ymax=colnames(data)[idx][2], 
   											fill="charcode", colour="charcode", linetype=NA), alpha=c(0.3, 0.2, 0.1)[i])
   			if(!is.null(line.data)) colnames(line.data) <- c('charcode', 'Year', 'low', 'high', 'variant')
-  			line.data <- rbind(line.data, setNames(cbind(data[,c(1,2,idx)], wppExplorer:::.get.pi.name.for.label(i)), colnames(line.data)))		
+  			line.data <- rbind(line.data, setNames(cbind(data[,c(1,2,idx)], wppExplorer:::.get.pi.name.for.label(i)), colnames(line.data)))
+  			tmp1 <- data
+  			tmp1[,'value'] <- data[,colnames(data)[idx][1]]
+  			tmp2 <- data
+  			tmp2[,'value'] <- data[,colnames(data)[idx][2]]
+  			probtime.data <<- rbind(probtime.data, tmp1, tmp2)
   		}
   		colnames(line.data) <- c('charcode', 'Year', 'low', 'high', 'variant')
 		
@@ -409,9 +423,18 @@ shinyServer(function(input, output, session) {
   		g <- g + geom_line(data=line.data, aes(y=high, linetype=variant, colour=charcode))
   		g <- g + scale_linetype_manual(values=c("80%"=2, '1/2child'=4, "95%"=3), na.value=0)
   	}
+  	probtime.data <<- merge(probtime.data, data.env()$iso3166[,c('charcode', 'name')], by='charcode', sort=FALSE)
   	g
   })
   
+  output$probtrends_selected <- renderText({
+  	if(is.null(input$probtrends_values)) return(" ")
+  	selected <- nearPoints(probtime.data, input$probtrends_values, maxpoints = 1, threshold=10)
+	if(nrow(selected) == 0) return(" ")
+	paste0("Year = ", selected$Year, ', Value = ', round(selected$value,3), ", Country: ", selected$name)
+	#paste0("Year = ", round(as.numeric(input$probtrends_values$x), 1), ', value = ', round(as.numeric(input$probtrends_values$y),3))
+	})
+	
   .is.pyramid.indicator <- function() {
   	 if(!indicator.fun() %in% c('tpop', 'tpopF', 'tpopM', 'popagesex')) {
   		df <- data.frame(x=0, y=0, lab='No pyramid data for this indicator.')
@@ -464,18 +487,21 @@ shinyServer(function(input, output, session) {
   
   .print.pyramid <- function(data) {
   	data.range <- range(data$value, na.rm=TRUE)
-  	g <- ggplot(data, aes(y=value, x=reorder(age, age.num), group=charcode, colour=charcode)) + geom_line(subset=.(sex=='F')) + geom_line(subset=.(sex=='M'), aes(y=-1*value)) + scale_x_discrete(name="") + scale_y_continuous(labels=function(x)abs(x)) + coord_flip() + ggtitle(input$year) + theme(legend.title=element_blank())
+  	g <- ggplot(data, aes(y=value, x=reorder(age, age.num), group=charcode, colour=charcode)) + 
+  			geom_line(data=subset(data, sex=='F')) + geom_line(data=subset(data, sex=='M'), aes(y=-1*value)) + 
+  			scale_x_discrete(name="") + scale_y_continuous(labels=function(x)abs(x)) + 
+  			coord_flip() + ggtitle(input$year) + theme(legend.title=element_blank())
   	g <- g + geom_text(data=NULL, y=-data.range[2]/2, x=20, label="Male", colour='black')
   	g <- g + geom_text(data=NULL, y=data.range[2]/2, x=20, label="Female", colour='black')
   	g <- g + geom_hline(yintercept = 0)
   	if(is.element('low', colnames(data))) {
-  		g <- g + geom_ribbon(subset=.(sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
-  		g <- g + geom_ribbon(subset=.(sex=='M'), aes(ymin=-high, ymax=-low, linetype=NA), alpha=0.3)
+  		g <- g + geom_ribbon(data=subset(data, sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
+  		g <- g + geom_ribbon(data=subset(data, sex=='M'), aes(ymin=-high, ymax=-low, linetype=NA), alpha=0.3)
   		line.data <- cbind(data, variant=wppExplorer:::.get.pi.name.for.label(3)) # only half-child variant available 
-  		g <- g + geom_line(data=line.data, subset=.(sex=='F'), aes(y=low, linetype=variant, colour=charcode, group=charcode)) # female low
-  		g <- g + geom_line(data=line.data, subset=.(sex=='F'), aes(y=high, linetype=variant, colour=charcode, group=charcode)) # female high
-  		g <- g + geom_line(data=line.data, subset=.(sex=='M'), aes(y=-low, linetype=variant, colour=charcode, group=charcode)) # male low
-  		g <- g + geom_line(data=line.data, subset=.(sex=='M'), aes(y=-high, linetype=variant, colour=charcode, group=charcode)) # male high
+  		g <- g + geom_line(data=subset(line.data, sex=='F'), aes(y=low, linetype=variant, colour=charcode, group=charcode)) # female low
+  		g <- g + geom_line(data=subset(line.data, sex=='F'), aes(y=high, linetype=variant, colour=charcode, group=charcode)) # female high
+  		g <- g + geom_line(data=subset(line.data, sex=='M'), aes(y=-low, linetype=variant, colour=charcode, group=charcode)) # male low
+  		g <- g + geom_line(data=subset(line.data, sex=='M'), aes(y=-high, linetype=variant, colour=charcode, group=charcode)) # male high
         g <- g + scale_linetype_manual(values=c("80%"=2, '1/2child'=4, "95%"=3), na.value=0)
   	}
   	g

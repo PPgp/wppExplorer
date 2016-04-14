@@ -93,10 +93,19 @@ width=3
 					col(0.5, ''),
 					col(2, uiOutput('cselection')),
 				  	col(7, tabsetPanel(
-				  				tabPanel('Median',
-				  					googleLineChart('trends', options=list(height=400, width=650)),
-				  					checkboxInput('median.logscale', 'Log scale', FALSE)),
-				  				tabPanel('Probabilistic trends', plotOutput('probtrends', height="400px", width="650px")),
+				  				#tabPanel('Median',
+				  				#	googleLineChart('trends', options=list(height=400, width=650)),
+				  				#	checkboxInput('median.logscale', 'Log scale', FALSE)),
+				  				tabPanel('Probabilistic trends', 
+				  					plotOutput('probtrends', height="400px", width="650px", 
+				  							click = "probtrends_values", hover = "probtrends_values", brush = "probtrends_zoom"),
+				  					flowLayout(
+				  						#numericInput("plotFrom", "Start: ", 1950, width="40%"), 
+										#numericInput("plotTo", "End: ", 2100, width="40%"),
+										checkboxInput('trend.logscale', 'Log scale', FALSE),
+										textOutput("probtrends_selected")
+										)
+				  					),
 				  				tabPanel('Age Profile', 
 				  					googleLineChart('age.profileM', options=list(height=200, width=650)),
 				  					googleLineChart('age.profileF', options=list(height=200, width=650)),

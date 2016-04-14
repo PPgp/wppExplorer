@@ -272,9 +272,23 @@ load.dataset.and.sum.by.country<-function(dataset){
 	pop <- sum.by.country(wpp.data.env[[dataset]])
 }
 
+trim.spaces <- function (x) gsub("^\\s+|\\s+$", "", x)
+
 if.not.exists.load <- function(name) {
-	if(!exists(name, where=wpp.data.env, inherits=FALSE))
-		do.call('data', list(name, package=wpp.data.env$package, envir=wpp.data.env))
+	if(exists(name, where=wpp.data.env, inherits=FALSE)) return()
+	do.call('data', list(name, package=wpp.data.env$package, envir=wpp.data.env))
+	# special handling of the age column (mostly because of inconsistent labels in the various datasets)
+	# trim spaces in age column if needed
+	if('age' %in% colnames(wpp.data.env[[name]]) && is.factor(wpp.data.env[[name]]$age)) {
+		levels(wpp.data.env[[name]]$age) <- trim.spaces(levels(wpp.data.env[[name]]$age))
+		# 'age' in the mx dataset should be numeric but includes 100+, so it's factor
+		# replace by 100 and make it numeric
+		levs <- levels(wpp.data.env[[name]]$age)
+		if("5" %in% levs && "100+" %in% levs) {
+			levels(wpp.data.env[[name]]$age)[levs == "100+"] <- "100"
+			wpp.data.env[[name]]$age <- as.integer(as.character(wpp.data.env[[name]]$age))
+		}
+	}
 }
 
 load.and.merge.datasets <- function(name.obs, name.pred=NULL, by='country_code', remove.cols=c('country', 'name')){
@@ -295,7 +309,7 @@ lookupByIndicator <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), ag
 	indicator <- as.numeric(indicator)
 	fun <- ind.fun(indicator)
 	# load observed data
-	#browser()
+	#if(fun == 'mortagesex') browser()
 	if(!is.null(wpp.data.env[[fun]])) return(wpp.data.env[[fun]])
 	data <- wpp.indicator(fun, sexm=sex.mult, sex=sex, agem=age.mult, age=age)
 	if(!ind.is.by.age(indicator))
@@ -430,6 +444,7 @@ sumMFbycountry <- function(datasetM, datasetF) {
 }
 
 sum.by.country.subset.age <- function(dataset, ages) {
+	if('100+' %in% ages) ages <- c(ages, "100")
 	sum.by.country(with(dataset, dataset[gsub("^\\s+|\\s+$", "", age) %in% ages,]))
 }
 
@@ -519,6 +534,7 @@ get.age.profile.fert <- function(year, countries){
 	asfr <- asfr[,-which(is.element(colnames(asfr), c('country', 'name')))]
 	asfrm <- wpp.by.countries(wpp.by.year(
 				merge.with.un.and.melt(cbind(asfr, age.num=.get.age.num(asfr$age)), id.vars=c('charcode', 'age', 'age.num')), year), countries)
+	#browser()
 	tfert <- fert()
 	tfert <- cbind(country_code=tfert$country_code, tfert[,.get.year.cols.idx(tfert)])
 	tfertm <- wpp.by.countries(wpp.by.year(
@@ -544,10 +560,11 @@ get.indicator.title <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), 
 	return(paste(title, sex.string, age.string, sep='; '))
 }
 
-.get.age.num <- function(age) {
+.get.age.num <- function(age) {	
+	# Return numeric version of the age, either its index or its numeric value
 	aorder <- .get.age.order()
 	#browser()
-	if(any(!is.element(age, names(aorder)))) return(age)
+	if(any(!(age %in% names(aorder)))) return(age)
 	aorder[as.character(age)]
 } 
 .get.age.order <- function() {
