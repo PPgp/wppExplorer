@@ -8,12 +8,12 @@ Launching WPP Explorer
 Main function of the package. It opens an interactive (shiny) interface in a browser. To exit the browser view, hit the Escape key.
 }
 \usage{
-wpp.explore(wpp.year = NULL)
+wpp.explore(wpp.year = NULL, ...)
 }
 
 \arguments{
-  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2015 (default), 2012, and 2010.
-}
+  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2015 (default), 2012, and 2010.}
+  \item{\dots}{Additional arguments passed to \code{\link[shiny:runApp]{runApp}}.}
 }
 \details{
 	The time slider in the left pane defines the year or time period for which data are shown. Note that for vital rates indicators, such as fertility, mortality, migration and sex ratio at birth, the time shown on the slider is the end year of the time period of the data shown in the right pane.

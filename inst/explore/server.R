@@ -69,8 +69,8 @@ shinyServer(function(input, output, session) {
   	if(nrow(data)==0) return(NULL)
   	animationOptions(interval = 2000)
     yearRange <- range(data$Year)
-    #value <- yearRange[1]
     value <- 2015
+    #value <- if(is.null(input$year)) 2015 else max(input$year, yearRange[1])
     #print(c('slider1: ', value, yearRange, data.env()$year.range, input$year))
     if(is.null(data.env()$year.range)) wppExplorer:::set.data.env('year.range', yearRange)
     else {
@@ -374,9 +374,14 @@ shinyServer(function(input, output, session) {
   output$age.profileF <- reactive({
 	show.age.profile('F', indicator.fun(), input$aprofile.logscale, input$year)
   })
+  reset.trend.data <- function() ggplot.data$trends <- NULL
+  reset.pyramid.data <- function() ggplot.data$pyramid <- NULL
+  
+  ggplot.data <- reactiveValues(trends=NULL, pyramid=NULL)
+  trends.ranges <- reactiveValues(year=NULL, value=NULL)
   
   output$probtrends <- renderPlot({
-  	probtime.data <<- NULL
+  	reset.trend.data()
   	data <- get.trends.nocast()
   	if(is.null(data)) return(data)
   	data <- data$casted
@@ -395,13 +400,17 @@ shinyServer(function(input, output, session) {
   		for (col in grep('low|high', colnames(data)))
   			data[idx,col] <- data$value[idx]
   	}
-  	#data <- subset(data, Year >= input$plotFrom & Year <= input$plotTo)
-  	if(!is.null(input$probtrends_zoom)) 
-  		data <- subset(data, Year >= round(input$probtrends_zoom$xmin,0) & Year <= round(input$probtrends_zoom$xmax,0) & 
-  								value >= input$probtrends_zoom$ymin & value <= input$probtrends_zoom$ymax)
+  	if(!is.null(trends.ranges$year)) {
+  		data.zoom <- subset(data, Year >= trends.ranges$year[1] & Year <= trends.ranges$year[2] & 
+  								value >= trends.ranges$value[1] & value <= trends.ranges$value[2])
+  		if(nrow(data.zoom) == 0) {
+  			trends.ranges$year <- trends.ranges$value <- NULL
+  		} else data <- data.zoom
+  	}
   	g <- ggplot(data, aes(x=Year,y=value,colour=charcode, fill=charcode)) + geom_line() + theme(legend.title=element_blank())
   	if (input$trend.logscale) g <- g + coord_trans(y="log2")
-  	probtime.data <<- data
+  	isolate(ggplot.data$trends <- data)
+  	
   	if(!is.null(low)) {
   		line.data <- NULL
   		for(i in 3:1) {
@@ -411,11 +420,10 @@ shinyServer(function(input, output, session) {
   											fill="charcode", colour="charcode", linetype=NA), alpha=c(0.3, 0.2, 0.1)[i])
   			if(!is.null(line.data)) colnames(line.data) <- c('charcode', 'Year', 'low', 'high', 'variant')
   			line.data <- rbind(line.data, setNames(cbind(data[,c(1,2,idx)], wppExplorer:::.get.pi.name.for.label(i)), colnames(line.data)))
-  			tmp1 <- data
+  			tmp1 <- tmp2 <- data
   			tmp1[,'value'] <- data[,colnames(data)[idx][1]]
-  			tmp2 <- data
   			tmp2[,'value'] <- data[,colnames(data)[idx][2]]
-  			probtime.data <<- rbind(probtime.data, tmp1, tmp2)
+  			isolate(ggplot.data$trends <- rbind(ggplot.data$trends, tmp1, tmp2))
   		}
   		colnames(line.data) <- c('charcode', 'Year', 'low', 'high', 'variant')
 		
@@ -423,18 +431,27 @@ shinyServer(function(input, output, session) {
   		g <- g + geom_line(data=line.data, aes(y=high, linetype=variant, colour=charcode))
   		g <- g + scale_linetype_manual(values=c("80%"=2, '1/2child'=4, "95%"=3), na.value=0)
   	}
-  	probtime.data <<- merge(probtime.data, data.env()$iso3166[,c('charcode', 'name')], by='charcode', sort=FALSE)
+  	isolate(ggplot.data$trends <- merge(ggplot.data$trends, data.env()$iso3166[,c('charcode', 'name')], by='charcode', sort=FALSE))
   	g
+  })
+  
+  observeEvent(input$probtrends_zoom, {
+  	trends.ranges$year <- c(round(input$probtrends_zoom$xmin,0), round(input$probtrends_zoom$xmax,0))
+  	trends.ranges$value <- c(input$probtrends_zoom$ymin, input$probtrends_zoom$ymax)
+  })
+
+  observeEvent(input$probtrends_zoom_reset, {
+  	trends.ranges$year <- NULL
+  	trends.ranges$value <- NULL
   })
   
   output$probtrends_selected <- renderText({
   	if(is.null(input$probtrends_values)) return(" ")
-  	selected <- nearPoints(probtime.data, input$probtrends_values, maxpoints = 1, threshold=10)
+  	selected <- nearPoints(ggplot.data$trends, input$probtrends_values, maxpoints = 1, threshold=10)
 	if(nrow(selected) == 0) return(" ")
 	paste0("Year = ", selected$Year, ', Value = ', round(selected$value,3), ", Country: ", selected$name)
-	#paste0("Year = ", round(as.numeric(input$probtrends_values$x), 1), ', value = ', round(as.numeric(input$probtrends_values$y),3))
 	})
-	
+		
   .is.pyramid.indicator <- function() {
   	 if(!indicator.fun() %in% c('tpop', 'tpopF', 'tpopM', 'popagesex')) {
   		df <- data.frame(x=0, y=0, lab='No pyramid data for this indicator.')
@@ -452,7 +469,10 @@ shinyServer(function(input, output, session) {
   	data$tpop <- NULL
   	data
   }
-  .get.pyramid.data <- function(proportion=FALSE) {
+  
+  .get.pyramid.data <- reactive({
+  #.get.pyramid.data <- function(proportion=FALSE) {
+  	proportion <- input$proppyramids
   	data <- pyramid.data()
   	if(proportion) {
   		tpop <- wppExplorer::wpp.indicator('tpop')
@@ -483,12 +503,12 @@ shinyServer(function(input, output, session) {
 	}
   	data <- data[order(data$age.num),]
   	data
-  }
+  })
   
   .print.pyramid <- function(data) {
-  	data.range <- range(data$value, na.rm=TRUE)
+  	data.range <- range(abs(data$value), na.rm=TRUE)
   	g <- ggplot(data, aes(y=value, x=reorder(age, age.num), group=charcode, colour=charcode)) + 
-  			geom_line(data=subset(data, sex=='F')) + geom_line(data=subset(data, sex=='M'), aes(y=-1*value)) + 
+  			geom_line(data=subset(data, sex=='F')) + geom_line(data=subset(data, sex=='M')) + 
   			scale_x_discrete(name="") + scale_y_continuous(labels=function(x)abs(x)) + 
   			coord_flip() + ggtitle(input$year) + theme(legend.title=element_blank())
   	g <- g + geom_text(data=NULL, y=-data.range[2]/2, x=20, label="Male", colour='black')
@@ -496,23 +516,60 @@ shinyServer(function(input, output, session) {
   	g <- g + geom_hline(yintercept = 0)
   	if(is.element('low', colnames(data))) {
   		g <- g + geom_ribbon(data=subset(data, sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
-  		g <- g + geom_ribbon(data=subset(data, sex=='M'), aes(ymin=-high, ymax=-low, linetype=NA), alpha=0.3)
+  		g <- g + geom_ribbon(data=subset(data, sex=='M'), aes(ymin=high, ymax=low, linetype=NA), alpha=0.3)
   		line.data <- cbind(data, variant=wppExplorer:::.get.pi.name.for.label(3)) # only half-child variant available 
   		g <- g + geom_line(data=subset(line.data, sex=='F'), aes(y=low, linetype=variant, colour=charcode, group=charcode)) # female low
   		g <- g + geom_line(data=subset(line.data, sex=='F'), aes(y=high, linetype=variant, colour=charcode, group=charcode)) # female high
-  		g <- g + geom_line(data=subset(line.data, sex=='M'), aes(y=-low, linetype=variant, colour=charcode, group=charcode)) # male low
-  		g <- g + geom_line(data=subset(line.data, sex=='M'), aes(y=-high, linetype=variant, colour=charcode, group=charcode)) # male high
+  		g <- g + geom_line(data=subset(line.data, sex=='M'), aes(y=low, linetype=variant, colour=charcode, group=charcode)) # male low
+  		g <- g + geom_line(data=subset(line.data, sex=='M'), aes(y=high, linetype=variant, colour=charcode, group=charcode)) # male high
         g <- g + scale_linetype_manual(values=c("80%"=2, '1/2child'=4, "95%"=3), na.value=0)
+        tmp1 <- tmp2 <- data
+		tmp1[,'value'] <- data[,'low']
+  		tmp2[,'value'] <- data[,'high']
+  		isolate(ggplot.data$pyramid <- rbind(ggplot.data$pyramid, tmp1, tmp2))
   	}
   	g
   }
   
+  pyramid.ranges <- reactiveValues(age=NULL, value=NULL)
   output$pyramids <- renderPlot({
   	if(!.is.pyramid.indicator()) return()
-	data <- .get.pyramid.data(proportion=input$proppyramids)
-	.print.pyramid(data)
+  	reset.pyramid.data()
+	#data <- .get.pyramid.data(proportion=input$proppyramids)
+	data <- .get.pyramid.data()
+	male.idx <- which(data$sex=='M')
+	for(col in c('value', 'low', 'high'))
+		if(!is.null(data[[col]])) data[[col]][male.idx] <- -data[[col]][male.idx]
+	if(!is.null(pyramid.ranges$age)) {
+		#print(input$pyramid_zoom)
+  		data.zoom <- subset(data, age.num >= pyramid.ranges$age[1] & age.num <= pyramid.ranges$age[2] & 
+  								value >= pyramid.ranges$value[1] & value <= pyramid.ranges$value[2])
+  		if(nrow(data.zoom) == 0) {
+  			pyramid.ranges$age <- pyramid.ranges$value <- NULL
+  		} else data <- data.zoom
+  	}
+	isolate(ggplot.data$pyramid <- data)
+	g <- .print.pyramid(data)
+	isolate(ggplot.data$pyramid <- merge(ggplot.data$pyramid, data.env()$iso3166[,c('charcode', 'name')], by='charcode', sort=FALSE))
+	g
   })
   
+  observeEvent(input$pyramid_zoom, {
+  	pyramid.ranges$age <- c(round(input$pyramid_zoom$ymin,0), round(input$pyramid_zoom$ymax,0))
+  	pyramid.ranges$value <- c(input$pyramid_zoom$xmin, input$pyramid_zoom$xmax)
+  })
+
+  observeEvent(input$pyramid_zoom_reset, {
+  	pyramid.ranges$age <- NULL
+  	pyramid.ranges$value <- NULL
+  })
+  
+  output$pyramid_selected <- renderText({
+  	if(is.null(input$pyramid_values)) return(" ")
+  	selected <- nearPoints(ggplot.data$pyramid, input$pyramid_values, xvar='value', yvar='age.num', maxpoints = 1, threshold=10)
+	if(nrow(selected) == 0) return(" ")
+	paste0(if(selected$value < 0) "Male " else "Female ", selected$age, ', Value = ', round(abs(selected$value),3), ", Country: ", selected$name)
+	})
   
   # .get.digits <- reactive({
   	# print(wppExplorer:::ind.digits(as.integer(input$indicator)))

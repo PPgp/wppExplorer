@@ -1,3 +1,17 @@
+1.8-0 (4/15/2016)
+-----
+ggplots made interactive (allows mouse hovers for retrieving values and 
+brushes for zooming). Affects Trends and Pyramids.
+
+Removed "Median" tab.
+
+Fixed an issue with oldest age in the mx dataset.
+
+Default value of the slider changed to 2015.
+
+Function wpp.explorer passes additional arguments to shiny runApp. 
+
+
 1.7-0/1 (8/8/2015)
 -----
 Added support for 2015.

@@ -98,10 +98,10 @@ width=3
 				  				#	checkboxInput('median.logscale', 'Log scale', FALSE)),
 				  				tabPanel('Probabilistic trends', 
 				  					plotOutput('probtrends', height="400px", width="650px", 
-				  							click = "probtrends_values", hover = "probtrends_values", brush = "probtrends_zoom"),
+				  							click = "probtrends_values", hover = "probtrends_values", 
+				  							dblclick = "probtrends_zoom_reset", 
+				  							brush = brushOpts(id = "probtrends_zoom", resetOnNew = TRUE)),
 				  					flowLayout(
-				  						#numericInput("plotFrom", "Start: ", 1950, width="40%"), 
-										#numericInput("plotTo", "End: ", 2100, width="40%"),
 										checkboxInput('trend.logscale', 'Log scale', FALSE),
 										textOutput("probtrends_selected")
 										)
@@ -111,8 +111,15 @@ width=3
 				  					googleLineChart('age.profileF', options=list(height=200, width=650)),
 				  					checkboxInput('aprofile.logscale', 'Log scale', FALSE)),
 				  				tabPanel('Pyramids', 
-				  					plotOutput('pyramids'),
-				  					checkboxInput('proppyramids', 'Pyramid of proportions', FALSE))				  			
+				  					plotOutput('pyramids', click = "pyramid_values", hover = "pyramid_values", 
+				  						dblclick = "pyramid_zoom_reset",
+				  						brush = brushOpts(id = "pyramid_zoom", resetOnNew = TRUE)
+									),
+				  					flowLayout(
+				  						checkboxInput('proppyramids', 'Pyramid of proportions', FALSE),
+				  						textOutput("pyramid_selected")
+									)
+				  				)	  			
 				  			)
 				  		)
  					),

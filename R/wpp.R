@@ -1,8 +1,9 @@
 utils::globalVariables("wpp.data.env")
 
-wpp.explore <- function(wpp.year=NULL) {
+wpp.explore <- function(wpp.year=NULL, host=NULL, ...) {
 	if(!is.null(wpp.year)) set.wpp.year(wpp.year)
-	shiny::runApp(system.file('explore', package='wppExplorer'), host = getOption("shiny.host", "0.0.0.0"))
+	if(missing(host)) host <- getOption("shiny.host", "0.0.0.0")
+	shiny::runApp(system.file('explore', package='wppExplorer'), host = host, ...)
 }
 
 wpp.explore3d <- function(wpp.year=NULL) {
