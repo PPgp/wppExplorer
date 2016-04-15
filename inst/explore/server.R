@@ -64,25 +64,25 @@ shinyServer(function(input, output, session) {
   
   data.env <- function() wppExplorer:::wpp.data.env
     
+  year.range <- reactiveValues(min=1955, max=2100)
+    
   output$yearUI <- renderUI({
-	data <- indicatorData()
-  	if(nrow(data)==0) return(NULL)
-  	animationOptions(interval = 2000)
-    yearRange <- range(data$Year)
-    value <- 2015
-    #value <- if(is.null(input$year)) 2015 else max(input$year, yearRange[1])
-    #print(c('slider1: ', value, yearRange, data.env()$year.range, input$year))
-    if(is.null(data.env()$year.range)) wppExplorer:::set.data.env('year.range', yearRange)
-    else {
-    	if(data.env()$year.range[1] != yearRange[1]) {
-    		wppExplorer:::set.data.env('year.range', yearRange)
-    		if(!is.null(input$year) && input$year >= yearRange[1]) value <- input$year
-    	}
-    }
-    #print(c('slider2: ', value, yearRange, data.env()$year.range, input$year))
+  	animationOptions(interval = 3000)
     sliderInput('year', h5('Year:'), sep="",
     			animate=TRUE,
-                min=yearRange[1], max=yearRange[2], value = value, step=5)
+                min=isolate(year.range$min), max=isolate(year.range$max), value = 2015, step=5)
+  })
+  
+  observe({
+  	# update the year slider if the indicator changes and its data have a different time range
+  	if(is.null(input$year)) return(NULL)
+  	data <- indicatorData()
+  	if(nrow(data)==0) return(NULL)
+  	yearRange <- range(data$Year)
+  	if(year.range$min == yearRange[1]) return(NULL)
+    year.range$min <- yearRange[1]
+    value <- max(yearRange[1], isolate(input$year))	
+  	updateSliderInput(session, "year", min=yearRange[1], value=value) 	
   })
   
   output$indicatorDesc <- renderText({
@@ -212,6 +212,21 @@ shinyServer(function(input, output, session) {
 	data
   	})
   	
+  output$ghist <- renderGvis({
+  	data <- data()
+  	if(is.null(data) || nrow(data)<=0) return(NULL)
+  	# filter out aggregations
+  	data <- merge(data[,c('charcode', 'value')], data.env()$iso3166[data.env()$iso3166$is.country, c('charcode', 'name'), drop=FALSE], by='charcode')
+  	data <- data[,c('name', 'value')]
+  	xlim <- if(input$fiXscaleHist) rangeForAllYears() else range(data$value, na.rm=TRUE)
+  	#browser()
+  	options <- list(title=paste(input$year), legend="{ position: 'none' }", colors="['green']", 
+  						height="500px", width="900px", histogram=paste0("{bucketSize: ", diff(xlim)/30, "}"))
+  						
+  	options$hAxis <- paste0("{maxAlternation: 1,  minValue:", xlim[1], ", maxValue:", xlim[2], "}")
+  	gvisHistogram(data, options=options)
+  })
+  
   output$hist <- renderPlot({
   	data <- data()
   	if(is.null(data) || nrow(data)<=0) return(NULL)

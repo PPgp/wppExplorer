@@ -5,11 +5,15 @@ brushes for zooming). Affects Trends and Pyramids.
 
 Removed "Median" tab.
 
+Histogram is now interactive, using googleVis.
+
 Fixed an issue with oldest age in the mx dataset.
+
+Fixed a constant re-drawing of the time slider.
 
 Default value of the slider changed to 2015.
 
-Function wpp.explorer passes additional arguments to shiny runApp. 
+Function wpp.explorer passes additional arguments to shiny runApp.
 
 
 1.7-0/1 (8/8/2015)

@@ -13,6 +13,10 @@ googleLineChart <- function(id, options=list()) {
   tags$div(id=id, class="google-linechart-output", `data-options`=RJSONIO::toJSON(options))
 }
 
+googleHistogram <- function(id, options=list()) {
+  tags$div(id=id, class="google-histogram-output", `data-options`=RJSONIO::toJSON(options))
+}
+
 row <- function(...) {
 	tags$div(class="row", ...)
 }
@@ -53,7 +57,7 @@ shinyUI(pageWithSidebar(
     			multiple=TRUE, selected=1),
     textOutput('uncertaintyNote'),
     hr(),
-    HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small></p><p><small>CSSS, University of Washington; <a href='http://bayespop.csss.washington.edu'>project website</a></small></p>"),
+    HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small></p><p><small>Hana &#352;ev&#269;&#237;kov&#225;, CSSS, University of Washington; <a href='http://bayespop.csss.washington.edu'>project website</a></small></p>"),
 width=3
   ),
   mainPanel(
@@ -96,7 +100,7 @@ width=3
 				  				#tabPanel('Median',
 				  				#	googleLineChart('trends', options=list(height=400, width=650)),
 				  				#	checkboxInput('median.logscale', 'Log scale', FALSE)),
-				  				tabPanel('Probabilistic trends', 
+				  				tabPanel('Trends', 
 				  					plotOutput('probtrends', height="400px", width="650px", 
 				  							click = "probtrends_values", hover = "probtrends_values", 
 				  							dblclick = "probtrends_zoom_reset", 
@@ -131,10 +135,14 @@ width=3
  				)
  		),
  	tabPanel('Histogram',
- 		textOutput('year3'),
- 		hr(),
-      	checkboxInput('fiXscaleHist', 'Fixed x-axis over time', TRUE),
-      	plotOutput('hist')
+ 		#textOutput('year3'),
+ 		#hr(),
+ 		flowLayout(
+      	checkboxInput('fiXscaleHist', 'Fixed x-axis over time', FALSE)
+      	),
+      	hr(),
+      	#plotOutput('hist')
+      	htmlOutput('ghist')
     ),
       tabPanel('Rosling Chart',
 		htmlOutput('graphgvis'),
