@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Help with WPP Explorer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<h3>Description</h3>
+
+<p>WPP Explorer allows to interactively explore data from the <a href='http://esa.un.org/unpd/ppp'>World Population Prospects</a>, contained in the R package <span class="pkg">wpp2015</span>. It is based on the <span class="pkg">shiny</span> R package. 
+</p>
+
+
+<h3>Data</h3>
+<p>The underlying datasets are based on estimates and projections of the
+United Nations, Department of Economic and Social Affairs, Population Division. Probabilistic projections were produced with methods of
+Raftery et al. (2012, 2014), see <a href='http://bayespop.csss.washington.edu'>our project website</a>.</p>
+
+<h3>Navigation</h3>
+
+<p>The time slider in the left pane defines the year or time period for which data are shown. Note that for vital rates indicators, such as fertility, mortality, migration and sex ratio at birth, the time shown on the slider is the end year of the time period of the data shown in the right pane.
+</p>
+<p>The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bounds are available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the &ldquo;Sortable Data&rdquo; tab, and &ldquo;Trends&rdquo; and &ldquo;Pyramids&rdquo;. In <span class="pkg">wpp2015</span>, the 80 and 95% intervals are available for the fertility, life expectancy and total population indicators; The +-1/2child intervals are available for the fertility and population indicators. 
+</p>
+<p>The ggplot-based graphs in the Trends and Pyramids tabs are interactive. One can see the data values by mouse hovering or single clicks. One can zoom in by selecting a region. Zooming out is done by a double click.</p>
+
+
+<h3>Note</h3>
+The wppExplorer can be also downloaded from <a href="https://cran.r-project.org">CRAN</a> as a standalone R package. It can be used for example to access values that are underlying the various visualizations. 
+
+
+<h3>Maintainer</h3>
+<p>Hana &#352;ev&#269;&#237;kov&#225;, Center for Statistics and the Social Sciences, University of Washington.</p>
+
+<h3>References</h3> 
+<p>A. E. Raftery,  N. Li, H. &#352;ev&#269;&#237;kov&#225; , P. Gerland, G. K. Heilig (2012). Bayesian probabilistic population projections for all countries. Proceedings of the National Academy of Sciences 109:13915-13921.
+</p>
+<p>P. Gerland, A. E. Raftery, H. &#352;ev&#269;&#237;kov&#225;, N. Li, D. Gu, T. Spoorenberg, L. Alkema, B. K. Fosdick, J. L. Chunn, N. Lalic, G. Bay, T. Buettner, G. K. Heilig,  J. Wilmoth (2014). World Population Stabilization Unlikely This Century. Science 346:234-237.
+</p>
+
+
+<hr /><div style="text-align: center;">[Package <em>wppExplorer</em> version 1.8-0]</div>
+</body>
+</html>
+

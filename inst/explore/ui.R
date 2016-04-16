@@ -57,7 +57,7 @@ shinyUI(pageWithSidebar(
     			multiple=TRUE, selected=1),
     textOutput('uncertaintyNote'),
     hr(),
-    HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small></p><p><small>Hana &#352;ev&#269;&#237;kov&#225;, CSSS, University of Washington; <a href='http://bayespop.csss.washington.edu'>project website</a></small></p>"),
+    HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract'>Raftery et al. (2012, PNAS)</a></small></p><p><small>Hana &#352;ev&#269;&#237;kov&#225;, <a href='https://www.csss.washington.edu'>CSSS</a>, University of Washington; <a href='http://bayespop.csss.washington.edu'>project website</a></small></p>"),
 width=3
   ),
   mainPanel(
@@ -152,7 +152,10 @@ width=3
 			col(3, textOutput('AddIndicatorText')),
 			col(1, actionButton("AddIndicator", "Add indicator"))
 			)
-      )#,
+      ),
+      tabPanel("Help",
+      	includeHTML("README.html")
+      )
   ) #end tabsetPanel
   ) #end mainPanel
 ))
