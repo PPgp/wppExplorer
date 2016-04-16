@@ -7,6 +7,8 @@ Removed "Median" tab.
 
 Histogram is now interactive, using googleVis.
 
+Added Help tab.
+
 Fixed an issue with oldest age in the mx dataset.
 
 Fixed a constant re-drawing of the time slider.

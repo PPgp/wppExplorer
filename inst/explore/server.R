@@ -80,7 +80,7 @@ shinyServer(function(input, output, session) {
   	if(nrow(data)==0) return(NULL)
   	yearRange <- range(data$Year)
   	if(year.range$min == yearRange[1]) return(NULL)
-    year.range$min <- yearRange[1]
+    isolate(year.range$min <- yearRange[1])
     value <- max(yearRange[1], isolate(input$year))	
   	updateSliderInput(session, "year", min=yearRange[1], value=value) 	
   })
