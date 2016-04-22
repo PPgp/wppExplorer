@@ -150,9 +150,9 @@ fertage <- function(age, ...){
 	tfert <- cbind(country_code=tfert$country_code, tfert[,.get.year.cols.idx(tfert)])
 	asfr <- sum.by.country.subset.age(wpp.data.env[['percentASFR']], age)
 	tfert <- tfert[tfert$country_code %in% asfr$country_code,]
-	o <- order(asfr$country_code)
+	tfert <- tfert[match(asfr$country_code, tfert$country_code), ] # put rows in the same order
 	#browser()
-	cbind(country_code=tfert[o,'country_code'], tfert[o,2:ncol(tfert)] * asfr[o,2:ncol(asfr)] / 100.)
+	cbind(country_code=tfert[,'country_code'], tfert[,2:ncol(tfert)] * asfr[,2:ncol(asfr)] / 100.)
 }
 
 pfertage <- function(agem, ...){
@@ -529,12 +529,17 @@ get.pyramid.data <- function(year, countries, which.pi=NULL, bound=NULL, indicat
 	wpp.by.countries(data, countries)
 }
 
-get.age.profile.fert <- function(year, countries){
+.get.pASFR <- function(year, countries) {
 	if.not.exists.load('percentASFR')
 	asfr <- wpp.data.env[['percentASFR']]
 	asfr <- asfr[,-which(is.element(colnames(asfr), c('country', 'name')))]
 	asfrm <- wpp.by.countries(wpp.by.year(
 				merge.with.un.and.melt(cbind(asfr, age.num=.get.age.num(asfr$age)), id.vars=c('charcode', 'age', 'age.num')), year), countries)
+	asfrm
+}
+
+get.age.profile.fert <- function(year, countries){
+	asfrm <- .get.pASFR(year, countries)
 	#browser()
 	tfert <- fert()
 	tfert <- cbind(country_code=tfert$country_code, tfert[,.get.year.cols.idx(tfert)])
@@ -545,6 +550,10 @@ get.age.profile.fert <- function(year, countries){
 	data <- ddply(data, 'charcode', mutate, value = get("value")/100. * get("tfr"))
 	data$tfr <- NULL
 	data
+}
+
+get.age.profile.pfert <- function(year, countries){
+	.get.pASFR(year, countries)
 }
 
 get.indicator.title <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), age=c()) {

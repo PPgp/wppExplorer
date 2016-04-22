@@ -60,6 +60,10 @@ shinyServer(function(input, output, session) {
   age.profile.fert <- reactive({
   	wppExplorer:::get.age.profile.fert(input$year, input$seltcountries)
   })
+  
+  age.profile.pfert <- reactive({
+  	wppExplorer:::get.age.profile.pfert(input$year, input$seltcountries)
+  })
 
   
   data.env <- function() wppExplorer:::wpp.data.env
@@ -353,16 +357,20 @@ shinyServer(function(input, output, session) {
 		if(fun %in% c('tpop', 'tpopF', 'tpopM', 'popagesex'))
 			data <- do.call(paste0('age.profile.pop', sex), list())
 		else {
-			if(fun %in% c('fert', 'fertage', 'pfertage') && sex=='F') {
+			if(fun %in% c('fert', 'fertage') && sex=='F') {
 				data <- age.profile.fert()
 			} else {
-  				return(list(data=data.frame(age=c(0,0), v=c(0,0)),
+				if(fun == 'pfertage' && sex=='F') {
+					data <- age.profile.pfert()
+				} else {
+  					return(list(data=data.frame(age=c(0,0), v=c(0,0)),
   						#data.frame(age=seq(0,100, by=5), value=rep(0, 21)), 
   						options=list(title=paste(c(F='Female', M='Male')[sex], ': No age profiles for this indicator.'),
   							legend= list(position="none"),
   							hAxis = list(viewWindow = list(min=-1, max=1)),
   							vAxis = list(viewWindow = list(min=-1, max=1))
   						)))
+  				}
 			}
 		}
 	}
