@@ -1,3 +1,11 @@
+1.8-1 (4/22/2016)
+-----
+Fixed bug in obtaining age-specific fertility rate.
+
+Corrected age profile plots for percent age-specific fertility.
+
+Indicator unit tests added.
+
 1.8-0 (4/15/2016)
 -----
 ggplots made interactive (allows mouse hovers for retrieving values and 
