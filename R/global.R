@@ -30,7 +30,7 @@ get.indicator.choices <- function() {
 	ind.df[c('popagesex', 'mortagesex', 'fertage', 'pfertage'), 'by.age'] <- TRUE  # display sex and age menu
 	ind.df[c('mortagesex','fertage'), 'no.age.sum'] <- TRUE                        # don't allow multiple age- and sex-selection
 	ind.df[c('tpop', 'tpopF', 'tpopM', 'mig','popagesex'), 'sum.in.table'] <- TRUE # show sum in the trend table
-	ind.df[c('fert', 'leF', 'leM', 'tpop'), 'low.high'] <- TRUE       # has uncertainty
+	ind.df[c('fert', 'leF', 'leM', 'tpop', 'mig'), 'low.high'] <- TRUE       # has uncertainty
 	ind.df[c('fert', 'tpop', 'popagesex'), 'half.child'] <- TRUE     # has half.child variant
 	ind.df[c('fert', 'leF', 'leM', 'mig', 'sexratio', 'mortagesex', 'fertage', 'pfertage'), 'mid.years'] <- TRUE # use mid years in slider (not implemented)
 	ind.df[c('tpop', 'tpopF', 'tpopM','popagesex'), 'digits'] <- 0                 # number of digits in trend table (not implemented)
