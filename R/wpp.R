@@ -1,7 +1,7 @@
 utils::globalVariables("wpp.data.env")
 
-wpp.explore <- function(wpp.year=NULL, host=NULL, ...) {
-	if(!is.null(wpp.year)) set.wpp.year(wpp.year)
+wpp.explore <- function(wpp.year=NULL, host=NULL, package.suffix="plusMig", ...) {
+	if(!is.null(wpp.year)) set.wpp.year(wpp.year, package.suffix)
 	if(missing(host)) host <- getOption("shiny.host", "0.0.0.0")
 	shiny::runApp(system.file('explore', package='wppExplorer'), host = host, ...)
 }
@@ -44,22 +44,24 @@ wpp.by.countries <- function(data, countries) {
   data
 }
 
-set.wpp.year <- function(wpp.year) {
+set.wpp.year <- function(wpp.year, package.suffix="") {
 	check.wpp.revision(wpp.year)
 	# cleanup the environment
 	for (item in ls(wpp.data.env)) {
 		if(!(item %in% c('indicators'))) rm(list=item, envir=wpp.data.env)
 	}
 	data('iso3166', envir=wpp.data.env)
-	wpp.data.env$package <- paste('wpp', wpp.year, sep='')
+	wpp.data.env$package <- paste('wpp', wpp.year, package.suffix, sep='')
 	# Filter out non-used countries
 	do.call('data', list("popM", package=wpp.data.env$package, envir=wpp.data.env))
 	wpp.data.env$iso3166 <- wpp.data.env$iso3166[is.element(wpp.data.env$iso3166$uncode, wpp.data.env$popM$country_code),]
 	cat('\nDefault WPP package set to', wpp.data.env$package,'.\n')
 }
 
-get.wpp.year <- function() as.integer(substr(wpp.data.env$package, 4,8))
- 
+get.wpp.year <- function() {
+	browser()
+	as.integer(substr(wpp.data.env$package, 4,8))
+ }
 tpop <- function(...) {
 	# Create a dataset of total population
 	if.not.exists.load('popM')
