@@ -28,7 +28,7 @@ col <- function(width, ...) {
 
  
 shinyUI(pageWithSidebar(
-  headerPanel(paste("WPP", substr(wppExplorer:::wpp.data.env$package, 4, 8), "Explorer")),
+  headerPanel(paste("WPP", wppExplorer:::get.wpp.year(), "Explorer")),
   sidebarPanel(
     shinyjs::useShinyjs(),
     geochartPrereqs,
