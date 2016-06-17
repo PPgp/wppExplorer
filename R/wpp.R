@@ -58,10 +58,8 @@ set.wpp.year <- function(wpp.year, package.suffix="") {
 	cat('\nDefault WPP package set to', wpp.data.env$package,'.\n')
 }
 
-get.wpp.year <- function() {
-	browser()
-	as.integer(substr(wpp.data.env$package, 4,8))
- }
+get.wpp.year <- function() as.integer(substr(wpp.data.env$package, 4,7))
+ 
 tpop <- function(...) {
 	# Create a dataset of total population
 	if.not.exists.load('popM')
