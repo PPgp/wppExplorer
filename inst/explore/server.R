@@ -5,6 +5,38 @@ library(plyr)
 library(ggplot2)
 
 shinyServer(function(input, output, session) {
+	ind.has.uncertainty <- function(ind)
+		((wppExplorer:::ind.is.low.high(ind) || wppExplorer:::ind.is.half.child(ind)) && 
+  	  					wppExplorer:::get.wpp.year()>2010)
+  	  					
+  observe({
+		# disable log scale button if migration indicator (because of negatives)
+	  shinyjs::toggleState("trend.logscale", !indicator.fun() %in% c('mig', 'migrate'))
+	})
+  observe({
+  	  ind.num <- as.integer(input$indicator)
+  	  has.uncertainty <- ind.has.uncertainty(ind.num)
+	  shinyjs::toggle(id = "uncertainty", anim = TRUE, condition=has.uncertainty)
+	  if(has.uncertainty) {
+	  	selected.choices <- input$uncertainty
+	  	available.choices <- structure(as.character(1:3), names=c('80%', '95%', '+-1/2child'))
+	  	uncertainty.choices <- c()
+	  	if(wppExplorer:::ind.is.low.high(ind.num)) 
+	  		uncertainty.choices <- available.choices[1:2]
+	  	if(wppExplorer:::ind.is.half.child(ind.num))
+	  		uncertainty.choices <- c(uncertainty.choices, available.choices[3])
+	  	selected <- uncertainty.choices[uncertainty.choices %in% selected.choices]
+	  	updateSelectInput(session, 'uncertainty', choices=uncertainty.choices, 
+	  		selected=if(length(selected) > 0) selected else uncertainty.choices[1])
+	  }
+  })
+  observe({
+  	ind <- indicator.fun()
+  	# switch log scale button to FALSE if migration indicator (because of negatives)
+  	 if(input$trend.logscale && ind %in% c('mig', 'migrate')) 
+  	   updateCheckboxInput(session, "trend.logscale", value = FALSE)  	
+  })
+
   indicatorData <- reactive({
     wppExplorer:::lookupByIndicator(input$indicator, input$indsexmult, input$indsex, input$selagesmult, input$selages)
   })
@@ -94,7 +126,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$uncertaintyNote <- renderText({
-  	if(wppExplorer:::ind.is.low.high(as.integer(input$indicator)) && wppExplorer:::get.wpp.year()>2010) return("")
+  	if(ind.has.uncertainty(as.integer(input$indicator))) return("")
     "No uncertainty available for this indicator."
   })
   
@@ -408,8 +440,7 @@ shinyServer(function(input, output, session) {
   	data <- get.trends.nocast()
   	if(is.null(data)) return(data)
   	data <- data$casted
-  	low <- NULL
-  	if (!input$trend.logscale) low <- get.trends.low()
+  	low <- get.trends.low()
   	if(!is.null(low)) {
   		high <- get.trends.high()
   		colnames(low$casted) <- sub('value', 'low', colnames(low$casted))

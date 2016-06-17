@@ -30,6 +30,7 @@ col <- function(width, ...) {
 shinyUI(pageWithSidebar(
   headerPanel(paste("WPP", substr(wppExplorer:::wpp.data.env$package, 4, 8), "Explorer")),
   sidebarPanel(
+    shinyjs::useShinyjs(),
     geochartPrereqs,
     tags$head(
          		#tags$style(type="text/css", ".jslider { max-width: 50px; }"),
@@ -61,6 +62,7 @@ shinyUI(pageWithSidebar(
 width=3
   ),
   mainPanel(
+    shinyjs::useShinyjs(),
     tabsetPanel(
       tabPanel('Map',
       	 flowLayout(
