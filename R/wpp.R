@@ -21,8 +21,10 @@ wpp.year.from.package.name <- function(package)
 	return(as.integer(substr(package, 4, 7)))
 
 wpp.indicator <- function(what, ...) {
+	print(what)
 	data <- do.call(what, list(...))
 	if(is.null(data)) return(NULL)
+	#browser()
 	merge.with.un.and.melt(data, what=what)
 }
 
@@ -50,7 +52,7 @@ set.wpp.year <- function(wpp.year, package.suffix="") {
 	for (item in ls(wpp.data.env)) {
 		if(!(item %in% c('indicators'))) rm(list=item, envir=wpp.data.env)
 	}
-	data('iso3166', envir=wpp.data.env)
+	data('iso3166', envir=wpp.data.env, package="wppExplorer")
 	wpp.data.env$package <- paste0('wpp', wpp.year)
 	if(package.suffix != "") wpp.data.env$package <- c(paste0('wpp', wpp.year, package.suffix), wpp.data.env$package)
 	# Filter out non-used countries
@@ -97,9 +99,7 @@ mig <- function(...) {
 		if.not.exists.load('migrationF')
 		return(sumMFbycountry(wpp.data.env$migrationM, wpp.data.env$migrationF))
 	}
-	pred.dataset <-NULL
-	if(length(wpp.data.env$package)>1) pred.dataset <- 'migproj' #projection stored separately from observations in wpp2015plusMig
-	load.and.merge.datasets('migration', pred.dataset) # total migration available
+	load.and.merge.datasets('migration', NULL) # total migration available
 }
 
 migrate <- function(...) {
@@ -271,10 +271,6 @@ popagesex.ci <- function(which.pi, bound, sexm, agem, ...) {
 	sum.by.country.subset.age(wpp.data.env[[dataset.name]], agem)
 }
 
-mig.ci <- function(which.pi, bound, ...) {
-	if(which.pi == 'half.child') return(NULL)
-	load.and.merge.datasets(paste0('migproj', which.pi, .pi.suffix(bound)), NULL)
-}
 
 load.dataset.and.sum.by.country<-function(dataset){
 	if.not.exists.load(dataset)
