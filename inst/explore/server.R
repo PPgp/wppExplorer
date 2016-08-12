@@ -11,7 +11,7 @@ shinyServer(function(input, output, session) {
   	  					
   observe({
 		# disable log scale button if migration indicator (because of negatives)
-	  shinyjs::toggleState("trend.logscale", !indicator.fun() %in% c('mig', 'migrate'))
+	  shinyjs::toggleState("trend.logscale", !has.negatives.indicator())
 	})
   observe({
   	  ind.num <- as.integer(input$indicator)
@@ -31,11 +31,10 @@ shinyServer(function(input, output, session) {
 	  }
   })
   observe({
-  	ind <- indicator.fun()
-  	# switch log scale button to FALSE if migration indicator (because of negatives)
-  	 if(input$trend.logscale && ind %in% c('mig', 'migrate')) 
+  	# switch log scale button to FALSE if migration or growth indicator (because of negatives)
+  	 if(input$trend.logscale && has.negatives.indicator()) 
   	   updateCheckboxInput(session, "trend.logscale", value = FALSE)  	
-  })
+  }, priority=10)
 
   indicatorData <- reactive({
     wppExplorer:::lookupByIndicator(input$indicator, input$indsexmult, input$indsex, input$selagesmult, input$selages)
@@ -44,6 +43,8 @@ shinyServer(function(input, output, session) {
 	indicator.fun <- reactive({
 		wppExplorer:::ind.fun(as.integer(input$indicator))
 	})
+
+   has.negatives.indicator <- function() indicator.fun() %in% c('mig', 'migrate', 'popgrowth')
 	
    indicatorDataLow <- reactive({
     wppExplorer:::getUncertainty(input$indicator, input$uncertainty, 'low', input$indsexmult, input$indsex, input$selagesmult, input$selages)
@@ -462,7 +463,7 @@ shinyServer(function(input, output, session) {
   		} else data <- data.zoom
   	}
   	g <- ggplot(data, aes(x=Year,y=value,colour=charcode, fill=charcode)) + geom_line() + theme(legend.title=element_blank())
-  	if (input$trend.logscale) g <- g + coord_trans(y="log2")
+  	if (input$trend.logscale && !has.negatives.indicator()) g <- g + coord_trans(y="log2")
   	isolate(ggplot.data$trends <- data)
   	
   	if(!is.null(low)) {
