@@ -50,7 +50,7 @@ set.wpp.year <- function(wpp.year) {
 	for (item in ls(wpp.data.env)) {
 		if(!(item %in% c('indicators'))) rm(list=item, envir=wpp.data.env)
 	}
-	data('iso3166', envir=wpp.data.env)
+	data('iso3166', envir=wpp.data.env, package="wppExplorer")
 	wpp.data.env$package <- paste('wpp', wpp.year, sep='')
 	# Filter out non-used countries
 	do.call('data', list("popM", package=wpp.data.env$package, envir=wpp.data.env))
