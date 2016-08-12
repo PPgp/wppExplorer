@@ -1,5 +1,7 @@
 1.9-0
 -----
+Selection of points for "no-pyramids" fixed.
+	
 Added shinyjs to Imports. Used for disable/enable & show/hide widgets.
 
 Uncertainty selection values made dependent on which indicator is chosen.

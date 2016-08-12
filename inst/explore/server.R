@@ -505,15 +505,18 @@ shinyServer(function(input, output, session) {
 	if(nrow(selected) == 0) return(" ")
 	paste0("Year = ", selected$Year, ', Value = ', round(selected$value,3), ", Country: ", selected$name)
 	})
-		
-  .is.pyramid.indicator <- function() {
-  	 if(!indicator.fun() %in% c('tpop', 'tpopF', 'tpopM', 'popagesex')) {
+	
+  .is.pyramid.indicator	<- function()
+      return(indicator.fun() %in% c('tpop', 'tpopF', 'tpopM', 'popagesex'))
+	
+  .plot.no.pyramid <- function() {
+  	 if(!.is.pyramid.indicator()) {
   		df <- data.frame(x=0, y=0, lab='No pyramid data for this indicator.')
   		g <- ggplot(df, aes(x=x, y=y, label=lab)) + geom_text() + scale_y_continuous(name='') + scale_x_continuous(name='')
   		print(g)
-  		return(FALSE)
+  		return(TRUE)
   	}
-  	TRUE
+  	FALSE
   }
   .get.prop.data <- function(data, tpop) {
 	tpop <- wppExplorer::wpp.by.countries(wppExplorer::wpp.by.year(tpop, input$year), input$seltcountries)
@@ -587,7 +590,7 @@ shinyServer(function(input, output, session) {
   
   pyramid.ranges <- reactiveValues(age=NULL, value=NULL)
   output$pyramids <- renderPlot({
-  	if(!.is.pyramid.indicator()) return()
+  	if(.plot.no.pyramid()) return()
   	reset.pyramid.data()
 	#data <- .get.pyramid.data(proportion=input$proppyramids)
 	data <- .get.pyramid.data()
@@ -619,7 +622,8 @@ shinyServer(function(input, output, session) {
   })
   
   output$pyramid_selected <- renderText({
-  	if(is.null(input$pyramid_values)) return(" ")
+  	if(!.is.pyramid.indicator()) return(" ")
+  	if(length(input$pyramid_values)==0) return(" ")
   	selected <- nearPoints(ggplot.data$pyramid, input$pyramid_values, xvar='value', yvar='age.num', maxpoints = 1, threshold=10)
 	if(nrow(selected) == 0) return(" ")
 	paste0(if(selected$value < 0) "Male " else "Female ", selected$age, ', Value = ', round(abs(selected$value),3), ", Country: ", selected$name)
