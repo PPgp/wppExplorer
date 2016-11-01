@@ -1,3 +1,15 @@
+2.0-0 (10/31/2016)
+-----
+Changed shinytheme.
+
+Changed color scheme for maps of indicators with negative values (thanks to Jon Azose).
+
+In histogram: Values on the x-axis rounded (thanks to Jon Azose). 
+
+Code updated to make a use of the shiny grid system.
+
+Table in Trends made scrollable.
+
 1.9-0 (8/12/2016)
 -----
 Selection of points for "no-pyramids" fixed.

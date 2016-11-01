@@ -14,7 +14,7 @@ shinyServer(function(input, output, session) {
 	  shinyjs::toggleState("trend.logscale", !has.negatives.indicator())
 	})
   observe({
-  	  ind.num <- as.integer(input$indicator)
+  	  ind.num <- as.integer.ind()
   	  has.uncertainty <- ind.has.uncertainty(ind.num)
 	  shinyjs::toggle(id = "uncertainty", anim = TRUE, condition=has.uncertainty)
 	  if(has.uncertainty) {
@@ -36,15 +36,19 @@ shinyServer(function(input, output, session) {
   	   updateCheckboxInput(session, "trend.logscale", value = FALSE)  	
   }, priority=10)
 
+  as.integer.ind <- reactive({as.integer(input$indicator)})
+
   indicatorData <- reactive({
     wppExplorer:::lookupByIndicator(input$indicator, input$indsexmult, input$indsex, input$selagesmult, input$selages)
   })
   
 	indicator.fun <- reactive({
-		wppExplorer:::ind.fun(as.integer(input$indicator))
+		wppExplorer:::ind.fun(as.integer.ind())
 	})
 
-   has.negatives.indicator <- function() indicator.fun() %in% c('mig', 'migrate', 'popgrowth')
+   has.negatives.indicator <- reactive({
+   		wppExplorer:::ind.has.negatives(as.integer.ind())
+	})
 	
    indicatorDataLow <- reactive({
     wppExplorer:::getUncertainty(input$indicator, input$uncertainty, 'low', input$indsexmult, input$indsex, input$selagesmult, input$selages)
@@ -104,9 +108,8 @@ shinyServer(function(input, output, session) {
   year.range <- reactiveValues(min=1955, max=2100)
     
   output$yearUI <- renderUI({
-  	animationOptions(interval = 3000)
     sliderInput('year', h5('Year:'), sep="",
-    			animate=TRUE,
+    			animate=animationOptions(interval = 1000),
                 min=isolate(year.range$min), max=isolate(year.range$max), value = 2015, step=5)
   })
   
@@ -123,11 +126,11 @@ shinyServer(function(input, output, session) {
   })
   
   output$indicatorDesc <- renderText({
-  	wppExplorer:::ind.definition(as.integer(input$indicator))
+  	paste0("<small>", wppExplorer:::ind.definition(as.integer.ind()), "</small>")
   })
   
   output$uncertaintyNote <- renderText({
-  	if(ind.has.uncertainty(as.integer(input$indicator))) return("")
+  	if(ind.has.uncertainty(as.integer.ind())) return("")
     "No uncertainty available for this indicator."
   })
   
@@ -149,17 +152,26 @@ shinyServer(function(input, output, session) {
     #df <- cbind(df, hover=rep('xxx', nrow(df)))
     country.codes <- get.country.charcodes()
     df <- df[df$charcode %in% country.codes,]
+    has.negatives <- has.negatives.indicator()
+    normalize <- input$normalizeMapAndCountryPlot
     options <- NULL
-    if (input$normalizeMapAndCountryPlot) {
-    	inddata <- indicatorData()
-    	inddata <- inddata[inddata$charcode %in% country.codes, 'value']
-    	options <- list( # fixed color scale
-           colorAxis = list(
-             minValue = min(inddata),
-             maxValue = max(inddata)
-           )
-        )
-	}
+    # available projections that can go into options
+    # projection="kavrayskiy-vii" #mercator, albers, lambert and kavrayskiy-vii
+    if (normalize || has.negatives) { # fixed color scale
+    	options <- list(colorAxis = list()) 
+    	if (has.negatives) 
+    		options$colorAxis$colors=c("red", "lightgrey", "green")
+    	if(normalize) {
+    		inddata <- indicatorData()
+    		vranges <- range(inddata[inddata$charcode %in% country.codes, 'value'])
+    	} else vranges <- range(df$value)
+		if (has.negatives) {
+    		maxranges <- max(abs(vranges))
+    		vranges <- c(-maxranges, maxranges)
+    	}
+   		options$colorAxis$minValue <- vranges[1] 
+    	options$colorAxis$maxValue <- vranges[2]
+    }  
     list(data = df, options=options)
   })
   
@@ -258,9 +270,10 @@ shinyServer(function(input, output, session) {
   	xlim <- if(input$fiXscaleHist) rangeForAllYears() else range(data$value, na.rm=TRUE)
   	#browser()
   	options <- list(title=paste(input$year), legend="{ position: 'none' }", colors="['green']", 
-  						height="500px", width="900px", histogram=paste0("{bucketSize: ", diff(xlim)/30, "}"))
-  						
-  	options$hAxis <- paste0("{maxAlternation: 1,  minValue:", xlim[1], ", maxValue:", xlim[2], "}")
+  						height="500px",  histogram=paste0("{bucketSize: ", diff(xlim)/30, "}")) #width="900px",
+	digits <- wppExplorerBayesMig:::ind.digits(as.integer.ind())				
+  	options$hAxis <- paste0("{maxAlternation: 1,  minValue:", xlim[1], ", maxValue:", xlim[2], 
+  							", ticks: [", paste(unique(round(seq(xlim[1], xlim[2], length=30), digits)), collapse=', '), "]}")
   	gvisHistogram(data, options=options)
   })
   
@@ -283,7 +296,7 @@ shinyServer(function(input, output, session) {
   		else ages <- paste(seq(0, by=5, length=20), seq(4, by=5, length=20), sep='-')
   		ages <- c(ages, '100+')
   	}
-  	if (wppExplorer:::ind.no.age.sum(as.integer(input$indicator))) { # no multiple choices allowed
+  	if (wppExplorer:::ind.no.age.sum(as.integer.ind())) { # no multiple choices allowed
   		multiple <- FALSE
 		name <- 'selages'
 		selected<-NULL
@@ -297,7 +310,7 @@ shinyServer(function(input, output, session) {
 	
 	output$sexselection <- renderUI({
 		choices<-if(indicator.fun() %in% c('fertage', 'pfertage')) c(Female="F") else c(Female="F", Male="M")
-		if(wppExplorer:::ind.no.age.sum(as.integer(input$indicator))){
+		if(wppExplorer:::ind.no.age.sum(as.integer.ind())){
   			multiple <- FALSE
   			selected <- NULL
   			name <- 'indsex'
@@ -631,8 +644,8 @@ shinyServer(function(input, output, session) {
 	})
   
   # .get.digits <- reactive({
-  	# print(wppExplorer:::ind.digits(as.integer(input$indicator)))
-  	# wppExplorer:::ind.digits(as.integer(input$indicator))
+  	# print(wppExplorer:::ind.digits(as.integer.ind()))
+  	# wppExplorer:::ind.digits(as.integer.ind())
   # })
   
   # format_num <- function(col, digits) {
@@ -646,14 +659,14 @@ shinyServer(function(input, output, session) {
 	if(is.null(data)) return(data)
 	df <- as.data.frame(data$casted[,-1])
 	if(ncol(df) > 1) {
-		if(wppExplorer:::ind.sum.in.table(as.integer(input$indicator))) {
+		if(wppExplorer:::ind.sum.in.table(as.integer.ind())) {
 			df <- cbind(df, rowSums(df))
 			colnames(df)[ncol(df)] <- 'Sum'
 		}
 	} else colnames(df) <- input$seltcountries # one country selected
 	
 	df <- t(df)
-	#df <- t(as.data.frame(lapply(df, format_num, digits=wppExplorer:::ind.digits(as.integer(input$indicator)))))
+	#df <- t(as.data.frame(lapply(df, format_num, digits=wppExplorer:::ind.digits(as.integer.ind()))))
 	# df <- t(data$casted[,-1]) # remove year column
 	#browser()
 	colnames(df) <- as.integer(data$casted[,'Year'])

@@ -467,6 +467,7 @@ ind.no.age.sum <- function(indicator) ind.settings()[indicator, 'no.age.sum']
 ind.sum.in.table <- function(indicator) ind.settings()[indicator, 'sum.in.table']
 ind.mid.years <- function(indicator) ind.settings()[indicator, 'mid.years']
 ind.digits <- function(indicator) ind.settings()[indicator, 'digits']
+ind.has.negatives <- function(indicator) ind.settings()[indicator, 'has.negatives']
 ind.definition <- function(indicator) attr(wpp.data.env$indicators, 'definition')[indicator]
 
 set.data.env <- function(name, value) wpp.data.env[[name]] <- value

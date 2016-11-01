@@ -25,7 +25,7 @@ get.indicator.choices <- function() {
 	l <- length(ind.names)
 	ini <- rep(FALSE, l)
 	ind.df <- data.frame(by.age=ini, no.age.sum=ini, sum.in.table=ini, low.high=ini, half.child=ini, prob.ci=ini, mid.years=ini,
-							digits=rep(2, l)) 
+							digits=rep(1, l),  has.negatives=ini) 
 	rownames(ind.df) <- funcs
 	ind.df[c('popagesex', 'mortagesex', 'fertage', 'pfertage'), 'by.age'] <- TRUE  # display sex and age menu
 	ind.df[c('mortagesex','fertage'), 'no.age.sum'] <- TRUE                        # don't allow multiple age- and sex-selection
@@ -33,11 +33,11 @@ get.indicator.choices <- function() {
 	ind.df[c('fert', 'leF', 'leM', 'tpop'), 'low.high'] <- TRUE       # has uncertainty
 	ind.df[c('fert', 'tpop', 'popagesex'), 'half.child'] <- TRUE     # has half.child variant
 	ind.df[c('fert', 'leF', 'leM', 'mig', 'sexratio', 'mortagesex', 'fertage', 'pfertage'), 'mid.years'] <- TRUE # use mid years in slider (not implemented)
-	ind.df[c('tpop', 'tpopF', 'tpopM','popagesex'), 'digits'] <- 0                 # number of digits in trend table (not implemented)
-	ind.df['mortagesex', 'digits'] <- 4
+	ind.df[c('tpop', 'tpopF', 'tpopM','popagesex', 'mig'), 'digits'] <- 0                 # number of digits the histogram
+	ind.df[c('sexratio', 'popgrowth', 'mortagesex'), 'digits'] <- 4
 	ind.df['fertage', 'digits'] <- 3
-	ind.df['pfertage', 'digits'] <- 1
-	
+	ind.df[c('tdratio', 'chdratio', 'oadratio'), 'digits'] <- 2
+	ind.df[c('mig', 'migrate', 'popgrowth'), 'has.negatives'] <- TRUE
 	structure(
 		as.character(1:length(ind.names)),
 		names = ind.names,
