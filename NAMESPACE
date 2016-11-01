@@ -7,7 +7,7 @@ export(
 	get.wpp.year,
 	set.wpp.year
 	)
-import("wpp2015",  "reshape2", "plyr", "googleVis",  "ggplot2", "DT", "shinyjs")
+import("wpp2015",  "shinythemes", "reshape2", "plyr", "googleVis",  "ggplot2", "DT", "shinyjs")
 importFrom(Hmisc, capitalize)
 importFrom("utils", "data")
 
