@@ -1,8 +1,9 @@
 utils::globalVariables("wpp.data.env")
 
-wpp.explore <- function(wpp.year=NULL) {
+wpp.explore <- function(wpp.year=NULL, host=NULL, ...) {
 	if(!is.null(wpp.year)) set.wpp.year(wpp.year)
-	shiny::runApp(system.file('explore', package='wppExplorer'), host = getOption("shiny.host", "0.0.0.0"))
+	if(missing(host)) host <- getOption("shiny.host", "0.0.0.0")
+	shiny::runApp(system.file('explore', package='wppExplorer'), host = host, ...)
 }
 
 wpp.explore3d <- function(wpp.year=NULL) {
@@ -49,7 +50,7 @@ set.wpp.year <- function(wpp.year) {
 	for (item in ls(wpp.data.env)) {
 		if(!(item %in% c('indicators'))) rm(list=item, envir=wpp.data.env)
 	}
-	data('iso3166', envir=wpp.data.env)
+	data('iso3166', envir=wpp.data.env, package="wppExplorer")
 	wpp.data.env$package <- paste('wpp', wpp.year, sep='')
 	# Filter out non-used countries
 	do.call('data', list("popM", package=wpp.data.env$package, envir=wpp.data.env))
@@ -57,7 +58,7 @@ set.wpp.year <- function(wpp.year) {
 	cat('\nDefault WPP package set to', wpp.data.env$package,'.\n')
 }
 
-get.wpp.year <- function() as.integer(substr(wpp.data.env$package, 4,8))
+get.wpp.year <- function() as.integer(substr(wpp.data.env$package, 4,7))
  
 tpop <- function(...) {
 	# Create a dataset of total population
@@ -101,7 +102,7 @@ mig <- function(...) {
 migrate <- function(...) {
 	migcounts <- mig()
 	pop <- tpop()
-	mergepop <- merge(migcounts[,'country_code', drop=FALSE], pop)
+	mergepop <- merge(migcounts[,'country_code', drop=FALSE], pop, sort=FALSE)
 	ncols <- ncol(mergepop)
 	#browser()
 	cbind(country_code=mergepop$country_code, (migcounts[,2:ncol(migcounts)]*200.)/((mergepop[,3:ncols]+mergepop[,2:(ncols-1)])/2.))
@@ -149,9 +150,9 @@ fertage <- function(age, ...){
 	tfert <- cbind(country_code=tfert$country_code, tfert[,.get.year.cols.idx(tfert)])
 	asfr <- sum.by.country.subset.age(wpp.data.env[['percentASFR']], age)
 	tfert <- tfert[tfert$country_code %in% asfr$country_code,]
-	o <- order(asfr$country_code)
+	tfert <- tfert[match(asfr$country_code, tfert$country_code), ] # put rows in the same order
 	#browser()
-	cbind(country_code=tfert[o,'country_code'], tfert[o,2:ncol(tfert)] * asfr[o,2:ncol(asfr)] / 100.)
+	cbind(country_code=tfert[,'country_code'], tfert[,2:ncol(tfert)] * asfr[,2:ncol(asfr)] / 100.)
 }
 
 pfertage <- function(agem, ...){
@@ -272,9 +273,23 @@ load.dataset.and.sum.by.country<-function(dataset){
 	pop <- sum.by.country(wpp.data.env[[dataset]])
 }
 
+trim.spaces <- function (x) gsub("^\\s+|\\s+$", "", x)
+
 if.not.exists.load <- function(name) {
-	if(!exists(name, where=wpp.data.env, inherits=FALSE))
-		do.call('data', list(name, package=wpp.data.env$package, envir=wpp.data.env))
+	if(exists(name, where=wpp.data.env, inherits=FALSE)) return()
+	do.call('data', list(name, package=wpp.data.env$package, envir=wpp.data.env))
+	# special handling of the age column (mostly because of inconsistent labels in the various datasets)
+	# trim spaces in age column if needed
+	if('age' %in% colnames(wpp.data.env[[name]]) && is.factor(wpp.data.env[[name]]$age)) {
+		levels(wpp.data.env[[name]]$age) <- trim.spaces(levels(wpp.data.env[[name]]$age))
+		# 'age' in the mx dataset should be numeric but includes 100+, so it's factor
+		# replace by 100 and make it numeric
+		levs <- levels(wpp.data.env[[name]]$age)
+		if("5" %in% levs && "100+" %in% levs) {
+			levels(wpp.data.env[[name]]$age)[levs == "100+"] <- "100"
+			wpp.data.env[[name]]$age <- as.integer(as.character(wpp.data.env[[name]]$age))
+		}
+	}
 }
 
 load.and.merge.datasets <- function(name.obs, name.pred=NULL, by='country_code', remove.cols=c('country', 'name')){
@@ -295,7 +310,7 @@ lookupByIndicator <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), ag
 	indicator <- as.numeric(indicator)
 	fun <- ind.fun(indicator)
 	# load observed data
-	#browser()
+	#if(fun == 'mortagesex') browser()
 	if(!is.null(wpp.data.env[[fun]])) return(wpp.data.env[[fun]])
 	data <- wpp.indicator(fun, sexm=sex.mult, sex=sex, agem=age.mult, age=age)
 	if(!ind.is.by.age(indicator))
@@ -363,7 +378,7 @@ lookupByIndicator.mchart <- function(indicator, ...) {
 
 getUncertainty <- function(indicator, which.pi, bound='low', sex.mult=c(), sex=c(), age.mult=c(), age=c()) {
 	indicator <- as.numeric(indicator)
-	if(!ind.is.low.high(indicator)) return(NULL)
+	if(!ind.is.low.high(indicator) && !ind.is.half.child(indicator)) return(NULL)
 	if(length(which.pi) == 0) return(NULL)
 	fun <- paste(ind.fun(indicator), 'ci', sep='.')
 	all.data <- NULL
@@ -430,6 +445,7 @@ sumMFbycountry <- function(datasetM, datasetF) {
 }
 
 sum.by.country.subset.age <- function(dataset, ages) {
+	if('100+' %in% ages) ages <- c(ages, "100")
 	sum.by.country(with(dataset, dataset[gsub("^\\s+|\\s+$", "", age) %in% ages,]))
 }
 
@@ -446,10 +462,12 @@ ind.settings <- function() attr(wpp.data.env$indicators, 'settings')
 ind.fun <- function(indicator) rownames(ind.settings())[indicator]
 ind.is.by.age <- function(indicator) ind.settings()[indicator, 'by.age']
 ind.is.low.high <- function(indicator) ind.settings()[indicator, 'low.high']
+ind.is.half.child <- function(indicator) ind.settings()[indicator, 'half.child']
 ind.no.age.sum <- function(indicator) ind.settings()[indicator, 'no.age.sum']
 ind.sum.in.table <- function(indicator) ind.settings()[indicator, 'sum.in.table']
 ind.mid.years <- function(indicator) ind.settings()[indicator, 'mid.years']
 ind.digits <- function(indicator) ind.settings()[indicator, 'digits']
+ind.has.negatives <- function(indicator) ind.settings()[indicator, 'has.negatives']
 ind.definition <- function(indicator) attr(wpp.data.env$indicators, 'definition')[indicator]
 
 set.data.env <- function(name, value) wpp.data.env[[name]] <- value
@@ -513,12 +531,18 @@ get.pyramid.data <- function(year, countries, which.pi=NULL, bound=NULL, indicat
 	wpp.by.countries(data, countries)
 }
 
-get.age.profile.fert <- function(year, countries){
+.get.pASFR <- function(year, countries) {
 	if.not.exists.load('percentASFR')
 	asfr <- wpp.data.env[['percentASFR']]
 	asfr <- asfr[,-which(is.element(colnames(asfr), c('country', 'name')))]
 	asfrm <- wpp.by.countries(wpp.by.year(
 				merge.with.un.and.melt(cbind(asfr, age.num=.get.age.num(asfr$age)), id.vars=c('charcode', 'age', 'age.num')), year), countries)
+	asfrm
+}
+
+get.age.profile.fert <- function(year, countries){
+	asfrm <- .get.pASFR(year, countries)
+	#browser()
 	tfert <- fert()
 	tfert <- cbind(country_code=tfert$country_code, tfert[,.get.year.cols.idx(tfert)])
 	tfertm <- wpp.by.countries(wpp.by.year(
@@ -528,6 +552,10 @@ get.age.profile.fert <- function(year, countries){
 	data <- ddply(data, 'charcode', mutate, value = get("value")/100. * get("tfr"))
 	data$tfr <- NULL
 	data
+}
+
+get.age.profile.pfert <- function(year, countries){
+	.get.pASFR(year, countries)
 }
 
 get.indicator.title <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), age=c()) {
@@ -544,10 +572,11 @@ get.indicator.title <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), 
 	return(paste(title, sex.string, age.string, sep='; '))
 }
 
-.get.age.num <- function(age) {
+.get.age.num <- function(age) {	
+	# Return numeric version of the age, either its index or its numeric value
 	aorder <- .get.age.order()
 	#browser()
-	if(any(!is.element(age, names(aorder)))) return(age)
+	if(any(!(age %in% names(aorder)))) return(age)
 	aorder[as.character(age)]
 } 
 .get.age.order <- function() {
