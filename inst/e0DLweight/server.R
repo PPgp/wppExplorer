@@ -5,6 +5,7 @@ server <- function(input, output) {
     dir <- '/mnt/shinydata/apps/wppExplorer/e0simulation'
     e0.pred <- get.e0.prediction(dir)
     country <- input$country
+    if(! country %in% get.countries.table(e0.pred)$code) return(NULL)
     t <- e0.trajectories.table(e0.pred, country)
     xct <- t[1:12,'median']
     act <- apply(e0.country.dlcurves(xct, e0.pred, country=country), 2, median)
