@@ -1,3 +1,57 @@
+2.0-1 (12/1/2016)
+-----
+Bug in the server fixed (wrong package referenced when calling the histogram).
+
+2.0-0 (10/31/2016)
+-----
+Changed shinytheme.
+
+Changed color scheme for maps of indicators with negative values (thanks to Jon Azose).
+
+In histogram: Values on the x-axis rounded (thanks to Jon Azose). 
+
+Code updated to make a use of the shiny grid system.
+
+Table in Trends made scrollable.
+
+1.9-0 (8/12/2016)
+-----
+Selection of points for "no-pyramids" fixed.
+	
+Added shinyjs to Imports. Used for disable/enable & show/hide widgets.
+
+Uncertainty selection values made dependent on which indicator is chosen.
+ 
+For trends - when log scale selected, show also the uncertainty.
+
+1.8-1 (4/22/2016)
+-----
+Fixed bug in obtaining age-specific fertility rate.
+
+Corrected age profile plots for percent age-specific fertility.
+
+Indicator unit tests added.
+
+1.8-0 (4/15/2016)
+-----
+ggplots made interactive (allows mouse hovers for retrieving values and 
+brushes for zooming). Affects Trends and Pyramids.
+
+Removed "Median" tab.
+
+Histogram is now interactive, using googleVis.
+
+Added Help tab.
+
+Fixed an issue with oldest age in the mx dataset.
+
+Fixed a constant re-drawing of the time slider.
+
+Default value of the slider changed to 2015.
+
+Function wpp.explorer passes additional arguments to shiny runApp.
+
+
 1.7-0/1 (8/8/2015)
 -----
 Added support for 2015.
