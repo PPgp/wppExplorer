@@ -1,3 +1,7 @@
+2.0-1 (12/1/2016)
+-----
+Bug in the server fixed (wrong package referenced when calling the histogram).
+
 2.0-0 (10/31/2016)
 -----
 Changed shinytheme.

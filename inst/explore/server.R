@@ -271,7 +271,7 @@ shinyServer(function(input, output, session) {
   	#browser()
   	options <- list(title=paste(input$year), legend="{ position: 'none' }", colors="['green']", 
   						height="500px",  histogram=paste0("{bucketSize: ", diff(xlim)/30, "}")) #width="900px",
-	digits <- wppExplorerBayesMig:::ind.digits(as.integer.ind())				
+	digits <- wppExplorer:::ind.digits(as.integer.ind())				
   	options$hAxis <- paste0("{maxAlternation: 1,  minValue:", xlim[1], ", maxValue:", xlim[2], 
   							", ticks: [", paste(unique(round(seq(xlim[1], xlim[2], length=30), digits)), collapse=', '), "]}")
   	gvisHistogram(data, options=options)
