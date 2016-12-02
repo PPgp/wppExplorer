@@ -12,16 +12,17 @@ server <- function(input, output) {
     yct <- diff(t[1:13,'median'])
     w <- - sum((act-bct)*(bct-yct))/sum((bct-yct)^2)
     e0.DLcurve.plot(e0.pred, country=country, nr.curves=10)
+    legend("topleft", legend=c("country", "world", "weighted"), col=c("red", "blue", "black"), lwd=2, lty=1, bty='n')
     x <- seq(40, 90, length=100) 
     dl.country <- e0.country.dlcurves(x, e0.pred, country=country)
     me.ctry <- apply(dl.country, 2, median)
     dl.world <- e0.world.dlcurves(x, e0.pred)
     me.world <- apply(dl.world, 2, median)
-    lines(x, me.world, col='blue')
+    lines(x, me.world, col='blue', lwd=2)
     cscurve <- (me.ctry - (1-w)*me.world)/w
     new.w <- input$weight
     tscurve <- new.w * cscurve + (1-new.w)*me.world
-    lines(x, tscurve, col='orange', lwd=2)
+    lines(x, tscurve, col='black', lwd=2)
   })
 }
 
