@@ -5,7 +5,7 @@ ui <- fluidPage(
     sidebarPanel(
       numericInput("country", "UN country code:", 68),
       HTML("<p><small><a href='http://unstats.un.org/unsd/methods/m49/m49alpha.htm' target='_blank'>See UN country codes</a></small></p>"),
-      sliderInput("weight", "Weights:", min = 0, max = 1, value = 0.5)
+      sliderInput("weight", "Country weight:", min = 0, max = 1, value = 1)
     ),
     mainPanel(plotOutput("DLPlot"))
   )

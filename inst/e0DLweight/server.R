@@ -1,30 +1,49 @@
 library(bayesLife)
-server <- function(input, output) {
-  output$DLPlot <- renderPlot({
-    #dir <- "~/talks/UN16/e0/converged/e0/sim03092016/"
-    dir <- '/mnt/shinydata/apps/wppExplorer/e0simulation'
-    e0.pred <- get.e0.prediction(dir)
+shinyServer(function(input, output, session) {
+  observe({
+    if(is.null(input$country)) return(NULL)
+    if(! input$country %in% get.countries.table(e0.pred)$code) return(NULL)
+    w <- weights()
+    updateSliderInput(session, "weight", value=w)
+  })
+  
+  plotDL <- function(country){
+    e0.DLcurve.plot(e0.pred, country=input$country, nr.curves=10)
+    legend("topleft", legend=c("country", "world", "weighted"), col=c("red", "blue", "black"), lwd=2, lty=1, bty='n')
+    lines(DLx, me.world, col='blue', lwd=2)
+  }
+  
+  weights <- reactive({
     country <- input$country
-    if(! country %in% get.countries.table(e0.pred)$code) return(NULL)
     t <- e0.trajectories.table(e0.pred, country)
     xct <- t[1:12,'median']
-    act <- apply(e0.country.dlcurves(xct, e0.pred, country=country), 2, median)
-    bct <- apply(e0.world.dlcurves(xct, e0.pred), 2, median)
     yct <- diff(t[1:13,'median'])
-    w <- - sum((act-bct)*(bct-yct))/sum((bct-yct)^2)
-    e0.DLcurve.plot(e0.pred, country=country, nr.curves=10)
-    legend("topleft", legend=c("country", "world", "weighted"), col=c("red", "blue", "black"), lwd=2, lty=1, bty='n')
-    x <- seq(40, 90, length=100) 
-    dl.country <- e0.country.dlcurves(x, e0.pred, country=country)
+    is.pos <- yct >= 0
+    yct <- yct[is.pos]
+    act <- apply(e0.country.dlcurves(xct, e0.pred, country=country), 2, median)[is.pos]
+    bct <- apply(e0.world.dlcurves(xct, e0.pred), 2, median)[is.pos]
+    w <- - sum((act-bct)^2)/sum((act-bct)*(bct-yct))
+    if(w <= 0 || w > 1) w <- 1
+    w
+  })
+  
+  median.country <- reactive({
+    dl.country <- e0.country.dlcurves(DLx, e0.pred, country=input$country)
     me.ctry <- apply(dl.country, 2, median)
-    dl.world <- e0.world.dlcurves(x, e0.pred)
-    me.world <- apply(dl.world, 2, median)
-    lines(x, me.world, col='blue', lwd=2)
-    cscurve <- (me.ctry - (1-w)*me.world)/w
+    w <- weights()
+    return((me.ctry - (1-w)*me.world)/w)
+  })
+  
+  output$DLPlot <- renderPlot({
+    if(is.null(input$country)) return(NULL)
+    country <- input$country
+    if(! country %in% get.countries.table(e0.pred)$code) return(NULL)
+    plotDL(country)
+    cscurve <- median.country()
     new.w <- input$weight
     tscurve <- new.w * cscurve + (1-new.w)*me.world
-    lines(x, tscurve, col='black', lwd=2)
+    lines(DLx, tscurve, col='black', lwd=2)
   })
-}
+})
 
 
