@@ -340,7 +340,7 @@ lookupByIndicator.mchart <- function(indicator, ...) {
 		exdf <- merge(iso[,c('charcode', 'name')], exdf)
 		return(exdf[,-1])
 	}
-	df <- lookupByIndicatorInclArea(indicator[1])
+	df <- lookupByIndicatorInclArea(indicator[1], ...)
 	colnames(df)[which(colnames(df)=='value')] <- name
 	if(!is.null(exdf)) 
 		df <- merge(exdf, df)
