@@ -11,7 +11,7 @@ wpp.explore3d <- function(wpp.year=NULL) {
 	shiny::runApp(system.file('bubbles', package='wppExplorer'))
 }
 
-get.available.wpps <- function() c(2008, 2010, 2012, 2015)
+get.available.wpps <- function() c(2008, 2010, 2012, 2015, 2017)
 check.wpp.revision <- function(wpp.year) {
 	if (!wpp.year %in% get.available.wpps())
 		stop('wpp.year must be one of ', paste(get.available.wpps(), collapse=', '))
@@ -435,7 +435,8 @@ merge.with.un.and.melt <- function(data, id.vars='charcode', what=NULL) {
 
 sum.by.country <- function(dataset) {
 	year.cols.idx <- grep('^[0-9]{4}', colnames(dataset))
-	ddply(dataset[,c(which(colnames(dataset)=='country_code'), year.cols.idx)], "country_code", .fun=colwise(sum))
+	ddply(dataset[,c(which(colnames(dataset)=='country_code'), year.cols.idx)], "country_code", 
+	      .fun=colwise(sum, na.rm=TRUE))
 }
 
 sumMFbycountry <- function(datasetM, datasetF) {
