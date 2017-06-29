@@ -52,7 +52,7 @@ assign("wpp.data.env", new.env(), envir=parent.env(environment())
 	)
 data('iso3166', envir=wpp.data.env)
 wpp.data.env$indicators <- get.indicator.choices()
-wpp.data.env$package <- "wpp2015"
+wpp.data.env$package <- "wpp2017"
 # Filter out non-used countries
 do.call('data', list("popM", package=wpp.data.env$package, envir=wpp.data.env))
 wpp.data.env$iso3166 <- wpp.data.env$iso3166[is.element(wpp.data.env$iso3166$uncode, wpp.data.env$popM$country_code),]

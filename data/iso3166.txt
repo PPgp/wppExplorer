@@ -56,7 +56,7 @@ Croatia;Croatia, Kroatien, Croatie, Croacia;HR;HRV;191;HR;Croatia;Europe;Souther
 Cuba;Cuba, Kuba;CU;CUB;192;CU;Cuba;Americas;Caribbean;59;"CP (codigo postal; postal code) is often part of the postcode.";21 30 N;80 00 W
 Curacao;"Curaçao; Curaçao; Kòrsou";CW;CUW;531;;;;;701;;;
 Cyprus;Cyprus, Zypern, Chypre, Chipre;CY;CYP;196;CY;Cyprus;Asia;Western Asia;60;Wikipedia: CY- is part of the postcode.  Statoids: CY- can be used.;35 00 N;33 00 E
-Czech Republic;Czech Republic, Tschechische Republik, République Tchèque, República Checa;CZ;CZE;203;EZ;Czech Republic;Europe;Eastern Europe;61;Wikipedia: CZ- is part of the postcode.  Statoids: CZ- can be used.;49 45 N;15 30 E
+Czechia;Czech Republic, Tschechische Republik, République Tchèque, República Checa;CZ;CZE;203;EZ;Czech Republic;Europe;Eastern Europe;61;Wikipedia: CZ- is part of the postcode.  Statoids: CZ- can be used.;49 45 N;15 30 E
 Cote DIvoire;;CI;CIV;384;IV;Côte DIvoire;Africa;Western Africa;57;;8 00 N;5 00 W
 Denmark;Denmark, Dänemark, Danemark, Dinamarca;DK;DNK;208;DA;Denmark;Europe;Northern Europe;62;Wikipedia: DK- is part of the postcode.;56 00 N;10 00 E
 Djibouti;Djibouti;DJ;DJI;262;DJ;Djibouti;Africa;Eastern Africa;63;;11 30 N;43 00 E

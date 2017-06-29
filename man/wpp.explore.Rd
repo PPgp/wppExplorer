@@ -12,14 +12,14 @@ wpp.explore(wpp.year = NULL, host = NULL, ...)
 }
 
 \arguments{
-  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2015 (default), 2012, and 2010.}
+  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2017 (default), 2015, 2012, and 2010.}
   \item{host}{Argument passed to \code{\link[shiny:runApp]{runApp}}. Defaults to the \code{shiny.host} option, or \code{"0.0.0.0"} if not set.}
   \item{\dots}{Additional arguments passed to \code{\link[shiny:runApp]{runApp}}.}
 }
 \details{
 	The time slider in the left pane defines the year or time period for which data are shown. Note that for vital rates indicators, such as fertility, mortality, migration and sex ratio at birth, the time shown on the slider is the end year of the time period of the data shown in the right pane.
 	
-	The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bounds are available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the \dQuote{Sortable Data} tab, and \dQuote{Trends} and \dQuote{Pyramids}. In \pkg{wpp2015} and \pkg{wpp2012}, the 80 and 95\% intervals are available for the fertility, life expectancy and total population indicators; The +-1/2child intervals are available for the fertility and population indicators. 
+	The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bounds are available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the \dQuote{Sortable Data} tab, and \dQuote{Trends} and \dQuote{Pyramids}. The 80 and 95\% intervals are available for the fertility, life expectancy and total population indicators; The +-1/2child intervals are available for the fertility and population indicators. 
 	
 	The ggplot-based graphs in the Trends and Pyramids tabs are interactive. One can see the data values by mouse hovering or single clicks. One can zoom in by selecting a region. Zooming out is done by a double click.  
 	
@@ -39,7 +39,7 @@ If you have any troubles to see the data, please check that the \pkg{\link[shiny
 }
 
 \seealso{
-\code{\link[wpp2015:wpp2015-package]{wpp2015}}, \code{\link{wpp.indicator}}
+\code{\link[wpp2017:wpp2017-package]{wpp2017}}, \code{\link{wpp.indicator}}
 }
 \examples{
 \dontrun{

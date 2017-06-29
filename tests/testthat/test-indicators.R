@@ -15,8 +15,8 @@ test_that('fertility age profile has the right dimension', {
 
 test_that('age-specific fertility rate has the right value', {
 	ind <- wpp.by.year(wpp.by.country(wpp.indicator('fertage', age="20-24"), 'FR'), 2015)$value
-	data(tfr, package="wpp2015")
-	data(percentASFR, package="wpp2015")
+	data(tfr, package="wpp2017")
+	data(percentASFR, package="wpp2017")
 	tfrFR <- subset(tfr, country_code==250)["2010-2015"]
 	asfrFR <- subset(percentASFR, country_code==250 & age=="20-24")["2010-2015"]
 	expect_true(ind == tfrFR*asfrFR/100)
@@ -40,12 +40,16 @@ test_that('mortality values for high ages come out correctly', {
 	expect_true(all.equal(mx, mx2))
 	mx <- wpp.by.year(wpp.by.country(wpp.indicator('mortagesex', sex="F", age="110"), 'FI'), 2015)$value
 	expect_true(mx > 1.2)
+	set.year(2017)
+	# wpp2017 no data for high ages
+	expect_true(all(wpp.indicator('mortagesex', sex="M", age="90")$value == 0))
 })
 
 test_that('migration rate has the right value', {
+    set.year(2017)
 	ind <- wpp.by.year(wpp.by.country(wpp.indicator('migrate'), 'AE'), 2025)$value
-	data(popproj, package="wpp2015")
-	data(migration, package="wpp2015")
+	data(popproj, package="wpp2017")
+	data(migration, package="wpp2017")
 	popUA <- sum(subset(popproj, country_code==784)[c("2020", "2025")])/2
 	migUA <- subset(migration, country_code == 784)["2020-2025"]
 	expect_true(ind == migUA*200/popUA)

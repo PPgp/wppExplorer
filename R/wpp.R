@@ -104,7 +104,6 @@ migrate <- function(...) {
 	pop <- tpop()
 	mergepop <- merge(migcounts[,'country_code', drop=FALSE], pop, sort=FALSE)
 	ncols <- ncol(mergepop)
-	#browser()
 	cbind(country_code=mergepop$country_code, (migcounts[,2:ncol(migcounts)]*200.)/((mergepop[,3:ncols]+mergepop[,2:(ncols-1)])/2.))
 }
 	
@@ -476,8 +475,8 @@ set.data.env <- function(name, value) wpp.data.env[[name]] <- value
 gmedian <- function(f, cats=NULL) {
 	# group median
 	if(is.null(cats)) cats <- seq(0, by=5, length=length(f)+1)
-	nhalf <- sum(f)/2.
-	cumsumf <- cumsum(f)
+	nhalf <- sum(f, na.rm = TRUE)/2.
+	cumsumf <- cumsum(f[!is.na(f)])
 	medcat <- findInterval(nhalf, cumsumf) + 1
 	med <- cats[medcat] + ((nhalf-cumsumf[medcat-1])/f[medcat])*(cats[medcat+1]-cats[medcat])
 	return(med)
