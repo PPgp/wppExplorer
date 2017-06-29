@@ -11,7 +11,7 @@ wpp.explore3d <- function(wpp.year=NULL) {
 	shiny::runApp(system.file('bubbles', package='wppExplorer'))
 }
 
-get.available.wpps <- function() c(2008, 2010, 2012, 2015)
+get.available.wpps <- function() c(2008, 2010, 2012, 2015, 2017)
 check.wpp.revision <- function(wpp.year) {
 	if (!wpp.year %in% get.available.wpps())
 		stop('wpp.year must be one of ', paste(get.available.wpps(), collapse=', '))
@@ -104,7 +104,6 @@ migrate <- function(...) {
 	pop <- tpop()
 	mergepop <- merge(migcounts[,'country_code', drop=FALSE], pop, sort=FALSE)
 	ncols <- ncol(mergepop)
-	#browser()
 	cbind(country_code=mergepop$country_code, (migcounts[,2:ncol(migcounts)]*200.)/((mergepop[,3:ncols]+mergepop[,2:(ncols-1)])/2.))
 }
 	
@@ -435,7 +434,8 @@ merge.with.un.and.melt <- function(data, id.vars='charcode', what=NULL) {
 
 sum.by.country <- function(dataset) {
 	year.cols.idx <- grep('^[0-9]{4}', colnames(dataset))
-	ddply(dataset[,c(which(colnames(dataset)=='country_code'), year.cols.idx)], "country_code", .fun=colwise(sum))
+	ddply(dataset[,c(which(colnames(dataset)=='country_code'), year.cols.idx)], "country_code", 
+	      .fun=colwise(sum, na.rm=TRUE))
 }
 
 sumMFbycountry <- function(datasetM, datasetF) {
@@ -475,8 +475,8 @@ set.data.env <- function(name, value) wpp.data.env[[name]] <- value
 gmedian <- function(f, cats=NULL) {
 	# group median
 	if(is.null(cats)) cats <- seq(0, by=5, length=length(f)+1)
-	nhalf <- sum(f)/2.
-	cumsumf <- cumsum(f)
+	nhalf <- sum(f, na.rm = TRUE)/2.
+	cumsumf <- cumsum(f[!is.na(f)])
 	medcat <- findInterval(nhalf, cumsumf) + 1
 	med <- cats[medcat] + ((nhalf-cumsumf[medcat-1])/f[medcat])*(cats[medcat+1]-cats[medcat])
 	return(med)

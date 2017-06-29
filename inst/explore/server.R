@@ -292,9 +292,10 @@ shinyServer(function(input, output, session) {
   		ages <- paste(seq(15, by=5, length=7), seq(19, by=5, length=7), sep='-')
   	} else {
   		if(indicator.fun()=='mortagesex')
-  			ages <- c(0,1,seq(5, by=5, length=19))
-  		else ages <- paste(seq(0, by=5, length=20), seq(4, by=5, length=20), sep='-')
-  		ages <- c(ages, '100+')
+  			ages <- c(0,1,seq(5, by=5, length=19), "100+")
+  		else ages <- c(paste(seq(0, by=5, length=20), 
+  		                     seq(4, by=5, length=20), sep='-'),
+  		               "100+")
   	}
   	if (wppExplorer:::ind.no.age.sum(as.integer.ind())) { # no multiple choices allowed
   		multiple <- FALSE

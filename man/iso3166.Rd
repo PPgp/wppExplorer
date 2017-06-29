@@ -29,7 +29,7 @@ Dataset \code{iso3166} includes both, countries and aggregations; dataset \code{
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
 %}
 \references{
-\url{http://www.iso.org/iso/home/standards/country_codes.htm}
+\url{https://www.iso.org/iso/home/standards/country_codes.htm}
 }
 \examples{
 data(iso3166)

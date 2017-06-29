@@ -1,3 +1,7 @@
+2.1-0 (6/29/2017)
+-----
+Added support for wpp2017 which became the new default. 
+
 2.0-2 (1/6/2017)
 -----
 Bug fix in Rosling chart (affects sex- and age-specific indicators)
