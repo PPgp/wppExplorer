@@ -40,9 +40,9 @@ test_that('mortality values for high ages come out correctly', {
 	expect_true(all.equal(mx, mx2))
 	mx <- wpp.by.year(wpp.by.country(wpp.indicator('mortagesex', sex="F", age="110"), 'FI'), 2015)$value
 	expect_true(mx > 1.2)
-	set.year(2017)
+	#set.year(2017)
 	# wpp2017 no data for high ages
-	expect_true(all(wpp.indicator('mortagesex', sex="M", age="90")$value == 0))
+	#expect_true(all(wpp.indicator('mortagesex', sex="M", age="90")$value == 0))
 })
 
 test_that('migration rate has the right value', {
