@@ -4,14 +4,17 @@
 
 <h3>Description</h3>
 
-<p>WPP Explorer allows you to interactively explore data from the <a href='http://esa.un.org/unpd/ppp' target="_blank">World Population Prospects</a>, contained in the R package <span class="pkg">wpp2017</span>. It is based on the <span class="pkg">shiny</span> R package. 
+<p>WPP Explorer allows you to interactively explore data from the UN's <a href='http://esa.un.org/unpd/ppp' target="_blank">World Population Prospects</a>. It is based on the <span class="pkg">shiny</span> R package. 
 </p>
 
 
 <h3>Data</h3>
 <p>The underlying datasets are based on estimates and projections of the
-United Nations, Department of Economic and Social Affairs, Population Division. Probabilistic projections were produced using the methods of
-Raftery et al. (2012, 2014), see <a href='http://bayespop.csss.washington.edu' target="_blank">our project website</a>.</p>
+United Nations, Department of Economic and Social Affairs, Population Division.</p>
+
+<h3>Methodology</h3>
+<p>Publications regarding the methodology used by the United Nations can be found <a href='https://esa.un.org/unpd/wpp/Publications' target="_blank">here</a>. The BayesPop research group at the University of Washington made contributions to the methodology for probabilistic projections, e.g. Raftery et al. (2012), Gerland et al. (2014), see the <a href='http://bayespop.csss.washington.edu' target="_blank">project website</a>.</p>
+
 
 <h3>Navigation</h3>
 
@@ -28,15 +31,12 @@ The time slider in the left pane defines the year or time period for which data 
 
 <p>The Rosling Chart is based on <a href="https://en.wikipedia.org/wiki/Hans_Rosling" target="_blank">Hans Rosling's</a> <a href="http://www.gapminder.org/world/"  target="_blank">gapminder</a>. After opening the tab, the x and y axes are preloaded with the first three indicators from the left panel. You can add indicators to the axes by selecting it on the left and clicking the "Add Indicator" button in the right panel. Age-specific indicators can also be selected and added to the chart. The chart is created via the R package <span class="pkg">googleVis</span> which for the rendering requires an Internet connection and a Flash player. See the <span class="pkg">googleVis</span> documentation for more details.</p>
 
-<h3>Note</h3>
-The wppExplorer can be either viewed <a href="https://rstudio.stat.washington.edu/shiny/wppExplorer/inst/explore/">online</a> or installed from <a href="https://cran.r-project.org" target="_blank">CRAN</a> as a standalone R package. The standalone version can be used for example to access values that are underlying the various visualizations. 
-
 
 <h3>Maintainer</h3>
 <p>Hana &#352;ev&#269;&#237;kov&#225;, Center for Statistics and the Social Sciences, University of Washington.</p>
 
 <h3>Acknowledgments</h3>
-<p>The idea and code of the basic layout was taken from one of Joe Cheng's examples presented at the useR Meetup in Seattle 2013. This is based on work done in collaboration with the United Nations Population Division, and we would like to thank all their staff, including Patrick Gerland for his thorough testing and useful comments and suggestions, and John Wilmoth for his support of the project.
+<p>The idea and code of the basic layout was taken from one of Joe Cheng's examples presented at the useR Meetup in Seattle 2013. This website was produced by the <a href='http://bayespop.csss.washington.edu' target="_blank">BayesPop research group</a> at the University of Washington in collaboration with the United Nations Population Division, and we would like to thank all their staff, including Patrick Gerland for his thorough testing and useful comments and suggestions, and John Wilmoth for his support of the project. This work was supported by the Eunice Kennedy Shriver National Institute of Child Health and Human Development (NICHD), under grants numbers R01 HD054511 and R01 HD070936, and by the University of Washington.
 </p>
 
 <h3>References</h3> 
