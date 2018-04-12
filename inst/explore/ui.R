@@ -22,7 +22,9 @@ googleHistogram <- function(id, options=list()) {
  
 shinyUI(
 	fluidPage(theme = shinytheme("yeti"),
- 	titlePanel(HTML(paste("<h2>WPP", wppExplorer:::get.wpp.year(), "Explorer</h2><h5>Exploratory interface to the UN's world population projections</h5>"))),
+ 	titlePanel(paste("WPP", wppExplorer:::get.wpp.year(), "Explorer"),
+ 	           title = HTML(paste("<h2>WPP", wppExplorer:::get.wpp.year(), "Explorer</h2><h5>Exploratory interface to the UN's world population projections</h5>"))
+ 	           ),
  sidebarLayout(
   	sidebarPanel(
     	shinyjs::useShinyjs(),
