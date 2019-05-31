@@ -16,7 +16,9 @@ get.indicator.choices <- function() {
 				'Ratio of population age 65+ to population age 15-64', 
 				'Ratio of population age 15-64 to population age 65+', 
 				'log(P_t/P_{t-1})/5', 'Population in thousands', 
-				'Mortality for ages 85-100+ are not official UN data. They were derived from UN published life table quantities.', '', '')
+				#'Mortality for ages 85-100+ are not official UN data. They were derived from UN published life table quantities.', 
+				'',
+				'', '')
 	funcs <- c('fert', 'leF', 'leM', 'tpop', 'tpopF', 'tpopM', 'mig', 'migrate',
 				'sexratio', 'medage', 'meanagechbear', 'meanageinchbearage',
 				'tdratio', 'chdratio', 'oadratio', 'psratio',
