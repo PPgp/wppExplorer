@@ -15,8 +15,8 @@ test_that('fertility age profile has the right dimension', {
 
 test_that('age-specific fertility rate has the right value', {
 	ind <- wpp.by.year(wpp.by.country(wpp.indicator('fertage', age="20-24"), 'FR'), 2015)$value
-	data(tfr, package="wpp2017")
-	data(percentASFR, package="wpp2017")
+	data(tfr, package="wpp2019")
+	data(percentASFR, package="wpp2019")
 	tfrFR <- subset(tfr, country_code==250)["2010-2015"]
 	asfrFR <- subset(percentASFR, country_code==250 & age=="20-24")["2010-2015"]
 	expect_true(ind == tfrFR*asfrFR/100)
