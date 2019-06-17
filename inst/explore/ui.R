@@ -22,8 +22,12 @@ googleHistogram <- function(id, options=list()) {
  
 shinyUI(
 	fluidPage(theme = shinytheme("yeti"),
- 	titlePanel(paste("WPP", wppExplorer:::get.wpp.year(), "Explorer")),
-  sidebarLayout(
+ 	titlePanel(paste("WPP", wppExplorer:::get.wpp.year(), "Explorer"),
+ 	           title = HTML(paste("<h2>WPP", wppExplorer:::get.wpp.year(), 
+ 	                              "Explorer</h2><h5>Exploratory interface to the UN's World Population Projections</h5>")
+ 	                        )
+ 	           ),
+    sidebarLayout(
   	sidebarPanel(
     	shinyjs::useShinyjs(),
     	geochartPrereqs,
@@ -53,7 +57,7 @@ shinyUI(
     	textOutput('uncertaintyNote'),
     	#shinythemes::themeSelector(),
     	hr(),
-    	HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://esa.un.org/unpd/wpp' target='_blank'>World Population Prospects</a>. <a href='http://esa.un.org/unpd/ppp' target='_blank'>Probabilistic projections</a> based on <a href='http://www.pnas.org/content/early/2012/08/13/1211452109.abstract' target='_blank'>Raftery et al. (2012, PNAS)</a></small></p><p><small>&copy; Hana &#352;ev&#269;&#237;kov&#225;, <a href='https://www.csss.washington.edu' target='_blank'>CSSS</a>, University of Washington; <a href='http://bayespop.csss.washington.edu' target='_blank'>project website</a></small></p>"),
+    	HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://population.un.org/wpp' target='_blank'>World Population Prospects 2019</a>. Made available under a <a href='http://creativecommons.org/licenses/by/3.0/igo'>Creative Commons license CC BY 3.0 IGO</a>.</small></p><p><small><b>User Interface:</b> Hana &#352;ev&#269;&#237;kov&#225;, <a href='http://bayespop.csss.washington.edu' target='_blank'>BayesPop research group</a>, <a href='https://www.csss.washington.edu' target='_blank'>CSSS</a>, University of Washington.</small></p>"),
 		width=3
 	),
   	mainPanel(
