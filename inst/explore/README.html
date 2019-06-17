@@ -4,7 +4,7 @@
 
 <h3>Description</h3>
 
-<p>WPP Explorer allows you to interactively explore data from the UN's <a href='http://esa.un.org/unpd/ppp' target="_blank">World Population Prospects</a>. It is based on the <span class="pkg">shiny</span> R package. 
+<p>WPP Explorer allows you to interactively explore data from the <a href='http://population.un.org/wpp' target="_blank">World Population Prospects</a>, contained in the R package <span class="pkg">wpp2019</span>. It is based on the <span class="pkg">shiny</span> R package. 
 </p>
 
 
@@ -15,24 +15,23 @@ United Nations, Department of Economic and Social Affairs, Population Division.<
 <h3>Methodology</h3>
 <p>Publications regarding the methodology used by the United Nations can be found <a href='https://esa.un.org/unpd/wpp/Publications' target="_blank">here</a>. The BayesPop research group at the University of Washington made contributions to the methodology for probabilistic projections, e.g. Raftery et al. (2012), Gerland et al. (2014), see the <a href='http://bayespop.csss.washington.edu' target="_blank">project website</a>.</p>
 
-
 <h3>Navigation</h3>
 
 <p>There is a time and indicator selection on the left, and various forms of visualization on the right.
 The time slider in the left pane defines the year or time period for which data are shown. Note that for vital rate indicators, such as fertility, mortality, migration and sex ratio at birth, the time shown on the slider is the end year of the time period of the data shown in the right pane.
 </p>
-<p>The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bounds are available, and for the appropriate visualization types. These are country plots that appear after clicking on the map
-<!--, table in the &ldquo;Sortable Data&rdquo; tab,-->
-and &ldquo;Trends&rdquo; and &ldquo;Pyramids&rdquo;. In the latest WPP revision, the 80 and 95% intervals are available for the fertility, life expectancy and total population indicators; The +-1/2child intervals are available for the fertility and population indicators. 
+<p>The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bounds are available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the &ldquo;Sortable Data&rdquo; tab, and &ldquo;Trends&rdquo; and &ldquo;Pyramids&rdquo;. In the latest WPP revision, the 80 and 95% intervals are available for the fertility, life expectancy and total population indicators; The +-1/2child intervals are available for the fertility and population indicators. 
 </p>
 <p>The "Trends & Pyramids" tab can be used to compare indicators by countries. Selection of multiple countries is supported. The countries are sorted alphabetically. Various aggregated regions can be found at the end of the list. Thus countries can be compared to regional agregates in the same graph. 
 </p>
 <p>The ggplot-based graphs in the Trends and Pyramids sub-tabs are interactive. One can see the data values by mouse hovering or single clicks. One can zoom in by selecting a region of the graph. Zooming out is done by a double click.</p>
-<p>Values in the "Trends" plots <!--as well as in the table below-->
-correspond to the indicator selected on the left. The values in the "Age Profiles" and "Pyramids" graphs correspond to the sex-  and age-specific version of the selected indicator. For example, if "Total Population" is selected in the left panel, the "Age Profiles" and "Pyramids" graphs show population by sex and age. <!--, while the table below shows values of the total population.-->
+<p>Values in the "Trends" plots as well as in the table below correspond to the indicator selected on the left. The values in the "Age Profiles" and "Pyramids" graphs correspond to the sex-  and age-specific version of the selected indicator. For example, if "Total Population" is selected in the left panel, the "Age Profiles" and "Pyramids" graphs show population by sex and age, while the table below shows values of the total population.
 </p>
 
 <p>The Rosling Chart is based on <a href="https://en.wikipedia.org/wiki/Hans_Rosling" target="_blank">Hans Rosling's</a> <a href="http://www.gapminder.org/world/"  target="_blank">gapminder</a>. After opening the tab, the x and y axes are preloaded with the first three indicators from the left panel. You can add indicators to the axes by selecting it on the left and clicking the "Add Indicator" button in the right panel. Age-specific indicators can also be selected and added to the chart. The chart is created via the R package <span class="pkg">googleVis</span> which for the rendering requires an Internet connection and a Flash player. See the <span class="pkg">googleVis</span> documentation for more details.</p>
+
+<h3>Note</h3>
+The wppExplorer can be either viewed <a href="https://rstudio.stat.washington.edu/shiny/wppExplorer/inst/explore/">online</a> or installed from <a href="https://cran.r-project.org" target="_blank">CRAN</a> as a standalone R package. The standalone version can be used for example to access values that are underlying the various visualizations. 
 
 
 <h3>Maintainer</h3>
@@ -50,7 +49,7 @@ correspond to the indicator selected on the left. The values in the "Age Profile
 
 
 
-<hr /><div style="text-align: center;">[Package <em>wppExplorer</em> version 2.2-0, 02/08/2018]</div>
+<hr /><div style="text-align: center;">[Package <em>wppExplorer</em> version 2.3-0, 06/17/2019]</div>
 </body>
 </html>
 

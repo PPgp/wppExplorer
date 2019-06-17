@@ -23,9 +23,11 @@ googleHistogram <- function(id, options=list()) {
 shinyUI(
 	fluidPage(theme = shinytheme("yeti"),
  	titlePanel(paste("WPP", wppExplorer:::get.wpp.year(), "Explorer"),
- 	           title = HTML(paste("<h2>WPP", wppExplorer:::get.wpp.year(), "Explorer</h2><h5>Exploratory interface to the UN's world population projections</h5>"))
+ 	           title = HTML(paste("<h2>WPP", wppExplorer:::get.wpp.year(), 
+ 	                              "Explorer</h2><h5>Exploratory interface to the UN's World Population Projections</h5>")
+ 	                        )
  	           ),
- sidebarLayout(
+    sidebarLayout(
   	sidebarPanel(
     	shinyjs::useShinyjs(),
     	geochartPrereqs,
@@ -55,7 +57,7 @@ shinyUI(
     	textOutput('uncertaintyNote'),
     	#shinythemes::themeSelector(),
     	hr(),
-		HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division:  <a href='http://esa.un.org/unpd/wpp' target='_blank'>World Population Prospects 2017</a>.  Copyright © 2017 United Nations.  Reused with permission of the United Nations. </small></p><p><small><b>User Interface:</b> Hana &#352;ev&#269;&#237;kov&#225;, <a href='http://bayespop.csss.washington.edu' target='_blank'>BayesPop research group</a>, <a href='https://www.csss.washington.edu' target='_blank'>CSSS</a>, University of Washington.</small></p>"),
+    	HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://population.un.org/wpp' target='_blank'>World Population Prospects 2019</a>. Made available under a <a href='http://creativecommons.org/licenses/by/3.0/igo'>Creative Commons license CC BY 3.0 IGO</a>.</small></p><p><small><b>User Interface:</b> Hana &#352;ev&#269;&#237;kov&#225;, <a href='http://bayespop.csss.washington.edu' target='_blank'>BayesPop research group</a>, <a href='https://www.csss.washington.edu' target='_blank'>CSSS</a>, University of Washington.</small></p>"),
 		width=3
 	),
   	mainPanel(
@@ -75,16 +77,16 @@ shinyUI(
 				conditionalPanel(condition='input.map_selection',
 					plotOutput('countryPlot', height='300px'))
       		),
-#       	tabPanel('Sortable Data', 
-#       		fluidRow(
-#       			column(6, checkboxInput('includeAggr2', 'Include Aggregations', FALSE))
-#       		),
-#       		fluidRow(
-#       	 		column(6, offset=5, textOutput('year2'))
-#       	 	),
-# 			hr(),
-#       		DT::dataTableOutput('stable')
-#       	),
+        tabPanel('Sortable Data',
+      		fluidRow(
+      			column(6, checkboxInput('includeAggr2', 'Include Aggregations', FALSE))
+      		),
+      		fluidRow(
+      	 		column(6, offset=5, textOutput('year2'))
+      	 	),
+			hr(),
+      		DT::dataTableOutput('stable')
+      	),
       	tabPanel('Trends & Pyramids',
   			tags$head(
 				tags$style(type="text/css", "#seltcountries { height: 450px}"),

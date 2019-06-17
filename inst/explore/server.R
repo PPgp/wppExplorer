@@ -110,7 +110,7 @@ shinyServer(function(input, output, session) {
   output$yearUI <- renderUI({
     sliderInput('year', h5('Year:'), sep="",
     			animate=animationOptions(interval = 1000),
-                min=isolate(year.range$min), max=isolate(year.range$max), value = 2015, step=5)
+                min=isolate(year.range$min), max=isolate(year.range$max), value = 2020, step=5)
   })
   
   observe({
