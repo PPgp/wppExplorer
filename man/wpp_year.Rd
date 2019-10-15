@@ -15,7 +15,7 @@ get.wpp.year()
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{wpp.year}{Possible values are 2017 (default) 2015, 2012, and 2010.}
+  \item{wpp.year}{Possible values are 2019 (default), 2017, 2015, 2012, and 2010.}
 }
 
 \value{
@@ -26,7 +26,7 @@ get.wpp.year()
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-get.wpp.year() # by default the wpp2017 is used
+get.wpp.year() # by default the wpp2019 is used
 set.wpp.year(2012) # any subsequent operations use the wpp2012 package
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

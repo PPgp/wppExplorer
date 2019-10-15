@@ -12,7 +12,7 @@ wpp.explore(wpp.year = NULL, host = NULL, ...)
 }
 
 \arguments{
-  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2017 (default), 2015, 2012, and 2010.}
+  \item{wpp.year}{Determines which \pkg{wpp} package is to be explored. Currently available are 2019 (default), 2017, 2015, 2012, and 2010.}
   \item{host}{Argument passed to \code{\link[shiny:runApp]{runApp}}. Defaults to the \code{shiny.host} option, or \code{"0.0.0.0"} if not set.}
   \item{\dots}{Additional arguments passed to \code{\link[shiny:runApp]{runApp}}.}
 }
@@ -39,7 +39,7 @@ If you have any troubles to see the data, please check that the \pkg{\link[shiny
 }
 
 \seealso{
-\code{\link[wpp2017:wpp2017-package]{wpp2017}}, \code{\link{wpp.indicator}}
+\code{\link[wpp2019:wpp2019-package]{wpp2019}}, \code{\link{wpp.indicator}}
 }
 \examples{
 \dontrun{

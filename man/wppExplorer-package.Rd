@@ -7,15 +7,15 @@ Explorer of the World Population Prospects
 }
 
 \description{
-Allows to interactively explore data from the World Population Prospects, contained in packages \pkg{wpp2017}, \pkg{wpp2015}, \pkg{wpp2012} and \pkg{wpp2010}. It is based on the \pkg{shiny} package.
+Allows to interactively explore data from the World Population Prospects, contained in packages \pkg{wpp2019}, \pkg{wpp2017}, \pkg{wpp2015}, \pkg{wpp2012} and \pkg{wpp2010}. It is based on the \pkg{shiny} package.
 }
 \details{
 \tabular{ll}{
 Package: \tab wppExplorer\cr
-Version: \tab 2.1-1\cr
-Date: \tab 2017-08-18\cr
+Version: \tab 2.3-2\cr
+Date: \tab 2019-10-04\cr
 Depends: \tab R (>= 3.0.0)\cr
-License: \tab GPL (>= 2)
+License: \tab GPL-3 | file LICENSE
 }
 
 The main function of the packge is \code{\link{wpp.explore}} which opens an interactive interface in a web browser. A few helper functions are available for a fast access to the (possibly filtered) data, e.g. \code{\link{wpp.indicator}}.
@@ -24,7 +24,7 @@ The interface can be also accessed online: \url{https://rstudio.stat.washington.
 }
 
 \source{
- The underlying datasets are based on estimates and projections of the United Nations, Department of Economic and Social Affairs, Population Division (2011, 2013, 2015, 2017). The probabilistic projections were produced with the method of Raftery et al. (2012).
+ The underlying datasets are based on estimates and projections of the United Nations, Department of Economic and Social Affairs, Population Division (2011, 2013, 2015, 2017, 2019). The probabilistic projections were produced with the method of Raftery et al. (2012).
  }
  
  \references{
@@ -44,7 +44,7 @@ Maintainer: Hana Sevcikova <hanas@uw.edu>
 }
 
 \seealso{
-\code{\link[wpp2017:wpp2017-package]{wpp2017}}, \code{\link[wpp2015:wpp2015-package]{wpp2015}}, \code{\link[wpp2012:wpp2012-package]{wpp2012}}, \code{\link[wpp2010:wpp2010-package]{wpp2010}}, \code{\link[shiny:shiny-package]{shiny}}, \code{\link{wpp.explore}}, \code{\link{wpp.indicator}}
+\code{\link[wpp2019:wpp2019-package]{wpp2019}}, \code{\link[wpp2017:wpp2017-package]{wpp2017}}, \code{\link[wpp2015:wpp2015-package]{wpp2015}}, \code{\link[wpp2012:wpp2012-package]{wpp2012}}, \code{\link[wpp2010:wpp2010-package]{wpp2010}}, \code{\link[shiny:shiny-package]{shiny}}, \code{\link{wpp.explore}}, \code{\link{wpp.indicator}}
 }
 
 \keyword{ package }
