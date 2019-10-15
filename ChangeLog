@@ -1,3 +1,19 @@
+2.3-2 (10/04/2019)
+-----
+LICENSE file added.
+
+2.3-1 (10/04/2019)
+-----
+Dependency changed to CRAN's wpp2019.
+
+2.3-0 (6/17/2019)
+-----
+Default set to wpp2019. Depends on Github's wpp2019.
+
+2.2-0 (2/08/2018)
+-----
+Changes requested by the UN.
+
 2.1-1 (8/18/2017)
 -----
 Unit test on mx fixed.

@@ -4,21 +4,23 @@
 
 <h3>Description</h3>
 
-<p>WPP Explorer allows you to interactively explore data from the <a href='http://esa.un.org/unpd/ppp' target="_blank">World Population Prospects</a>, contained in the R package <span class="pkg">wpp2017</span>. It is based on the <span class="pkg">shiny</span> R package. 
+<p>WPP Explorer allows you to interactively explore data from the <a href='http://population.un.org/wpp' target="_blank">World Population Prospects</a>, contained in the R package <span class="pkg">wpp2019</span>. It is based on the <span class="pkg">shiny</span> R package. 
 </p>
 
 
 <h3>Data</h3>
 <p>The underlying datasets are based on estimates and projections of the
-United Nations, Department of Economic and Social Affairs, Population Division. Probabilistic projections were produced using the methods of
-Raftery et al. (2012, 2014), see <a href='http://bayespop.csss.washington.edu' target="_blank">our project website</a>.</p>
+United Nations, Department of Economic and Social Affairs, Population Division.</p>
+
+<h3>Methodology</h3>
+<p>Publications regarding the methodology used by the United Nations can be found <a href='https://esa.un.org/unpd/wpp/Publications' target="_blank">here</a>. The BayesPop research group at the University of Washington made contributions to the methodology for probabilistic projections, e.g. Raftery et al. (2012), Gerland et al. (2014), see the <a href='http://bayespop.csss.washington.edu' target="_blank">project website</a>.</p>
 
 <h3>Navigation</h3>
 
 <p>There is a time and indicator selection on the left, and various forms of visualization on the right.
 The time slider in the left pane defines the year or time period for which data are shown. Note that for vital rate indicators, such as fertility, mortality, migration and sex ratio at birth, the time shown on the slider is the end year of the time period of the data shown in the right pane.
 </p>
-<p>The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bounds are available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the &ldquo;Sortable Data&rdquo; tab, and &ldquo;Trends&rdquo; and &ldquo;Pyramids&rdquo;. In <span class="pkg">wpp2015</span>, the 80 and 95% intervals are available for the fertility, life expectancy and total population indicators; The +-1/2child intervals are available for the fertility and population indicators. 
+<p>The uncertainty selection is only used for indicators and years for which the corresponding lower and upper bounds are available, and for the appropriate visualization types. These are country plots that appear after clicking on the map, table in the &ldquo;Sortable Data&rdquo; tab, and &ldquo;Trends&rdquo; and &ldquo;Pyramids&rdquo;. In the latest WPP revision, the 80 and 95% intervals are available for the fertility, life expectancy and total population indicators; The +-1/2child intervals are available for the fertility and population indicators. 
 </p>
 <p>The "Trends & Pyramids" tab can be used to compare indicators by countries. Selection of multiple countries is supported. The countries are sorted alphabetically. Various aggregated regions can be found at the end of the list. Thus countries can be compared to regional agregates in the same graph. 
 </p>
@@ -36,7 +38,7 @@ The wppExplorer can be either viewed <a href="https://rstudio.stat.washington.ed
 <p>Hana &#352;ev&#269;&#237;kov&#225;, Center for Statistics and the Social Sciences, University of Washington.</p>
 
 <h3>Acknowledgments</h3>
-<p>The idea and code of the basic layout was taken from one of Joe Cheng's examples presented at the useR Meetup in Seattle 2013. This is based on work done in collaboration with the United Nations Population Division, and we would like to thank all their staff, including Patrick Gerland for his thorough testing and useful comments and suggestions, and John Wilmoth for his support of the project.
+<p>The idea and code of the basic layout was taken from one of Joe Cheng's examples presented at the useR Meetup in Seattle 2013. This website was produced by the <a href='http://bayespop.csss.washington.edu' target="_blank">BayesPop research group</a> at the University of Washington in collaboration with the United Nations Population Division, and we would like to thank all their staff, including Patrick Gerland for his thorough testing and useful comments and suggestions, and John Wilmoth for his support of the project. This work was supported by the Eunice Kennedy Shriver National Institute of Child Health and Human Development (NICHD), under grants numbers R01 HD054511 and R01 HD070936, and by the University of Washington.
 </p>
 
 <h3>References</h3> 
@@ -47,7 +49,7 @@ The wppExplorer can be either viewed <a href="https://rstudio.stat.washington.ed
 
 
 
-<hr /><div style="text-align: center;">[Package <em>wppExplorer</em> version 2.1-0, 06/29/2017]</div>
+<hr /><div style="text-align: center;">[Package <em>wppExplorer</em> version 2.3-0, 06/17/2019]</div>
 </body>
 </html>
 

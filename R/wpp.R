@@ -11,7 +11,7 @@ wpp.explore3d <- function(wpp.year=NULL) {
 	shiny::runApp(system.file('bubbles', package='wppExplorer'))
 }
 
-get.available.wpps <- function() c(2008, 2010, 2012, 2015, 2017)
+get.available.wpps <- function() c(2008, 2010, 2012, 2015, 2017, 2019)
 check.wpp.revision <- function(wpp.year) {
 	if (!wpp.year %in% get.available.wpps())
 		stop('wpp.year must be one of ', paste(get.available.wpps(), collapse=', '))
