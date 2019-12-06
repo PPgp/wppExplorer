@@ -1,0 +1,10 @@
+name: wpp2015explorer
+title: WPP 2015 Explorer
+username:
+account: bayespop
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1572836
+bundleId: 2647689
+url: https://bayespop.shinyapps.io/wpp2015explorer/
+when: 1575671307.68716

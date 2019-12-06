@@ -19,7 +19,7 @@ googleHistogram <- function(id, options=list()) {
   tags$div(id=id, class="google-histogram-output", `data-options`=RJSONIO::toJSON(options))
 }
 
-wppExplorer:::set.wpp.year(2017)
+wppExplorer:::set.wpp.year(2015)
 
 shinyUI(
 	fluidPage(theme = shinytheme("yeti"),
