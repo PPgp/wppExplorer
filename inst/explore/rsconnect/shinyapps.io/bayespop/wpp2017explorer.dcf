@@ -1,0 +1,10 @@
+name: wpp2017explorer
+title: WPP 2017 Explorer
+username:
+account: bayespop
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1572800
+bundleId: 2647671
+url: https://bayespop.shinyapps.io/wpp2017explorer/
+when: 1575670713.48126
