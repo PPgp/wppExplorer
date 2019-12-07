@@ -58,7 +58,7 @@ shinyUI(
     	textOutput('uncertaintyNote'),
     	#shinythemes::themeSelector(),
     	hr(),
-		HTML("<p><small><b>Explore other WPP revisions:</b><br/><a href='https://bayespop.shinyapps.io/wpp2017explorer' target='_blank'>2017</a> <a href='https://bayespop.shinyapps.io/wpp2015explorer' target='_blank'>2015</a> <a href='https://bayespop.shinyapps.io/wpp2012explorer' target='_blank'>2012</a></small></p>"),
+		HTML("<p><small><b>Explore other WPP revisions:</b><br/><a href='https://bayespop.shinyapps.io/wpp2019explorer' target='_blank'>2019</a> <a href='https://bayespop.shinyapps.io/wpp2015explorer' target='_blank'>2015</a> <a href='https://bayespop.shinyapps.io/wpp2012explorer' target='_blank'>2012</a></small></p>"),
     	HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://population.un.org/wpp' target='_blank'>World Population Prospects 2019</a>. Made available under a <a href='http://creativecommons.org/licenses/by/3.0/igo'>Creative Commons license CC BY 3.0 IGO</a>.</small></p><p><small><b>User Interface:</b> Hana &#352;ev&#269;&#237;kov&#225;, <a href='http://bayespop.csss.washington.edu' target='_blank'>BayesPop research group</a>, <a href='https://www.csss.washington.edu' target='_blank'>CSSS</a>, University of Washington.</small></p>"),
 		width=3
 	),
