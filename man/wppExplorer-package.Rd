@@ -20,7 +20,7 @@ License: \tab GPL-3 | file LICENSE
 
 The main function of the packge is \code{\link{wpp.explore}} which opens an interactive interface in a web browser. A few helper functions are available for a fast access to the (possibly filtered) data, e.g. \code{\link{wpp.indicator}}.
 
-The interface can be also accessed online: \url{https://bayespop.shinyapps.io/wpp2019explorer}
+The interface can be also accessed online: \url{https://bayespop.shinyapps.io/wpp2019explorer/}
 }
 
 \source{
