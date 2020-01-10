@@ -12,15 +12,15 @@ Allows to interactively explore data from the World Population Prospects, contai
 \details{
 \tabular{ll}{
 Package: \tab wppExplorer\cr
-Version: \tab 2.3-2\cr
-Date: \tab 2019-10-04\cr
+Version: \tab 2.3-3\cr
+Date: \tab 2020-1-9\cr
 Depends: \tab R (>= 3.0.0)\cr
 License: \tab GPL-3 | file LICENSE
 }
 
 The main function of the packge is \code{\link{wpp.explore}} which opens an interactive interface in a web browser. A few helper functions are available for a fast access to the (possibly filtered) data, e.g. \code{\link{wpp.indicator}}.
 
-The interface can be also accessed online: \url{https://rstudio.stat.washington.edu/shiny/wppExplorer/inst/explore/}
+The interface can be also accessed online: \url{https://bayespop.shinyapps.io/wpp2019explorer/}
 }
 
 \source{

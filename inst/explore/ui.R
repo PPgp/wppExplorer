@@ -57,7 +57,9 @@ shinyUI(
     	textOutput('uncertaintyNote'),
     	#shinythemes::themeSelector(),
     	hr(),
-    	HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://population.un.org/wpp' target='_blank'>World Population Prospects 2019</a>. Made available under a <a href='http://creativecommons.org/licenses/by/3.0/igo'>Creative Commons license CC BY 3.0 IGO</a>.</small></p><p><small><b>User Interface:</b> Hana &#352;ev&#269;&#237;kov&#225;, <a href='http://bayespop.csss.washington.edu' target='_blank'>BayesPop research group</a>, <a href='https://www.csss.washington.edu' target='_blank'>CSSS</a>, University of Washington.</small></p>"),
+    	HTML("<p><small><b>Data Source:</b> United Nations, Department of Economic and Social Affairs, Population Division: <a href='http://population.un.org/wpp' target='_blank'>World Population Prospects 2019</a>. Made available under a <a href='http://creativecommons.org/licenses/by/3.0/igo'>Creative Commons license CC BY 3.0 IGO</a>.</small></p>"),
+		HTML("<p><small><b>Methodology:</b> <a href='https://www.un.org/development/desa'  target='_blank'>UN DESA</a> and <a href='http://bayespop.csss.washington.edu' target='_blank'>BayesPop research group</a> at University of Washington supported by <a href='https://www.nichd.nih.gov' target='_blank'>NICHD</a> (<a href='https://www.stat.washington.edu/raftery' target='_blank'>Adrian Raftery</a>, PI).</small></p>"),
+		HTML("<p><small><b>User Interface:</b> Hana &#352;ev&#269;&#237;kov&#225;, <a href='http://bayespop.csss.washington.edu' target='_blank'>BayesPop research group</a>, <a href='https://www.csss.washington.edu' target='_blank'>CSSS</a>, University of Washington.</small></p>"),
 		width=3
 	),
   	mainPanel(

@@ -23,7 +23,7 @@ wpp.explore(wpp.year = NULL, host = NULL, ...)
 	
 	The ggplot-based graphs in the Trends and Pyramids tabs are interactive. One can see the data values by mouse hovering or single clicks. One can zoom in by selecting a region. Zooming out is done by a double click.  
 	
-	The interface can be accessed online: \url{https://rstudio.stat.washington.edu/shiny/wppExplorer/inst/explore/}
+	The interface can be accessed online: \url{https://bayespop.shinyapps.io/wpp2019explorer/}
 }
 %\value{
 %}
