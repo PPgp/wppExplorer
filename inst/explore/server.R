@@ -699,5 +699,5 @@ shinyServer(function(input, output, session) {
                       #sizevar="zvalue",
                       options=list(width=700, height=600))
   })
-  output$AddIndicatorText <- renderText({"\nAdd indicator from the left panel\nto chart axes:"})
+  output$AddIndicatorText <- renderText({"\nAdd indicator from the left panel\nto chart axes:*"})
 })
