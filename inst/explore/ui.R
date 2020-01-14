@@ -149,12 +149,13 @@ shinyUI(
     	),
       	tabPanel('Rosling Chart',
 			htmlOutput('graphgvis'),
-			HTML("<br>"),
+			HTML("<br/>"),
 			fluidRow(column(1, "")),
 			fluidRow(
 				column(3, offset=1, textOutput('AddIndicatorText')),
 				column(1, actionButton("AddIndicator", "Add indicator"))
-			)
+			),
+			HTML("<br/><i><small>*If you don't see a graph above, make sure Adobe Flash Player is installed and enabled in your browser.</small></i>")
       	),
       	tabPanel("Help",
       		includeHTML("README.html")
