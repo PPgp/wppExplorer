@@ -230,38 +230,51 @@ shinyServer(function(input, output, session) {
 	# data[,c('charcode', 'name', 'value')]
  # }, include.rownames = FALSE, include.colnames = FALSE)
   
-  output$stable <- DT::renderDataTable({ #renderGvis({
-  	year.data <- data()
-  	if(nrow(year.data)==0) invalidateLater(1000, session)
-  	iso <- data.env()$iso3166
- 	if(!input$includeAggr2) iso <- iso[iso$is.country,]
-  	year.data <- merge(year.data, iso[,c('charcode', 'name')], by='charcode')
-  	low <- indicatorDataLow()
-  	data <- cbind(year.data[,c('charcode', 'name', 'value')], rank=rank(year.data$value)) # add rank column
-  	if(!is.null(low)) { # add intervals
-  		data.l <- wpp.by.year(low, input$year)
-  		 if(nrow(data.l) > 0) {		
-    		data.h <- wpp.by.year(indicatorDataHigh(), input$year)
-    		for(i in 1:3) {
-    			colnames(data.l) <- sub(paste0('value.',i), paste('low', wppExplorer:::.get.pi.name.for.label(i)), colnames(data.l))
-    			colnames(data.h) <- sub(paste0('value.',i), paste('high', wppExplorer:::.get.pi.name.for.label(i)), colnames(data.h))
-    		}
-    		ncoldata <- ncol(data)
-  			data <- merge(data, data.l, by='charcode')
-  			data <- merge(data, data.h, by='charcode')
-  			# rearrange, so that columns corresponding to (low, high) pairs is always beside one another
-  			if (ncol(data.l) > 2) {
-  				l <- ncol(data.l) - 1
-  				col.idx <- matrix(1:(2*l), nrow=l)
-  				col.idx <- as.vector(t(col.idx))
-  				data <- data[,c(1:ncoldata, col.idx+ncoldata)]
-  			}
-  		}
-  	}
-  	colnames(data)[1] <- 'code'
-	data
-  	})
+  get.data.for.tabletab <- reactive({
+      year.data <- data()
+      if(nrow(year.data)==0) invalidateLater(1000, session)
+      iso <- data.env()$iso3166
+      if(!input$includeAggr2) iso <- iso[iso$is.country,]
+      year.data <- merge(year.data, iso[,c('charcode', 'uncode', 'name')], by='charcode')
+      low <- indicatorDataLow()
+      data <- cbind(year.data[,c('charcode', 'uncode', 'name', 'value')], rank=rank(year.data$value)) # add rank column
+      if(!is.null(low)) { # add intervals
+          data.l <- wpp.by.year(low, input$year)
+          if(nrow(data.l) > 0) {		
+              data.h <- wpp.by.year(indicatorDataHigh(), input$year)
+              for(i in 1:3) {
+                  colnames(data.l) <- sub(paste0('value.',i), paste('low', wppExplorer:::.get.pi.name.for.label(i)), colnames(data.l))
+                  colnames(data.h) <- sub(paste0('value.',i), paste('high', wppExplorer:::.get.pi.name.for.label(i)), colnames(data.h))
+              }
+              ncoldata <- ncol(data)
+              data <- merge(data, data.l, by='charcode')
+              data <- merge(data, data.h, by='charcode')
+              # rearrange, so that columns corresponding to (low, high) pairs is always beside one another
+              if (ncol(data.l) > 2) {
+                  l <- ncol(data.l) - 1
+                  col.idx <- matrix(1:(2*l), nrow=l)
+                  col.idx <- as.vector(t(col.idx))
+                  data <- data[,c(1:ncoldata, col.idx+ncoldata)]
+              }
+          }
+      }
+      colnames(data)[1] <- 'iso'
+      colnames(data)[2] <- 'UNid'
+      data
+  })
+  
+  output$stable <- DT::renderDataTable({ 
+      get.data.for.tabletab()
+  })
   	
+  output$download <- downloadHandler(
+      filename <- function() { paste0(indicator.fun(), "_", input$year, ".csv") },
+      content <- function(file) {
+        tbl <- get.data.for.tabletab()
+        write.csv(tbl, file, row.names = FALSE)
+      }
+  )
+  
   output$ghist <- renderGvis({
   	data <- data()
   	if(is.null(data) || nrow(data)<=0) return(NULL)
