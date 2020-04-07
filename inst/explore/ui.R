@@ -86,7 +86,8 @@ shinyUI(
       			column(6, checkboxInput('includeAggr2', 'Include Aggregations', FALSE))
       		),
       		fluidRow(
-      	 		column(6, offset=5, textOutput('year2'))
+      	 		column(3, offset=5, textOutput('year2')),
+      	 		column(3, offset=1, downloadLink("download", "Download table", class = "fa fa-download alignright"))
       	 	),
 			hr(),
       		DT::dataTableOutput('stable')
