@@ -257,8 +257,8 @@ shinyServer(function(input, output, session) {
               }
           }
       }
-      colnames(data)[1] <- 'iso'
-      colnames(data)[2] <- 'UNid'
+      colnames(data)[1] <- 'id'
+      colnames(data)[2] <- 'UN'
       data
   })
   
