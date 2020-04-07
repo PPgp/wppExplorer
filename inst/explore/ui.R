@@ -85,7 +85,7 @@ shinyUI(
       		),
       		fluidRow(
       	 		column(3, offset=5, textOutput('year2')),
-      	 		column(3, offset=1, downloadLink("download", "Download table", class = "fa fa-download alignright"))
+      	 		column(1, offset=2, downloadLink("download", "Download", class = "fa fa-download alignright"))
       	 	),
 			hr(),
       		DT::dataTableOutput('stable')
