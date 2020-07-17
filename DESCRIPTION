@@ -9,3 +9,5 @@ Imports: shiny (>= 0.13.0), shinythemes, shinyjs, plyr, reshape2, googleVis, wpp
 Suggests: wpp2017, wpp2015, wpp2012, wpp2010, testthat
 Description: Explore data in the 'wpp2019' (or 2017, 2015, ...) package using a 'shiny' interface.
 License: GPL-3 | file LICENSE
+RemoteType: github
+RemoteRepo: PPgp
