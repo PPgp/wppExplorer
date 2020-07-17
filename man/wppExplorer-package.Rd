@@ -12,8 +12,8 @@ Allows to interactively explore data from the World Population Prospects, contai
 \details{
 \tabular{ll}{
 Package: \tab wppExplorer\cr
-Version: \tab 2.3-4\cr
-Date: \tab 2020-4-7\cr
+Version: \tab 2.3-5\cr
+Date: \tab 2020-7-17\cr
 Depends: \tab R (>= 3.0.0)\cr
 License: \tab GPL-3 | file LICENSE
 }
@@ -28,7 +28,7 @@ The interface can be also accessed online: \url{https://bayespop.shinyapps.io/wp
  }
  
  \references{
- World Population Prospects: The 2017 Revision. (\url{http://esa.un.org/unpd/wpp}) Special Tabulations.
+ World Population Prospects: The 2019 Revision. (\url{https://population.un.org/wpp/}) Special Tabulations.
  
  A. E. Raftery,  N. Li, H. Sevcikova , P. Gerland, G. K. Heilig (2012). Bayesian probabilistic population projections for all countries. Proceedings of the National Academy of Sciences 109:13915-13921.
  
