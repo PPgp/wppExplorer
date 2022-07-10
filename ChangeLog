@@ -1,3 +1,7 @@
+2.4-0 (7/11/2020)
+-----
+Support for the 2022 revision. Dependency on GitHub version of wpp2022. 
+
 2.3-5 (7/17/2020)
 -----
 Fixed the net migration rate indicator.
