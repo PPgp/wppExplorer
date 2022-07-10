@@ -11,7 +11,7 @@ wpp.explore3d <- function(wpp.year=NULL) {
 	shiny::runApp(system.file('bubbles', package='wppExplorer'))
 }
 
-get.available.wpps <- function() c(2008, 2010, 2012, 2015, 2017, 2019)
+get.available.wpps <- function() c(2008, 2010, 2012, 2015, 2017, 2019, 2022)
 check.wpp.revision <- function(wpp.year) {
 	if (!wpp.year %in% get.available.wpps())
 		stop('wpp.year must be one of ', paste(get.available.wpps(), collapse=', '))
@@ -62,15 +62,20 @@ get.wpp.year <- function() as.integer(substr(wpp.data.env$package, 4,7))
  
 tpop <- function(...) {
 	# Create a dataset of total population
+    if((wpp.year <- wpp.year.from.package.name(wpp.data.env$package)) > 2012){
+        if.not.exists.load('pop')
+        return(load.and.merge.datasets('pop', 'popproj'))
+    }
+    # for previous revision need to aggregate from age-specific datasets
 	if.not.exists.load('popM')
 	if.not.exists.load('popF')
 	tpop <- sumMFbycountry(wpp.data.env$popM, wpp.data.env$popF)
-	if(wpp.year.from.package.name(wpp.data.env$package) > 2010) { #projection stored separately from observations
-		if.not.exists.load('popMprojMed')
-		if.not.exists.load('popFprojMed')
-		tpopp <- sumMFbycountry(wpp.data.env$popMprojMed, wpp.data.env$popFprojMed)
-		tpop <- merge(tpop, tpopp, by='country_code')
-	}
+	if(wpp.year > 2010) { #projection stored separately from observations
+        if.not.exists.load('popMprojMed')
+        if.not.exists.load('popFprojMed')
+        tpopp <- sumMFbycountry(wpp.data.env$popMprojMed, wpp.data.env$popFprojMed)
+        tpop <- merge(tpop, tpopp, by='country_code')
+    }
 	tpop
 }
 
@@ -178,6 +183,14 @@ leM <- function(...) {
 	return(load.and.merge.datasets('e0M', name.pred))
 }
 
+leB <- function(...) {
+    if(wpp.year.from.package.name(wpp.data.env$package) < 2022){
+        # TODO: combine female and male
+        return(NULL)
+    }
+    return(load.and.merge.datasets('e0B5', 'e0Bproj5'))
+}
+
 sexratio <- function(...) {
 	return(load.and.merge.datasets('sexRatio', NULL))
 }
@@ -185,7 +198,8 @@ sexratio <- function(...) {
 meanagechbear <- function(...) {
 	# mean age of child bearing
 	data <- load.and.merge.datasets('percentASFR', NULL)
-	ddply(data[,-which(colnames(data) == "age")], "country_code", .fun=colwise(function(x) sum(seq(17.5, by=5, length=7)*x)/100.))
+	macseq <- if(wpp.year.from.package.name(wpp.data.env$package) < 2022) seq(17.5, by=5, length=7) else seq(10.5, by=5, length=9)
+	ddply(data[,-which(colnames(data) == "age")], "country_code", .fun=colwise(function(x) sum(macseq*x)/100.))
 }
 
 .sum.popFM.keep.age <- function() {
@@ -245,6 +259,15 @@ leF.ci <- function(which.pi, bound, ...) {
 leM.ci <- function(which.pi, bound, ...) {
 	e0.ci('M', which.pi, bound)
 }
+
+leB.ci <- function(which.pi, bound, ...) {
+    if(wpp.year.from.package.name(wpp.data.env$package) < 2022){
+        # TODO: combine female and male
+        return(NULL)
+    }
+    load.and.merge.datasets(paste0('e0Bproj', which.pi, .pi.suffix(bound)), NULL)
+}
+
 
 e0.ci <- function(sex, which.pi, bound) {
 	if(wpp.year.from.package.name(wpp.data.env$package) <= 2010 || which.pi == 'half.child') return(NULL)
@@ -525,10 +548,16 @@ get.pyramid.data <- function(year, countries, which.pi=NULL, bound=NULL, indicat
 	dataB <- list()
 	for(i in 1:min(2,length(indicators))) {
 		p <- load.and.merge.datasets(name.obs[i], name.preds[i], by=c('country_code', 'age'), remove.cols=c('country', 'name'))
+		#browser()
+		if("100+" %in% p$age && !"15-19" %in% p$age) { # if in form 0,1,5,10, ..., 100+ -> convert to numeric
+		    p$age[p$age == "100+"] <- "100"
+		    p$age <- type.convert(p$age)
+		}
 		dataB[[i]] <- merge.with.un.and.melt(cbind(p, age.num=.get.age.num(p$age)), id.vars=c('charcode', 'age', 'age.num'),
 				what=indicators[i])
 		dataB[[i]] <- cbind(dataB[[i]], sex=names(indicators)[i])
-	}	
+	}
+	#browser()
 	data <- wpp.by.year(if(length(indicators) > 1) rbind(dataB[[1]], dataB[[2]]) else dataB[[1]], year)
 	wpp.by.countries(data, countries)
 }
@@ -578,7 +607,10 @@ get.indicator.title <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), 
 	# Return numeric version of the age, either its index or its numeric value
 	aorder <- .get.age.order()
 	#browser()
-	if(any(!(age %in% names(aorder)))) return(age)
+	if(any(!(age %in% names(aorder)))) {
+	    aorder <- .get.age.order2()
+	    if(any(!(age %in% names(aorder)))) return(age)
+	}
 	aorder[as.character(age)]
 } 
 .get.age.order <- function() {
@@ -586,4 +618,10 @@ get.indicator.title <- function(indicator, sex.mult=c(), sex=c(), age.mult=c(), 
 	age.array <- 1:21
 	names(age.array) <- age
 	age.array
+}
+.get.age.order2 <- function() {
+    age <- c(0, 1, seq(5, by=5, length=19), '100+')
+    age.array <- 1:22
+    names(age.array) <- age
+    age.array
 }

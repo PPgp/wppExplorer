@@ -1,13 +1,13 @@
 utils::globalVariables("wpp.data.env")
 get.indicator.choices <- function() {
-	ind.names <- c('Total Fertility Rate', 'Female Life Expectancy', 'Male Life Expectancy', 
+	ind.names <- c('Total Fertility Rate', 'Female Life Expectancy', 'Male Life Expectancy', #'Total Life Expectancy', 
 					'Total Population', 'Female Population', 'Male Population', 
 					'Net Migration', 'Net Migration Rate', 
 					'Sex Ratio at Birth', 'Median Age', 'Mean Age at Childbearing', 'Mean Age of Women in Childbearing Ages',
 					'Total Dependency Ratio', 'Child Dependency Ratio', 'Old-age Dependency Ratio','Potential Support Ratio',
 					'Mean Annual Population Growth',
 					'Population by sex and age', 'Mortality Rate by sex and age', 'Age-specific Fertility Rate', 'Percent Age-specific Fertility')
-	ind.def <- c('', '', '',
+	ind.def <- c('', '', '', #'Combined male and female e0',
 				'Total population in thousands', 'Female population in thousands', 'Male population in thousands', 
 				'Net migration counts in thousands per 5 years', 'Annual net migration rate (per thousand population; denominator is approx. average population)',
 				'Ratio of male to female', '', 'Mean age of mothers at the birth of their children', 'Mean age of women that are in childbearing ages',
@@ -19,7 +19,8 @@ get.indicator.choices <- function() {
 				#'Mortality for ages 85-100+ are not official UN data. They were derived from UN published life table quantities.', 
 				'',
 				'', '')
-	funcs <- c('fert', 'leF', 'leM', 'tpop', 'tpopF', 'tpopM', 'mig', 'migrate',
+	funcs <- c('fert', 'leF', 'leM', #'leB', 
+	           'tpop', 'tpopF', 'tpopM', 'mig', 'migrate',
 				'sexratio', 'medage', 'meanagechbear', 'meanageinchbearage',
 				'tdratio', 'chdratio', 'oadratio', 'psratio',
 				'popgrowth',
@@ -35,7 +36,7 @@ get.indicator.choices <- function() {
 	ind.df[c('tpop', 'tpopF', 'tpopM', 'mig','popagesex'), 'sum.in.table'] <- TRUE # show sum in the trend table
 	ind.df[c('fert', 'leF', 'leM', 'tpop'), 'low.high'] <- TRUE       # has uncertainty
 	ind.df[c('fert', 'tpop', 'popagesex'), 'half.child'] <- TRUE     # has half.child variant
-	ind.df[c('fert', 'leF', 'leM', 'mig', 'sexratio', 'mortagesex', 'fertage', 'pfertage'), 'mid.years'] <- TRUE # use mid years in slider (not implemented)
+	ind.df[c('fert', 'leF', 'leM',  'mig', 'sexratio', 'mortagesex', 'fertage', 'pfertage'), 'mid.years'] <- TRUE # use mid years in slider (not implemented)
 	ind.df[c('tpop', 'tpopF', 'tpopM','popagesex', 'mig'), 'digits'] <- 0                 # number of digits the histogram
 	ind.df[c('sexratio', 'popgrowth', 'mortagesex'), 'digits'] <- 4
 	ind.df['fertage', 'digits'] <- 3

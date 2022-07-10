@@ -344,14 +344,14 @@ shinyServer(function(input, output, session) {
   		codes,
   		names = names
   	)
-  	do.call('selectInput', list('seltcountries', 'Select countries/areas:', countries, multiple=TRUE, selectize = FALSE,
+  	do.call('selectInput', list('seltcountries', 'Select one or more locations:', countries, multiple=TRUE, selectize = FALSE,
   					selected=countries[1] #names[1]
   					))
 	})
 	
   cast.profile.data <- function(data) {
     vrange <- range(data$value, na.rm=TRUE)
-    hrange <- if(is.element('15-19', data$age)) c(0, length(unique(data$age))) else range(data$age)
+    hrange <- if('15-19' %in% data$age) c(0, length(unique(data$age))) else range(data$age)
     #browser()
     data <- dcast(data, age.num + age ~ charcode, mean)
     data$age.num <- NULL
