@@ -7,6 +7,6 @@ Maintainer: Hana Sevcikova <hanas@uw.edu>
 Depends: R (>= 3.0.0)
 Imports: shiny (>= 0.13.0), shinythemes, shinyjs, plyr, reshape2, googleVis, wpp2022, Hmisc, ggplot2, DT
 Suggests: wpp2019, wpp2017, wpp2015, wpp2012, wpp2010, testthat
-Remotes: PPgp/wpp2022
+Remotes: PPgp/wpp2022@shinyapp_wpp2022explorer
 Description: Explore data in the 'wpp2022' (or 2019, 2017, 2015, ...) package using a 'shiny' interface.
 License: GPL-3 | file LICENSE
