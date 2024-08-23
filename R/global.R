@@ -40,7 +40,7 @@ get.indicator.choices <- function() {
 	ind.df[c('tpop', 'tpopF', 'tpopM','popagesex', 'mig'), 'digits'] <- 0                 # number of digits the histogram
 	ind.df[c('sexratio', 'popgrowth', 'mortagesex'), 'digits'] <- 4
 	ind.df['fertage', 'digits'] <- 3
-	ind.df[c('tdratio', 'chdratio', 'oadratio'), 'digits'] <- 2
+	ind.df[c('tdratio', 'chdratio', 'oadratio', 'mig'), 'digits'] <- 2
 	ind.df[c('mig', 'migrate', 'popgrowth'), 'has.negatives'] <- TRUE
 	structure(
 		as.character(1:length(ind.names)),
