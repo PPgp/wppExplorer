@@ -1,6 +1,10 @@
-2.5-0 (7/11/2024)
+3.0-0 (7/11/2024)
 -----
 Support for the 2024 revision. Dependency on GitHub version of wpp2024. 
+
+Indicator for total e0 added.
+
+Support for age-specific net migration added.
 
 2.4-0 (7/11/2022)
 -----

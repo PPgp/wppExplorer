@@ -67,7 +67,7 @@ shinyServer(function(input, output, session) {
   })
   
   pyramid.data <- reactive({
-  	wppExplorer:::get.pyramid.data(input$year, input$seltcountries)
+      wppExplorer:::get.pyramid.data(input$year, input$seltcountries)
   })
   
   pyramid.data.low <- reactive({
@@ -101,7 +101,14 @@ shinyServer(function(input, output, session) {
   age.profile.pfert <- reactive({
   	wppExplorer:::get.age.profile.pfert(input$year, input$seltcountries)
   })
-
+  
+  age.profile.migF <- reactive({
+      wppExplorer:::get.pyramid.mig.data(input$year, input$seltcountries, indicators=c(F='migF'))
+  })
+  age.profile.migM <- reactive({
+      wppExplorer:::get.pyramid.mig.data(input$year, input$seltcountries, indicators=c(M='migM'))
+  })
+  
   
   data.env <- function() wppExplorer:::wpp.data.env
     
@@ -353,7 +360,7 @@ shinyServer(function(input, output, session) {
     vrange <- range(data$value, na.rm=TRUE)
     hrange <- if('15-19' %in% data$age) c(0, length(unique(data$age))) else range(data$age)
     #browser()
-    data <- dcast(data, age.num + age ~ charcode, mean)
+    data <- reshape2::dcast(data, age.num + age ~ charcode, mean)
     data$age.num <- NULL
     list(casted=data, hrange=hrange, vrange=vrange)
   	
@@ -365,7 +372,7 @@ shinyServer(function(input, output, session) {
    	hrange <- range(data$Year, na.rm=TRUE)
     vrange <- range(data[,grep('value', colnames(data))], na.rm=TRUE)
     if(cast)
-    	data <- dcast(data, Year ~ charcode, mean)
+    	data <- reshape2::dcast(data, Year ~ charcode, mean)
     list(casted=data, hrange=hrange, vrange=vrange)
   }
   
@@ -423,13 +430,17 @@ shinyServer(function(input, output, session) {
 				if(fun == 'pfertage' && sex=='F') {
 					data <- age.profile.pfert()
 				} else {
-  					return(list(data=data.frame(age=c(0,0), v=c(0,0)),
-  						#data.frame(age=seq(0,100, by=5), value=rep(0, 21)), 
-  						options=list(title=paste(c(F='Female', M='Male')[sex], ': No age profiles for this indicator.'),
-  							legend= list(position="none"),
-  							hAxis = list(viewWindow = list(min=-1, max=1)),
-  							vAxis = list(viewWindow = list(min=-1, max=1))
-  						)))
+				    if(fun %in% c('mig') && year > 2020) {
+				        data <- do.call(paste0('age.profile.mig', sex), list())
+				    } else {
+  					    return(list(data=data.frame(age=c(0,0), v=c(0,0)),
+  						#   data.frame(age=seq(0,100, by=5), value=rep(0, 21)), 
+  						    options=list(title=paste(c(F='Female', M='Male')[sex], ': No age profiles for this indicator.'),
+  							    legend= list(position="none"),
+  							    hAxis = list(viewWindow = list(min=-1, max=1)),
+  							    vAxis = list(viewWindow = list(min=-1, max=1))
+  						    )))
+				    }
   				}
 			}
 		}
@@ -560,8 +571,8 @@ shinyServer(function(input, output, session) {
   	proportion <- input$proppyramids
   	data <- pyramid.data()
   	if(proportion) {
-  		tpop <- wppExplorer::wpp.indicator('tpop')
-  		data <- .get.prop.data(data, tpop)
+  		tot <- wppExplorer::wpp.indicator('tpop')
+  		data <- .get.prop.data(data, tot)
   	}
 	low <- pyramid.data.low()
   	if(!is.null(low) && nrow(low)>0) {

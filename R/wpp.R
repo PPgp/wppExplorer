@@ -101,7 +101,8 @@ mig <- function(...) {
 		if.not.exists.load('migrationF')
 		return(sumMFbycountry(wpp.data.env$migrationM, wpp.data.env$migrationF))
 	}
-	load.and.merge.datasets('migration', NULL) # total migration available
+	#load.and.merge.datasets('migration', NULL) # total migration available
+	return(load.and.merge.dt.datasets('mig5dt', 'migproj5dt', value.column = "mig"))
 }
 
 migrate <- function(...) {
@@ -188,7 +189,7 @@ leB <- function(...) {
         # TODO: combine female and male
         return(NULL)
     }
-    return(load.and.merge.datasets('e0B5', 'e0Bproj5'))
+    return(load.and.merge.dt.datasets('e05dt', 'e0proj5dt', value.column = "e0B"))
 }
 
 sexratio <- function(...) {
@@ -265,7 +266,7 @@ leB.ci <- function(which.pi, bound, ...) {
         # TODO: combine female and male
         return(NULL)
     }
-    load.and.merge.datasets(paste0('e0Bproj', which.pi, .pi.suffix(bound)), NULL)
+    load.and.merge.dt.datasets('e0proj5dt', NULL, value.column = paste0("e0B_", which.pi, .pi.suffix(bound)))
 }
 
 
@@ -273,6 +274,14 @@ e0.ci <- function(sex, which.pi, bound) {
 	if(wpp.year.from.package.name(wpp.data.env$package) <= 2010 || which.pi == 'half.child') return(NULL)
 	load.and.merge.datasets(paste0('e0', sex, 'proj', which.pi, .pi.suffix(bound)), NULL)
 }
+
+mig.ci <- function(which.pi, bound, ...) {
+    if(wpp.year.from.package.name(wpp.data.env$package) < 2024){
+        return(NULL)
+    }
+    load.and.merge.dt.datasets('migproj5dt', NULL, value.column = paste0("mig_", which.pi, .pi.suffix(bound)))
+}
+
 
 tpop.ci <- function(which.pi, bound, ...) {
 	# which.pi is for '80', '95' or 'half.child'
@@ -315,6 +324,20 @@ if.not.exists.load <- function(name) {
 		}
 	}
 }
+
+load.and.merge.dt.datasets <- function(name.obs, name.pred=NULL, value.column, id.cols=c('country_code', 'year')){
+    if.not.exists.load(name.obs)
+    data <- wpp.data.env[[name.obs]][, c(id.cols, value.column), with = FALSE]
+    if(!is.null(name.pred)){
+        # load predictions
+        if.not.exists.load(name.pred)
+        data.pred <- wpp.data.env[[name.pred]][, c(id.cols, value.column), with = FALSE]
+        data <- rbind(data, data.pred)
+    }
+    data.table::setnames(data, value.column, "value")
+    data
+}
+
 
 load.and.merge.datasets <- function(name.obs, name.pred=NULL, by='country_code', remove.cols=c('country', 'name')){
 	if.not.exists.load(name.obs)
@@ -440,20 +463,30 @@ getUncertainty <- function(indicator, which.pi, bound='low', sex.mult=c(), sex=c
 }
 
 merge.with.un.and.melt <- function(data, id.vars='charcode', what=NULL) {
-	year.cols.idx <- .get.year.cols.idx(data)
-  	year.cols <- colnames(data)[year.cols.idx]
-	data <- merge(wpp.data.env$iso3166[,c('uncode', 'name', 'charcode')], data, 
-					by.x='uncode', by.y='country_code', sort=FALSE)
-  	data <- data[,-which(colnames(data)=='uncode')] 
-  	data <- melt(data,
+  	if(data.table::is.data.table(data)){ # it's already in long format
+  	    data <- merge(data.table::as.data.table(wpp.data.env$iso3166[,c('uncode', 'name', 'charcode')]), 
+  	                  data, 
+  	                  by.x='uncode', by.y='country_code', sort=FALSE)[, `:=`(uncode = NULL, name = NULL)]
+  	    data.table::setnames(data, "year", "Year")
+  	    data$Year <- as.numeric(data$Year)
+  	    if(! data$Year[1] %% 5 == 0) data$Year <- data$Year + 2
+  	    data <- as.data.frame(data)
+  	} else {
+  	    year.cols.idx <- .get.year.cols.idx(data)
+  	    year.cols <- colnames(data)[year.cols.idx]
+  	    data <- merge(wpp.data.env$iso3166[,c('uncode', 'name', 'charcode')], data, 
+  	                  by.x='uncode', by.y='country_code', sort=FALSE)
+  	    data <- data[,-which(colnames(data)=='uncode')] 
+  	    data <- reshape2::melt(data,
                id.vars = id.vars, 
                measure.vars = year.cols,
                variable.name = 'Year',
                na.rm=TRUE)
-	data$Year <- as.numeric(.get.year.col.names(as.character(data$Year)))
-	#if(!is.null(what) && ind.mid.years(what))
-	#	data$Year <- data$Year - 2
-	#browser()
+	    data$Year <- as.numeric(.get.year.col.names(as.character(data$Year)))
+	    #if(!is.null(what) && ind.mid.years(what))
+	    #	data$Year <- data$Year - 2
+	    #browser()
+  	}
 	data	
 }
 
@@ -560,6 +593,26 @@ get.pyramid.data <- function(year, countries, which.pi=NULL, bound=NULL, indicat
 	#browser()
 	data <- wpp.by.year(if(length(indicators) > 1) rbind(dataB[[1]], dataB[[2]]) else dataB[[1]], year)
 	wpp.by.countries(data, countries)
+}
+
+get.pyramid.mig.data <- function(year, countries, indicators=c(F='migF', M='migM')) {
+    name.ind <- "migprojAge5dt"
+    dataB <- list()
+    for(i in 1:min(2,length(indicators))) {
+        p <- load.and.merge.dt.datasets(name.ind, NULL, value.column = indicators[i], 
+                                        id.cols=c('country_code', 'year', 'age'))
+        if("100+" %in% p$age && !"15-19" %in% p$age) { # if in form 0,1,5,10, ..., 100+ -> convert to numeric
+            p$age[p$age == "100+"] <- "100"
+            p$age <- type.convert(p$age)
+        }
+        p <- cbind(p, age.num=.get.age.num(p$age))
+        dataB[[i]] <- merge.with.un.and.melt(p, id.vars=c('charcode', 'age', 'age.num'),
+                                             what=indicators[i])
+        dataB[[i]] <- cbind(dataB[[i]], sex=names(indicators)[i])
+    }
+    #browser()
+    data <- wpp.by.year(if(length(indicators) > 1) rbind(dataB[[1]], dataB[[2]]) else dataB[[1]], year)
+    wpp.by.countries(data, countries)
 }
 
 .get.pASFR <- function(year, countries) {
