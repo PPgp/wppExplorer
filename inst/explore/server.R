@@ -485,7 +485,6 @@ shinyServer(function(input, output, session) {
   		colnames(low$casted) <- sub('value', 'low', colnames(low$casted))
   		colnames(high$casted) <- sub('value', 'high', colnames(high$casted))
   		low.high <- merge(low$casted, high$casted, by=c('charcode', 'Year'))
-  		#browser()
   		#colnames(low.high)[3:4] <- c('low', 'high')
   		min.year <- min(low.high$Year, na.rm=TRUE)
   		data <- merge(data, low.high, by=c('charcode', 'Year'), all=TRUE)
@@ -510,7 +509,8 @@ shinyServer(function(input, output, session) {
   			idx <- grep(paste0('\\.',i), colnames(data))
   			if(length(idx)==0) next
   			g <- g + geom_ribbon(aes(ymin=.data[[colnames(data)[idx][1]]], ymax=.data[[colnames(data)[idx][2]]], 
-  											fill=.data[["charcode"]], colour=.data[["charcode"]], linetype=NA), alpha=c(0.3, 0.2, 0.1)[i])
+  											fill=.data[["charcode"]], colour=.data[["charcode"]], linetype=NA), 
+  											alpha=c(0.3, 0.2, 0.1)[i], show.legend = FALSE)
   			if(!is.null(line.data)) colnames(line.data) <- c('charcode', 'Year', 'low', 'high', 'variant')
   			line.data <- rbind(line.data, setNames(cbind(data[,c(1,2,idx)], wppExplorer:::.get.pi.name.for.label(i)), colnames(line.data)))
   			tmp1 <- tmp2 <- data
