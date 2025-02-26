@@ -84,6 +84,10 @@ tpopM <- function(...) return(tpop.sex('M'))
 
 tpop.sex <- function(sex) {
 	# Create a dataset of total population
+    if(wpp.year.from.package.name(wpp.data.env$package) >= 2022){
+        # use data.table versions
+        return(load.and.merge.dt.datasets('pop5dt', 'popproj5dt', value.column = paste0("pop", sex)))
+    }
 	dataset <- paste('pop', sex, sep='')
 	pop <- load.dataset.and.sum.by.country(dataset)
 	if(wpp.year.from.package.name(wpp.data.env$package) > 2010) { #projection stored separately from observations
