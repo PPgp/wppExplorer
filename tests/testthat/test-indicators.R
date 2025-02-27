@@ -14,6 +14,7 @@ test_that('fertility age profile has the right dimension', {
 })
 
 test_that('age-specific fertility rate has the right value', {
+    set.year(2019)	
 	ind <- wpp.by.year(wpp.by.country(wpp.indicator('fertage', age="20-24"), 'FR'), 2015)$value
 	data(tfr, package="wpp2019")
 	data(percentASFR, package="wpp2019")
