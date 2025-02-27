@@ -7,8 +7,13 @@ export(
 	get.wpp.year,
 	set.wpp.year
 	)
-import("wpp2024", "shinythemes", "reshape2", "plyr", "googleVis",  "ggplot2", "DT", "shinyjs", "data.table")
+import("wpp2024", "shinythemes", "plyr", "googleVis",  "ggplot2", "DT", "shinyjs", "data.table")
 importFrom(Hmisc, capitalize)
-importFrom("utils", "data")
+importFrom("utils", "data", "type.convert")
+importFrom("methods", "is")
+
+# make sure the reshape2 package is available, but what is actually used 
+# is the function "melt" which causes collision when importing data.table
+importFrom("reshape2", "recast") 
 
 

@@ -112,6 +112,7 @@ mig <- function(...) {
 }
 
 migrate <- function(...) {
+    country_code <- value <- NULL # for CRAN
 	migcounts <- mig()
 	pop <- tpop()
 	if(is(migcounts, "data.table")){
@@ -128,6 +129,7 @@ migrate <- function(...) {
 }
 	
 popagesex <- function(sexm, agem, ...){
+    country_code <- value1 <- value2 <- value <- age <- NULL # for CRAN
 	age <- agem
 	sex <- sexm
 	if(is.null(age)) age <- '0-4'
@@ -227,6 +229,7 @@ meanagechbear <- function(...) {
 }
 
 .sum.popFM.keep.age <- function() {
+    country_code <- age <- value1 <- value2 <- NULL # to make CRAN check happy
     if(wpp.year.from.package.name(wpp.data.env$package) >= 2022) {
         pop <- load.and.merge.dt.datasets('popAge5dt', 'popprojAge5dt', value.column = c("popF", "popM"),
                                    id.cols=c('country_code', 'age', 'year'))
@@ -239,6 +242,7 @@ meanagechbear <- function(...) {
 }
 
 .compute.measure.over.ages <- function(fct, ...){
+    value <- NULL # to make CRAN check happy
     dt <- .sum.popFM.keep.age()
     if(is(dt, "data.table"))
         return(dt[, .(value = fct(value, ...)), by = c("country_code", "year")])
@@ -331,6 +335,7 @@ tpop.ci <- function(which.pi, bound, ...) {
 }
 
 popagesex.ci <- function(which.pi, bound, sexm, agem, ...) {
+    age <- NULL # for CRAN check
 	# bound is 'low' or 'high'
     if((wpp.year.from.package.name(wpp.data.env$package) <= 2010) || (length(sexm) > 1) || (length(agem) > 1) || (which.pi != 'half.child')) 
         return(NULL)
