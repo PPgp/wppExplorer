@@ -105,17 +105,25 @@ mig <- function(...) {
 		if.not.exists.load('migrationF')
 		return(sumMFbycountry(wpp.data.env$migrationM, wpp.data.env$migrationF))
 	}
-	#load.and.merge.datasets('migration', NULL) # total migration available
-	return(load.and.merge.dt.datasets('mig5dt', 'migproj5dt', value.column = "mig"))
+    # total migration available
+    if(wpp.year.from.package.name(wpp.data.env$package) >= 2022)
+        return(load.and.merge.dt.datasets('mig5dt', 'migproj5dt', value.column = "mig"))
+	load.and.merge.datasets('migration', NULL) # total migration available
 }
 
 migrate <- function(...) {
 	migcounts <- mig()
 	pop <- tpop()
+	if(is(migcounts, "data.table")){
+	    popl <- data.table::melt(data.table(pop), id.vars = 'country_code', variable.name = "year", 
+	                             value.name = "pop", variable.factor = FALSE)
+	    popl[, year := as.integer(year)]
+	    mergepop <- merge(popl, migcounts[, year := year + 2], by = c('country_code', 'year'))
+	    return(mergepop[, .(country_code, year, value = value * 200 / pop)])
+	}
 	mergepop <- merge(migcounts[,'country_code', drop=FALSE], pop, sort=FALSE)
 	ncols <- ncol(mergepop)
 	migcounts <- migcounts[migcounts$country_code %in% mergepop$country_code,]
-	#browser()
 	cbind(country_code=mergepop$country_code, (migcounts[,2:ncol(migcounts)]*200.)/((mergepop[,3:ncols]+mergepop[,2:(ncols-1)])/2.))
 }
 	
@@ -125,6 +133,17 @@ popagesex <- function(sexm, agem, ...){
 	if(is.null(age)) age <- '0-4'
 	if(is.null(sex)) sex <- 'F'
 	if(length(sex)==0 || length(age)==0) return(NULL)
+	if(wpp.year.from.package.name(wpp.data.env$package) >= 2022){
+	    # use data.table versions
+	    pop <- load.and.merge.dt.datasets('popAge5dt', 'popprojAge5dt', value.column = paste0("pop", sex),
+	                                      id.cols=c('country_code', 'age', 'year'))
+	    
+	    if(length(sex) > 1)
+	        pop <- pop[, .(country_code, year, age, value = value1 + value2)]
+	    agem <- age
+	    return(pop[age %in% agem, .(value = sum(value)), by = c('country_code', 'year')])
+	}
+	
 	tpop <- tpopp <- NULL			
 	for(s in sex) {
 		dataset.name <- paste('pop',s, sep='')
@@ -203,39 +222,54 @@ sexratio <- function(...) {
 meanagechbear <- function(...) {
 	# mean age of child bearing
 	data <- load.and.merge.datasets('percentASFR', NULL)
-	macseq <- if(wpp.year.from.package.name(wpp.data.env$package) < 2022) seq(17.5, by=5, length=7) else seq(10.5, by=5, length=9)
+	macseq <- if("10-14" %in% data[["age"]]) seq(10.5, by=5, length=9) else seq(17.5, by=5, length=7)
 	ddply(data[,-which(colnames(data) == "age")], "country_code", .fun=colwise(function(x) sum(macseq*x)/100.))
 }
 
 .sum.popFM.keep.age <- function() {
+    if(wpp.year.from.package.name(wpp.data.env$package) >= 2022) {
+        pop <- load.and.merge.dt.datasets('popAge5dt', 'popprojAge5dt', value.column = c("popF", "popM"),
+                                   id.cols=c('country_code', 'age', 'year'))
+        return(pop[, .(country_code, age, year, value = value1 + value2)])
+    }
 	name.preds <- if(wpp.year.from.package.name(wpp.data.env$package) <= 2010) c(NULL, NULL) else c('popFprojMed', 'popMprojMed')
 	pF <- load.and.merge.datasets('popF', name.preds[1], by=c('country_code', 'age'), remove.cols=c('country', 'name'))
 	pM <- load.and.merge.datasets('popM', name.preds[2], by=c('country_code', 'age'), remove.cols=c('country', 'name'))
 	cbind(country_code=pF[,1], pF[,-c(1,2)] + pM[,-c(1,2)])
 }
 
+.compute.measure.over.ages <- function(fct, ...){
+    dt <- .sum.popFM.keep.age()
+    if(is(dt, "data.table"))
+        return(dt[, .(value = fct(value, ...)), by = c("country_code", "year")])
+    ddply(dt, "country_code", .fun=colwise(fct, ...))
+}
+
 medage <- function(...) {
-	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(gmedian))
+    .compute.measure.over.ages(gmedian)
 }
 
 meanageinchbearage <- function(...) {
-	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(gmean.child.bearing))
+    .compute.measure.over.ages(gmean.child.bearing)
 }
 
 tdratio <- function(...) {
-	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='total'))
+    .compute.measure.over.ages(dependency.ratio, which='total')
 }
 
 psratio <- function(...) {
-	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(function(x) 1/dependency.ratio(x, which='old')))
+    .compute.measure.over.ages(function(x) 1/dependency.ratio(x, which='old'))
+	#ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(function(x) 1/dependency.ratio(x, which='old')))
 }
 
 chdratio <- function(...) {
-	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='child'))
+    .compute.measure.over.ages(dependency.ratio, which='child')
+	#ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='child'))
 }
 
 oadratio <- function(...) {
-	ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='old'))
+    .compute.measure.over.ages(dependency.ratio, which='old')
+	#ddply(.sum.popFM.keep.age(), "country_code", .fun=colwise(dependency.ratio, which='old'))
 }
 
 popgrowth <- function(...) {
@@ -298,9 +332,18 @@ tpop.ci <- function(which.pi, bound, ...) {
 
 popagesex.ci <- function(which.pi, bound, sexm, agem, ...) {
 	# bound is 'low' or 'high'
-	if((wpp.year.from.package.name(wpp.data.env$package) <= 2010) || (length(sexm) > 1) || (length(agem) > 1) || (which.pi != 'half.child')) 
-		return(NULL)
-	dataset.name <- paste('pop', sexm, 'proj', capitalize(bound), sep='')
+    if((wpp.year.from.package.name(wpp.data.env$package) <= 2010) || (length(sexm) > 1) || (length(agem) > 1) || (which.pi != 'half.child')) 
+        return(NULL)
+    if(wpp.year.from.package.name(wpp.data.env$package) >= 2022){
+        # use data.table versions
+        dataset.name <- 'popprojAge5dt'
+        if.not.exists.load(dataset.name)
+        col <- paste0('pop', sexm, "_", bound)
+        pop <- wpp.data.env[[dataset.name]][age == agem, c("country_code", "year", col), with = FALSE]
+        setnames(pop, col, "value")
+        return(pop)
+    }
+	dataset.name <- paste0('pop', sexm, 'proj', capitalize(bound))
 	if.not.exists.load(dataset.name)
 	sum.by.country.subset.age(wpp.data.env[[dataset.name]], agem)
 }
@@ -338,7 +381,10 @@ load.and.merge.dt.datasets <- function(name.obs, name.pred=NULL, value.column, i
         data.pred <- wpp.data.env[[name.pred]][, c(id.cols, value.column), with = FALSE]
         data <- rbind(data, data.pred)
     }
-    data.table::setnames(data, value.column, "value")
+    if(length(value.column) > 1)
+        data.table::setnames(data, value.column, paste0("value", 1:length(value.column)))
+    else 
+        data.table::setnames(data, value.column, "value")
     data
 }
 
