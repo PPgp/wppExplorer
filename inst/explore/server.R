@@ -611,8 +611,8 @@ shinyServer(function(input, output, session) {
   	g <- g + geom_text(data=NULL, y=data.range[2]/2, x=20, label="Female", colour='black')
   	g <- g + geom_hline(yintercept = 0)
   	if(is.element('low', colnames(data))) {
-  		g <- g + geom_ribbon(data=subset(data, sex=='F'), aes(ymin=low, ymax=high, linetype=NA), alpha=0.3)
-  		g <- g + geom_ribbon(data=subset(data, sex=='M'), aes(ymin=high, ymax=low, linetype=NA), alpha=0.3)
+  		g <- g + geom_ribbon(data=subset(data, sex=='F'), aes(ymin=low, ymax=high, linetype='blank'), alpha=0.3)
+  		g <- g + geom_ribbon(data=subset(data, sex=='M'), aes(ymin=high, ymax=low, linetype='blank'), alpha=0.3)
   		line.data <- cbind(data, variant=wppExplorer:::.get.pi.name.for.label(3)) # only half-child variant available 
   		g <- g + geom_line(data=subset(line.data, sex=='F'), aes(y=low, linetype=variant, colour=charcode, group=charcode)) # female low
   		g <- g + geom_line(data=subset(line.data, sex=='F'), aes(y=high, linetype=variant, colour=charcode, group=charcode)) # female high
