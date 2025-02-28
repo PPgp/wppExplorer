@@ -244,6 +244,8 @@ shinyServer(function(input, output, session) {
       year.data <- merge(year.data, iso[,c('charcode', 'uncode', 'name')], by='charcode')
       low <- indicatorDataLow()
       data <- cbind(year.data[,c('charcode', 'uncode', 'name', 'value')], rank=rank(year.data$value)) # add rank column
+      digits <- wppExplorer:::ind.digits.tbl(as.integer.ind())
+      data[["value"]] <- round(data[["value"]], digits)
       if(!is.null(low)) { # add intervals
           data.l <- wpp.by.year(low, input$year)
           if(nrow(data.l) > 0) {		
@@ -251,6 +253,10 @@ shinyServer(function(input, output, session) {
               for(i in 1:3) {
                   colnames(data.l) <- sub(paste0('value.',i), paste('low', wppExplorer:::.get.pi.name.for.label(i)), colnames(data.l))
                   colnames(data.h) <- sub(paste0('value.',i), paste('high', wppExplorer:::.get.pi.name.for.label(i)), colnames(data.h))
+              }
+              for(i in 2:ncol(data.l)){ # round
+                data.l[,i] <- round(data.l[,i], digits)
+                data.h[,i] <- round(data.h[,i], digits)
               }
               ncoldata <- ncol(data)
               data <- merge(data, data.l, by='charcode')
@@ -291,7 +297,7 @@ shinyServer(function(input, output, session) {
   	#browser()
   	options <- list(title=paste(input$year), legend="{ position: 'none' }", colors="['green']", 
   						height="500px",  histogram=paste0("{bucketSize: ", diff(xlim)/30, "}")) #width="900px",
-	digits <- wppExplorer:::ind.digits(as.integer.ind())				
+	digits <- wppExplorer:::ind.digits(as.integer.ind())
   	options$hAxis <- paste0("{maxAlternation: 1,  minValue:", xlim[1], ", maxValue:", xlim[2], 
   							", ticks: [", paste(unique(round(seq(xlim[1], xlim[2], length=30), digits)), collapse=', '), "]}")
   	gvisHistogram(data, options=options)
